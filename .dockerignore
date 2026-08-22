@@ -1,0 +1,16 @@
+# Ignore node dependencies
+node_modules/
+package.json
+package-lock.json
+
+# Ignore Git files
+.git/
+.gitignore
+
+# Ignore Docker-related files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Ignore markdown or documentation files
+*.md

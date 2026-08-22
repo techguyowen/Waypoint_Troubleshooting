@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waypoint Production &bull; Sound Booth Operations & Troubleshooting</title>
+  <meta name="description" content="Official Waypoint Church Sound Booth Operations Guide: step-by-step fixes for Sanctuary TVs, OBS Projector, WaveCAST, and Soundcraft Si Impact Patching.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Waypoint AV">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-branding">
+        <div class="brand-badge" title="Waypoint Sound Booth Operations">
+          <img src="favicon.svg" alt="Waypoint Production Logo" class="brand-favicon-img" width="38" height="38">
+        </div>
+        <div>
+          <h1 class="brand-title">Waypoint Church Production</h1>
+          <div class="brand-subtitle">
+            <span class="status-dot"></span> Sound Booth Operations
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Global Search -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="globalSearchInput" 
+            class="global-search-input" 
+            placeholder="Search TV, OBS, Wavecast, Click, Faders, Mics..."
+            autocomplete="off"
+          >
+          <span class="search-kbd-hint"><kbd>⌘K</kbd></span>
+          <button id="searchClearBtn" class="search-clear-btn" title="Clear search">✕</button>
+        </div>
+        <!-- Live Search Results Dropdown -->
+        <div id="searchResultsDropdown" class="search-results-dropdown"></div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="header-quick-actions">
+        <button id="installPwaBtn" class="emergency-btn" style="display: none; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: hsl(156, 95%, 75%);" title="Install to computer desktop for offline use">
+          <span>📥</span> Install App
+        </button>
+        <a href="https://docs.google.com/document/d/13H1LsbhdocR-NE9Hpa9k5cjeHOpi8mQa-IBDHi4dhpI/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="emergency-btn" style="text-decoration: none; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.35); color: #93c5fd;" title="Open Master Google Doc in a new tab">
+          <span>📄</span> Google Doc ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Top-Level Role Navigation Bar -->
+  <nav class="nav-tabs-bar" aria-label="Main Navigation">
+    <div class="nav-tabs-inner">
+      <!-- Volunteer Tools (Primary) -->
+      <button class="nav-tab-btn active" data-tab="volunteer-hub">
+        <span>🚨</span> Troubleshooting
+      </button>
+      <button class="nav-tab-btn" data-tab="embrace-hub">
+        <span>🤝</span> Embrace Room
+      </button>
+      <button class="nav-tab-btn" data-tab="click-hub">
+        <span>⏱️</span> Click Track
+      </button>
+      <button class="nav-tab-btn" data-tab="checklist">
+        <span>📋</span> Checklist
+      </button>
+      <button class="nav-tab-btn" data-tab="logbook">
+        <span>📝</span> Logbook
+      </button>
+
+      <!-- Sound Engineer Section Separator -->
+      <span class="nav-separator">|</span>
+
+      <!-- Advanced Sound Section -->
+      <button class="nav-tab-btn nav-tab-advanced" data-tab="audio-hub">
+        <span>🎛️</span> Audio Hub
+      </button>
+    </div>
+  </nav>
+
+  <!-- Live Booth Status Ribbon -->
+  <div class="system-status-bar">
+    <div class="status-bar-inner">
+      <div class="status-item">
+        <span class="status-pulse-dot"></span>
+        <span class="status-label">System Active</span>
+      </div>
+      <div class="status-item" id="networkStatusBadge">
+        <span class="status-meta-icon" id="networkStatusIcon">💾</span>
+        <span class="status-meta-text" id="networkStatusText">Offline Ready</span>
+      </div>
+      <div class="status-item live-clock-wrap">
+        <span class="status-meta-icon">🕒</span>
+        <span id="liveServiceClock" class="status-meta-clock">--:-- --</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="app-main">
+
+    <!-- ====================================================================
+         SECTION 1: VOLUNTEER QUICK-FIX CENTER (DEFAULT PRIMARY VIEW)
+         ==================================================================== -->
+    <section id="pane-volunteer-hub" class="tab-pane active">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>🚨</span> What needs fixing right now?</h2>
+          <p class="section-desc">Choose your issue below for simple, step-by-step instructions with exact equipment locations.</p>
+        </div>
+      </div>
+
+      <!-- Category Filter Chips -->
+      <div class="problem-filter-bar" id="problemFilterBar">
+        <button class="filter-chip active" data-filter="all"><span>⚡</span> All</button>
+        <button class="filter-chip" data-filter="embrace"><span>🤝</span> Embrace</button>
+        <button class="filter-chip" data-filter="audio"><span>🎛️</span> Audio</button>
+        <button class="filter-chip" data-filter="screens"><span>📺</span> Screens</button>
+        <button class="filter-chip" data-filter="power"><span>⚡</span> Power</button>
+      </div>
+
+      <!-- Quick Issue Selector Cards -->
+      <div class="volunteer-cards-grid" id="volunteerCardsGrid">
+        
+        <!-- 1. Embrace Group Category -->
+        <div class="quick-problem-card" data-scenario="embrace-obs" data-category="embrace">
+          <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📺</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Embrace Room TV: No Signal</h3>
+            <p class="problem-card-desc">Check TV receiver HDMI cable, Nest camera outlet timer, booth transmitter (TX), or OBS LONTIUM projector.</p>
+            <span class="problem-card-action">Fix Embrace TV ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="obs-captions" data-category="embrace">
+          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">💬</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">OBS Cloud Closed Captions</h3>
+            <p class="problem-card-desc">Tools ➔ Cloud Closed Captions ➔ Check Captioning Enabled ➔ Click preview box to transcribe.</p>
+            <span class="problem-card-action">Fix Closed Captions ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="williams-av-wavecast" data-category="embrace">
+          <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🎧</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">WaveCAST Assistive Listening</h3>
+            <p class="problem-card-desc">Guest Wi-Fi check, Reaper DAW meters bouncing, volume/distortion fix, or Williams AV reboot.</p>
+            <span class="problem-card-action">Fix WaveCAST ➔</span>
+          </div>
+        </div>
+
+        <!-- 2. Soundboard, Mics & Audio Category -->
+        <div class="quick-problem-card" data-scenario="click-track-patch" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">⏱️</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Click Track Patch Switcher</h3>
+            <p class="problem-card-desc">Toggle click feed between Front Stage (Input 12) & Drum Cage (Input 20) on Layer B Fader 2.</p>
+            <span class="problem-card-action">Switch Click Track ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="soundboard-dead-channel" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🎤</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Mic or Instrument Has No Sound</h3>
+            <p class="problem-card-desc">Quick 4-point check: Stage box plug, channel SEL, preamp gain & Mix 12 House fader.</p>
+            <span class="problem-card-action">Troubleshoot Audio Channel ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="wireless-mic-issues" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">🎙️</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Wireless Mic Cuts Out, Crackles, or Dead</h3>
+            <p class="problem-card-desc">Physical mute switch, 2x fresh AA batteries, receiver RF meter & Layer B un-mute.</p>
+            <span class="problem-card-action">Fix Wireless Mic ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="load-show-file" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">💾</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Load Sunday Show File on Soundboard</h3>
+            <p class="problem-card-desc">MENU ➔ SHOW ➔ LOAD ➔ Scroll knob to Sunday show ➔ Press APPLY.</p>
+            <div style="margin-top: auto;">
+              <span style="display: inline-block; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; font-size: 0.7rem; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px; margin-bottom: 0.25rem;">
+                🛑 NEVER Overwrite 1NormalSunday
+              </span>
+              <span class="problem-card-action" style="display: block;">Show File Walkthrough ➔</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Screens & Video Category -->
+        <div class="quick-problem-card" data-scenario="sanctuary-tvs" data-category="screens">
+          <div class="problem-card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">📺</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Front Sanctuary TVs are Blank</h3>
+            <p class="problem-card-desc">Restart choir closet ceiling splitter, verify Mac power strip & HDMI 1 remote input.</p>
+            <span class="problem-card-action">Fix TVs Step-by-Step ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="proclaim-slides-freeze" data-category="screens">
+          <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">📑</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Proclaim Slides Frozen / Wrong Screen</h3>
+            <p class="problem-card-desc">Cycle Off/On Air, fix Proclaim Virtual Screen Display output, check macOS Extended Desktop, or Force Quit.</p>
+            <span class="problem-card-action">Fix Proclaim Slides ➔</span>
+          </div>
+        </div>
+
+        <!-- 4. Power & Electrical Breakers Category -->
+        <div class="quick-problem-card" data-scenario="stage-power-breakers" data-category="power">
+          <div class="problem-card-icon" style="background: rgba(234, 179, 8, 0.15); color: #facc15;">⚡</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Stage Floor Pockets / Booth Lost AC Power</h3>
+            <p class="problem-card-desc">Gray Panel S in sound booth: Reset breakers 4 & 6 for stage pockets or breaker 9 for booth lights.</p>
+            <span class="problem-card-action">Reset Breakers (Panel S) ➔</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Active Interactive Step Walkthrough -->
+      <div style="margin-top: 1.75rem;">
+        <div class="wizard-canvas" id="wizardCanvas">
+          <!-- Dynamically Populated with active step -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 2: EMBRACE & ACCESSIBILITY OPERATIONS HUB
+         ==================================================================== -->
+    <section id="pane-embrace-hub" class="tab-pane">
+      <div class="section-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <h2 class="section-title">Embrace Room & Accessibility</h2>
+          <p class="section-desc">Operations center for Embrace TV, WaveCAST, and Captions.</p>
+        </div>
+
+        <!-- Sub-Nav Switcher for Embrace Hub -->
+        <div class="layer-switch-group" id="embraceSubNavGroup">
+          <button class="layer-btn active" data-embracesub="sub-wavecast">🎧 WaveCAST & Wi-Fi</button>
+          <button class="layer-btn" data-embracesub="sub-embracetv">📺 Embrace Room TV</button>
+          <button class="layer-btn" data-embracesub="sub-captions">💬 OBS Closed Captions</button>
+          <button class="layer-btn" data-embracesub="sub-all-embrace">📋 All Embrace Tools (<span id="embraceCountBadge">3</span>)</button>
+        </div>
+      </div>
+
+      <!-- Dynamic Embrace Scenarios Banner -->
+      <div style="margin: 1.25rem 0;">
+        <div class="volunteer-cards-grid" id="embraceDynamicCardsGrid">
+          <!-- Dynamically populated with all Embrace group items from AV_DATA -->
+        </div>
+      </div>
+
+      <!-- Sub-Pane 1: WaveCAST & Wi-Fi Guest QR -->
+      <div id="embracesub-wavecast" class="embrace-subpane active">
+        <!-- Live Guest Card Container (Printable Area) -->
+        <div id="printableGuestCardArea" class="guest-card-container">
+          <div class="guest-card-header">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div class="brand-badge" style="background: linear-gradient(135deg, #10b981, #059669);">🎧</div>
+              <div>
+                <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff;">Assistive Listening with WaveCAST</h3>
+                <p style="font-size: 0.85rem; color: #94a3b8;">Waypoint Church &bull; Hearing Assistance System</p>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="location-pill" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399; background: rgba(16, 185, 129, 0.1);">
+                📶 Wi-Fi: <strong>Waypoint Guest</strong>
+              </span>
+              <span class="location-pill" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.1);">
+                🔑 Pass: <strong id="wifiPasswordText">Psalm27:4!</strong>
+                <button id="btnCopyWifiPass" class="search-clear-btn" style="display: inline-block; padding: 0 0.3rem; margin-left: 0.2rem; font-size: 0.7rem; color: #93c5fd;" title="Copy Wi-Fi Password">📋</button>
+              </span>
+            </div>
+          </div>
+
+          <div class="guest-steps-qr-grid">
+            <!-- Step 1 & 2 Instructions -->
+            <div class="guest-text-steps">
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--accent-emerald); text-transform: uppercase; margin-bottom: 0.75rem;">
+                How to Listen in 3 Easy Steps:
+              </h4>
+              <ol class="step-actions-list">
+                <li class="step-action-item">
+                  <span class="step-action-number">1</span>
+                  <div>
+                    <strong>Connect to Church Wi-Fi:</strong> Scan the Wi-Fi QR code or join <strong style="color: var(--accent-emerald);">"Waypoint Guest"</strong> with password <code style="background: rgba(255,255,255,0.1); padding: 0.1rem 0.3rem; border-radius: 4px; color: #fff;">Psalm27:4!</code>
+                  </div>
+                </li>
+                <li class="step-action-item">
+                  <span class="step-action-number">2</span>
+                  <div>
+                    <strong>Download WaveCAST Receiver:</strong> Scan the iOS or Android QR code below (or search <em>"WaveCAST Receiver"</em> in your app store).
+                  </div>
+                </li>
+                <li class="step-action-item">
+                  <span class="step-action-number">3</span>
+                  <div>
+                    <strong>Select Audio Channel:</strong> Open the WaveCAST app and tap <strong style="color: var(--accent-blue);">"Waypoint church"</strong> to start listening through your headphones or hearing aids.
+                  </div>
+                </li>
+              </ol>
+
+              <div class="step-tip-box" style="margin-top: 1rem;">
+                <strong>Need Assistance?</strong> Visit the Sound Booth at the back of the sanctuary for help or to borrow a pre-configured hearing receiver.
+              </div>
+            </div>
+
+            <!-- Triple QR Code Blocks (Wi-Fi, iOS, Android) -->
+            <div class="qr-codes-holder">
+              <div class="qr-block">
+                <div id="qrWifi" class="qr-svg-wrap"></div>
+                <span class="qr-label">📶 Join Wi-Fi</span>
+                <span style="font-size: 0.65rem; color: var(--text-muted);">Scan to Connect</span>
+              </div>
+
+              <div class="qr-block">
+                <div id="qrAppStore" class="qr-svg-wrap"></div>
+                <span class="qr-label">🍎 iOS WaveCAST</span>
+                <a href="https://itunes.apple.com/us/app/wavecast-receiver/id1458383632?mt=8" target="_blank" class="qr-link">App Store ↗</a>
+              </div>
+
+              <div class="qr-block">
+                <div id="qrGooglePlay" class="qr-svg-wrap"></div>
+                <span class="qr-label">🤖 Android App</span>
+                <a href="https://play.google.com/store/apps/details?id=com.williamsav.wavecast_receiver&hl=en_US&gl=US" target="_blank" class="qr-link">Google Play ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Pane 2: Embrace Room TV & Extender -->
+      <div id="embracesub-embracetv" class="embrace-subpane" style="display: none;">
+        <div class="calc-card" style="margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-blue); display: flex; align-items: center; gap: 0.5rem;">
+              <span>📺</span> Embrace Conference Room TV & Video Extender
+            </h3>
+            <span class="location-pill" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.1);">HDMI-over-Ethernet</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            The Embrace Conference Room TV receives its video feed via a dedicated HDMI-over-Ethernet extender system originating from the sound booth:
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
+            <div style="background: var(--bg-input); padding: 0.75rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
+              <strong style="color: var(--accent-blue);">Transmitter (TX):</strong><br>
+              Located underneath the desk inside the main sound booth. Takes HDMI feed from the presentation/OBS broadcast computer.
+            </div>
+            <div style="background: var(--bg-input); padding: 0.75rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
+              <strong style="color: var(--accent-emerald);">Receiver (RX):</strong><br>
+              A small receiver box mounted directly behind the Embrace Room TV, connected to HDMI, Ethernet, and power.
+            </div>
+            <div style="background: rgba(234, 179, 8, 0.08); padding: 0.75rem 0.85rem; border-radius: 6px; border: 1px solid rgba(234, 179, 8, 0.3);">
+              <strong style="color: var(--accent-amber);">Power Source (Shared Outlet Timer):</strong><br>
+              The receiver is powered by the same wall outlet timer controlling the room's Nest camera. If the timer is inactive, both devices lose power.
+            </div>
+          </div>
+
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+            Troubleshooting "No Signal" on Embrace TV:
+          </h4>
+          <ol class="step-actions-list">
+            <li class="step-action-item">
+              <span class="step-action-number">1</span>
+              <div>
+                <strong>Inspect HDMI Cable (Behind TV):</strong> Check the HDMI cable connected to the small receiver box behind the TV. Make sure both ends (receiver out to TV input) are fully seated, as this cable often gets bumped or unplugged.
+              </div>
+            </li>
+            <li class="step-action-item">
+              <span class="step-action-number">2</span>
+              <div>
+                <strong>Check Power & Outlet Timer:</strong> Verify that the receiver box behind the TV has power lights on. Because the receiver shares an outlet timer with the Nest camera, ensure the timer is active and currently supplying power to the outlet.
+              </div>
+            </li>
+            <li class="step-action-item">
+              <span class="step-action-number">3</span>
+              <div>
+                <strong>Inspect the Transmitter (Sound Booth):</strong> Check the transmitter unit located under the desk in the sound room. Confirm power, HDMI input (from computer/video feed), and Ethernet cables are securely connected and show an active link/power status.
+              </div>
+            </li>
+            <li class="step-action-item">
+              <span class="step-action-number">4</span>
+              <div>
+                <strong>OBS Fullscreen Projection:</strong> Open OBS Studio ➔ Right-click video preview ➔ Fullscreen Projector (Preview) ➔ Select <strong>'LONTIUM'</strong>.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Sub-Pane 3: OBS Cloud Closed Captions -->
+      <div id="embracesub-captions" class="embrace-subpane" style="display: none;">
+        <div class="calc-card" style="margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.5rem;">
+              <span>💬</span> OBS Cloud Closed Captions Setup & Troubleshooting
+            </h3>
+            <span class="location-pill" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8; background: rgba(14, 165, 233, 0.1);">Google Cloud Speech API</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Real-time automated subtitles and closed captions for deaf / hard-of-hearing stream viewers and conference room screens.
+          </p>
+
+          <ol class="step-actions-list">
+            <li class="step-action-item">
+              <span class="step-action-number">1</span>
+              <div>
+                <strong>Open Plugin Menu:</strong> In the top OBS menu bar, click <strong>Tools ➔ Cloud Closed Captions</strong>.
+              </div>
+            </li>
+            <li class="step-action-item">
+              <span class="step-action-number">2</span>
+              <div>
+                <strong>Turn On Captioning:</strong> In the Caption Preview dock, make sure the <strong>Captioning Enabled</strong> box is checked.
+              </div>
+            </li>
+            <li class="step-action-item">
+              <span class="step-action-number">3</span>
+              <div>
+                <strong>Click Preview Box:</strong> Click the preview box inside the caption dock to make it turn on and start transcribing live voice audio.
+              </div>
+            </li>
+            <li class="step-action-item">
+              <span class="step-action-number">4</span>
+              <div>
+                <strong>No Captions Generating?</strong> Verify active microphone is unmuted in OBS Audio Mixer, check ASIO Soundcraft soundboard USB driver connection, and verify internet connectivity.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Sub-Pane 4: All Dynamic Embrace Guides -->
+      <div id="embracesub-all-embrace" class="embrace-subpane" style="display: none;">
+        <div id="embraceAllGuidesList" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- Dynamically populated from AV_DATA by renderEmbraceHub() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 3: CLICK TRACK SWITCHER
+         ==================================================================== -->
+    <section id="pane-click-hub" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>⏱️</span> Click Track Patch Switcher</h2>
+          <p class="section-desc">Quickly toggle click feed between Front Stage Click (Input 12) and Drum Cage Click (Input 20) on Layer B Fader 2.</p>
+        </div>
+      </div>
+
+      <div class="calc-card" style="max-width: 720px; margin: 0 auto;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem;">
+          <span>⏱️</span> Select Active Click Location
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Click which location the drummer or worship leader is using today:
+        </p>
+
+        <div style="display: flex; gap: 0.75rem; margin: 0.75rem 0;">
+          <button id="btnClickFront" class="btn-resolved" style="flex: 1; justify-content: center; padding: 0.75rem;">
+            📍 Front Stage Click (Input 12)
+          </button>
+          <button id="btnClickDrums" class="btn-next-step" style="flex: 1; justify-content: center; padding: 0.75rem;">
+            🥁 Drum Cage Click (Input 20)
+          </button>
+        </div>
+
+        <div class="calc-output-box" id="clickOutputBox">
+          <!-- Dynamically Populated -->
+        </div>
+
+        <div class="step-tip-box" style="margin-top: 1rem; background: rgba(239, 68, 68, 0.1); border-left-color: var(--accent-rose); color: #fca5a5;">
+          <strong style="color: #f87171;">⚠️ Strict Routing Rule:</strong> Click Track is routed <strong>EXCLUSIVELY to Aviom In-Ear Monitors</strong>. Ensure Click is <strong>NEVER</strong> routed to <strong>MIX 12 (Stereo House)</strong> or <strong>Master LR</strong> so the congregation does not hear the metronome.
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 4: VOLUNTEER PRE-SERVICE CHECKLIST
+         ==================================================================== -->
+    <section id="pane-checklist" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>📋</span> Pre-Service Sound Booth Readiness Checklist</h2>
+          <p class="section-desc">Interactive volunteer checklist to verify sound, video, broadcast, and assistive listening systems before rehearsal.</p>
+        </div>
+        <button id="btnResetChecklist" class="btn-prev-step" style="border-color: var(--border-prominent);">
+          🔄 Reset Checklist
+        </button>
+      </div>
+
+      <div class="checklist-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+          <span style="font-weight: 600; color: var(--text-secondary);">Readiness Progress</span>
+          <span id="chkProgressText" style="font-weight: 700; color: var(--accent-blue);">0% Complete</span>
+        </div>
+        <div class="checklist-progress-bar-wrap">
+          <div class="checklist-progress-fill" id="chkProgressFill"></div>
+        </div>
+
+        <div class="checklist-items-grid" id="checklistGrid">
+          <!-- Dynamically Populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 5: BOOTH MAINTENANCE LOGBOOK
+         ==================================================================== -->
+    <section id="pane-logbook" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><span>📝</span> Sound Booth Shift Log & Maintenance Notes</h2>
+          <p class="section-desc">Log broken cables, dead batteries, guest musician adjustments, and maintenance issues that persist across sessions.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button id="btnExportLog" class="btn-prev-step" style="border-color: var(--border-prominent);">
+            📥 Export Log
+          </button>
+          <button id="btnClearLog" class="btn-prev-step" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+            🗑️ Clear All
+          </button>
+        </div>
+      </div>
+
+      <div class="wizard-grid" style="grid-template-columns: 360px 1fr;">
+        <!-- Log Entry Form -->
+        <div class="calc-card">
+          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-blue);">
+            ✍️ Add New Log Entry
+          </h3>
+
+          <!-- Quick Template Pills -->
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <label class="calc-label">Quick Templates:</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+              <button class="log-template-btn" data-tmpl="cable">🔌 Bad Cable</button>
+              <button class="log-template-btn" data-tmpl="battery">🔋 Mic Batteries</button>
+              <button class="log-template-btn" data-tmpl="splitter">📺 Splitter Reboot</button>
+              <button class="log-template-btn" data-tmpl="extender">📺 Embrace TV / Extender</button>
+              <button class="log-template-btn" data-tmpl="breaker">⚡ Tripped Breaker (Panel S)</button>
+              <button class="log-template-btn" data-tmpl="guest">🎻 Guest Musician</button>
+            </div>
+          </div>
+
+          <form id="logEntryForm" style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.5rem;">
+            <div class="calc-field-group">
+              <label class="calc-label" for="logCategory">Category:</label>
+              <select id="logCategory" class="calc-select" required>
+                <option value="Hardware / Cable">🔌 Hardware / Broken Cable</option>
+                <option value="Battery / Wireless">🔋 Battery / Wireless Mic</option>
+                <option value="Video / Splitter">📺 Video / TVs / Splitter</option>
+                <option value="Service Note">🎵 Service Note / Patching</option>
+                <option value="Assistive Listening">🎧 Wavecast / Assistive Audio</option>
+                <option value="General">📝 General Observation</option>
+              </select>
+            </div>
+
+            <div class="calc-field-group">
+              <label class="calc-label" for="logStatus">Status / Priority:</label>
+              <select id="logStatus" class="calc-select">
+                <option value="open">⚠️ Open (Needs Fix / Attention)</option>
+                <option value="resolved">✅ Resolved / Fixed</option>
+                <option value="info">ℹ️ Info Only</option>
+              </select>
+            </div>
+
+            <div class="calc-field-group">
+              <label class="calc-label" for="logAuthor">Logged By (Name / Initials):</label>
+              <input type="text" id="logAuthor" class="calc-input" placeholder="e.g. Owen / Sound Lead" required>
+            </div>
+
+            <div class="calc-field-group">
+              <label class="calc-label" for="logDetails">Notes & Details:</label>
+              <textarea id="logDetails" class="calc-input" rows="3" placeholder="Describe the issue, stage location, or action taken..." required style="resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-resolved" style="justify-content: center; margin-top: 0.5rem;">
+              ➕ Save to Logbook
+            </button>
+          </form>
+        </div>
+
+        <!-- Log Entries Feed & Filter -->
+        <div class="calc-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">
+              📋 Maintenance History & Service Notes
+            </h3>
+            <!-- Filter Group -->
+            <div class="layer-switch-group" style="padding: 0.2rem;" id="logFilterGroup">
+              <button class="layer-btn active" data-filter="all" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">All</button>
+              <button class="layer-btn" data-filter="open" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">Open Issues</button>
+              <button class="layer-btn" data-filter="resolved" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">Resolved</button>
+            </div>
+          </div>
+
+          <div id="logbookEntriesList" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 620px; overflow-y: auto; padding-right: 0.3rem;">
+            <!-- Dynamically Populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 6: DEDICATED SOUND ENGINEER & AUDIO PATCH HUB (ADVANCED)
+         ==================================================================== -->
+    <section id="pane-audio-hub" class="tab-pane">
+      <!-- Section Header -->
+      <div class="section-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(168, 85, 247, 0.15); color: #c084fc; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.35rem;">
+            <span>🎛️</span> Audio Engineering & FOH Tools
+          </div>
+          <h2 class="section-title">Soundcraft Si Impact & Stage Patch Hub</h2>
+          <p class="section-desc">Dedicated console layers A-D, stage floor tie-lines, 14 mix buses, Mini Stagebox 32i snake colors, and guest instrument patching.</p>
+        </div>
+
+        <!-- Sub-Nav Switcher for Audio Tech -->
+        <div class="layer-switch-group" id="audioSubNavGroup">
+          <button class="layer-btn active" data-audiosub="sub-stage">🗺️ Stage Map</button>
+          <button class="layer-btn" data-audiosub="sub-console">🎛️ Virtual Console</button>
+          <button class="layer-btn" data-audiosub="sub-buses">🔀 Mix Buses (1-14)</button>
+          <button class="layer-btn" data-audiosub="sub-guest">🎻 Guest Patching</button>
+          <button class="layer-btn" data-audiosub="sub-power">⚡ Breaker Panel S</button>
+          <button class="layer-btn" data-audiosub="sub-arch">📐 Architecture</button>
+        </div>
+      </div>
+
+      <!-- Sub-Tab 1: Stage Map Explorer -->
+      <div id="audiosub-stage" class="audio-subpane active">
+        <div class="stage-explorer-layout">
+          <!-- Stage Visual Diagram -->
+          <div class="stage-visual-container">
+            <div class="stage-diagram-wrapper">
+              <div class="stage-backwall-label">▲ BACK WALL / DRUM CAGE & KEYBOARD AREA ▲</div>
+              
+              <div class="stage-box-zones" id="stageBoxZones">
+                <!-- Dynamically Populated -->
+              </div>
+
+              <div class="stage-front-label">▼ FRONT OF STAGE / TOWARDS CONGREGATION ▼</div>
+            </div>
+          </div>
+
+          <!-- Stage Inspector Panel -->
+          <div class="stage-inspector-panel" id="stageInspectorPanel">
+            <div class="inspector-header">
+              <h3 class="inspector-title" id="inspectorTitle">Select a Stage Box</h3>
+              <p class="inspector-subtitle" id="inspectorLocation">Click any box on the stage diagram to inspect its tie-lines.</p>
+            </div>
+            <div id="inspectorContent">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Tab 2: Virtual Console Simulator -->
+      <div id="audiosub-console" class="audio-subpane" style="display: none;">
+        <div class="console-container">
+          <!-- Layer Switcher Header -->
+          <div class="console-header-controls">
+            <div class="layer-switch-group" id="layerSwitchGroup">
+              <button class="layer-btn active" data-layer="A">Layer A (Instruments & Vocals)</button>
+              <button class="layer-btn" data-layer="B">Layer B (Wireless & Utility)</button>
+              <button class="layer-btn" data-layer="C">Layer C (VCAs, DAW, FX)</button>
+              <button class="layer-btn" data-layer="D">Layer D (Aviom & Masters)</button>
+            </div>
+            <div class="layer-indicator-label" id="currentLayerLabel">
+              Layer A: Main Instruments & Primary Vocals (1-24)
+            </div>
+          </div>
+
+          <!-- 24 Fader Strips Viewport -->
+          <div class="faders-viewport">
+            <div class="fader-strips-grid" id="faderStripsGrid">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Tab 3: Mix Buses & Outputs -->
+      <div id="audiosub-buses" class="audio-subpane" style="display: none;">
+        <div class="step-tip-box" style="margin-bottom: 1.25rem; background: rgba(59, 130, 246, 0.1); border-left-color: var(--accent-blue);">
+          <strong style="color: var(--accent-blue);">Master Output Routing (LR Bus & AES Out 01):</strong><br>
+          Individual channels route to Mix Buses. Mix 12 (Stereo House) and Mix 13 (Stereo Drums House) are assigned to the Master LR bus using the physical <strong>'LR'</strong> button to the left of the console touchscreen. The Master LR fader drives the main sanctuary speakers via <strong>AES Out 01</strong>.
+        </div>
+
+        <div class="mixbus-table-wrap">
+          <table class="mixbus-table">
+            <thead>
+              <tr>
+                <th style="width: 90px;">Bus #</th>
+                <th>Tape Label</th>
+                <th>Function / Category</th>
+                <th>Hardware Destination</th>
+                <th>Description & Key Routing Rules</th>
+              </tr>
+            </thead>
+            <tbody id="mixBusTableBody">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sub-Tab 4: Guest Instrument Calculator & Stage Soft-Patches -->
+      <div id="audiosub-guest" class="audio-subpane" style="display: none;">
+        <div class="wizard-grid" style="grid-template-columns: 1fr 1fr;">
+          <!-- Guest Instrument Calculator -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-blue); display: flex; align-items: center; gap: 0.5rem;">
+              <span>🎻</span> Guest Instrument Routing Wizard
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              Generate exact step-by-step console routing for any guest musician (Cello, Flute, Trumpet, etc.).
+            </p>
+
+            <div class="calc-controls-grid">
+              <div class="calc-field-group">
+                <label class="calc-label" for="guestInstrumentName">Guest Instrument / Performer:</label>
+                <input type="text" id="guestInstrumentName" class="calc-input" value="Cello" placeholder="e.g. Cello, Sax, Guest Vocal">
+              </div>
+
+              <div class="calc-field-group">
+                <label class="calc-label" for="guestStagePort">Stage Box Port:</label>
+                <select id="guestStagePort" class="calc-select">
+                  <option value="aux1">Front Left Box: Aux 1 (Hardwired to Input 3)</option>
+                  <option value="folk">Back Left Box: Folk (Hardwired to Input 9)</option>
+                  <option value="stomp">Front Left Box: Stomp (Hardwired to Input 4)</option>
+                  <option value="drumSpare">Drum Cage Left: Spare (Hardwired to Input 21)</option>
+                </select>
+              </div>
+
+              <div class="calc-field-group">
+                <label class="calc-label" for="guestAviomTarget">Aviom In-Ear Monitor Send:</label>
+                <select id="guestAviomTarget" class="calc-select">
+                  <option value="mix6">Mix 6 (Flex 1 - Guest / Violin)</option>
+                  <option value="mix1">Mix 1 (Drums Aviom)</option>
+                  <option value="mix4">Mix 4 (Keys Aviom)</option>
+                  <option value="mix5">Mix 5 (Electric Guitar Aviom)</option>
+                  <option value="mix9">Mix 9 (Vocals 1 & 2 Aviom)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Generated Guest Instructions Box -->
+            <div class="calc-output-box" id="guestOutputBox">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Quick Reference Accordions -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-amber); display: flex; align-items: center; gap: 0.5rem;">
+              <span>📌</span> Standard Stage Soft-Patches
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              Direct routing cheat sheet for standard instruments:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: var(--accent-blue);">Violin (Far Left Box):</strong> Layer A, Fader 19 (SEL) ➔ Inputs ➔ Select <strong>Input 1</strong> ➔ Route to Mix 6 (Flex 1).
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: var(--accent-emerald);">Stomp Box (Front Left Box):</strong> Layer B, Fader 18 (SEL) ➔ Inputs ➔ Select <strong>Input 4</strong>.
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: var(--accent-amber);">Cajon / Stomp (Front Right Box):</strong> Layer A, Fader 21 (SEL) ➔ Inputs ➔ Select <strong>Input 18</strong> ➔ Sub Mix 8 active.
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: #c084fc;">Acoustic & Electric Guitars:</strong> Select fader on Layer A ➔ Inputs ➔ Select matching bracketed number on scribble strip (e.g. In 15 for Acou1, In 11 for Elec1).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Tab 5: Sound Booth Breaker Panel S & Electrical Directory -->
+      <div id="audiosub-power" class="audio-subpane" style="display: none;">
+        <!-- Two Panels Overview -->
+        <div class="wizard-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 1.25rem;">
+          <div class="calc-card" style="border-left: 4px solid var(--accent-amber);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: #facc15; display: flex; align-items: center; gap: 0.5rem;">
+                <span>⚡</span> Gray Metal Electrical Panel (Panel S)
+              </h3>
+              <span class="location-pill" style="border-color: rgba(234, 179, 8, 0.4); color: #facc15; background: rgba(234, 179, 8, 0.1);">Back Sound Booth</span>
+            </div>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              Supplies AC power to stage floor pockets, platform receptacles, sound booth quad outlets, sanctuary displays, projectors, and subwoofers.
+            </p>
+            <div style="background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.25); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.78rem;">
+              <strong style="color: #facc15;">Key Audio/Stage Circuits:</strong> Breakers 4 & 6 (Stage Floor Boxes) &bull; Breaker 9 (Sound Booth Lights) &bull; Breakers 1, 2, 7, 8 (Sound Booth Outlets) &bull; Breaker 11 (Sanctuary TVs) &bull; Breakers 29–30 (Subwoofers).
+            </div>
+          </div>
+
+          <div class="calc-card" style="border-left: 4px solid var(--text-muted);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+                <span>💡</span> Large Black Lighting Panel
+              </h3>
+              <span class="location-pill" style="border-color: rgba(148, 163, 184, 0.4); color: #cbd5e1; background: rgba(148, 163, 184, 0.1);">Next to Panel S</span>
+            </div>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+              Located directly next to Panel S. Dedicated exclusively to sanctuary architectural lighting and theatrical stage lighting control.
+            </p>
+            <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.78rem; color: var(--text-muted);">
+              <strong>Note for Audio/Stage Techs:</strong> Do NOT use the black lighting panel for general stage audio, instrument, pedalboard, or video power issues.
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Troubleshooting Action Alert Cards -->
+        <div class="volunteer-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 1.25rem;">
+          <div style="background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8px; padding: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #facc15; font-size: 0.9rem; margin-bottom: 0.35rem;">
+              <span>⚡</span> Stage Floor Boxes / Pockets Dead
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+              Locate <strong>Breakers 4 and 6</strong> (<em>Floor Recept. Stage</em>) in Panel S. Push firmly all the way to <strong>OFF</strong>, then back to <strong>ON</strong>.
+            </p>
+          </div>
+
+          <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #60a5fa; font-size: 0.9rem; margin-bottom: 0.35rem;">
+              <span>💡</span> Sound Booth Lights Not Working
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+              Locate <strong>Breaker 9</strong> (<em>Sound Rm Lights</em>) in Panel S to ensure it has not tripped. Cycle OFF then ON.
+            </p>
+          </div>
+
+          <div style="background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 8px; padding: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #fb7185; font-size: 0.9rem; margin-bottom: 0.35rem;">
+              <span>🔉</span> Subwoofers Dead / No Bass
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+              Check <strong>Breakers 29–30</strong> (<em>10 R & L SUBS</em>) in Panel S. Cycle OFF then ON if tripped.
+            </p>
+          </div>
+
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #34d399; font-size: 0.9rem; margin-bottom: 0.35rem;">
+              <span>📺</span> Front Sanctuary TVs No Power
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+              Check <strong>Breaker 11</strong> (<em>TV Sanctuary</em>) or <strong>Breaker 13</strong> (<em>Projector Sanctuary</em>) in Panel S.
+            </p>
+          </div>
+        </div>
+
+        <!-- Panel S Directory Filter & Search Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">Panel S Circuit Directory:</span>
+            <div class="problem-filter-bar" id="breakerFilterBar" style="margin: 0; padding: 0;">
+              <button class="filter-chip active" data-breakerfilter="all">All (13)</button>
+              <button class="filter-chip" data-breakerfilter="stage">Stage Power (5)</button>
+              <button class="filter-chip" data-breakerfilter="booth">Sound Booth (3)</button>
+              <button class="filter-chip" data-breakerfilter="video">Video & TVs (2)</button>
+              <button class="filter-chip" data-breakerfilter="audio">Subwoofers (1)</button>
+              <button class="filter-chip" data-breakerfilter="spare">Spares (3)</button>
+            </div>
+          </div>
+          <div style="position: relative; min-width: 220px;">
+            <input type="text" id="breakerSearchInput" class="calc-input" placeholder="Search circuits, labels..." style="padding: 0.35rem 0.65rem; font-size: 0.8rem;">
+          </div>
+        </div>
+
+        <!-- Panel S Circuit Table -->
+        <div class="mixbus-table-wrap">
+          <table class="mixbus-table">
+            <thead>
+              <tr>
+                <th style="width: 100px;">Circuit #</th>
+                <th>Panel Directory Label</th>
+                <th>Assignment / Notes</th>
+                <th style="width: 140px;">Category</th>
+                <th style="width: 200px;">Quick Reset Guide</th>
+              </tr>
+            </thead>
+            <tbody id="breakerTableBody">
+              <!-- Dynamically Populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sub-Tab 6: System Architecture & Engineering Specifications -->
+      <div id="audiosub-arch" class="audio-subpane" style="display: none;">
+        <div class="volunteer-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));">
+          
+          <!-- Pillar 1: House & Master LR (AES Out 01) -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-blue); display: flex; align-items: center; gap: 0.5rem;">
+              <span>🔊</span> House & Master LR Routing
+            </h3>
+            <ul class="step-actions-list" style="margin: 0.4rem 0;">
+              <li class="step-action-item">
+                <span class="step-action-number">1</span>
+                <div>
+                  <strong>Bus-to-Master Subgroups:</strong> Channels DO NOT directly feed Left/Right main outputs. They route to subgroup mix buses: <strong>Mix 12 (Stereo House)</strong> for non-drums and <strong>Mix 13 (Stereo Drums House)</strong>.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">2</span>
+                <div>
+                  <strong>'LR' Button Assignment:</strong> Mix 12 and Mix 13 are assigned to the main LR bus using the physical illuminated <strong>'LR'</strong> button to the left of the console touchscreen.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">3</span>
+                <div>
+                  <strong>Physical Main Output:</strong> The master stereo audio is physically sent via <strong>AES Out 01</strong> digital output (NOT local analogue XLR 15/16).
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pillar 2: Subwoofer & Low-End Management -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem;">
+              <span>🔉</span> Aux-Fed Subwoofer (Mix 8)
+            </h3>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.4rem;">
+              Low frequencies are isolated using <strong>Mix 8 (Sub)</strong> rather than an internal crossover.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.78rem;">
+                <strong style="color: var(--accent-emerald);">✅ Allowed Sub Sources (7 Only):</strong><br>
+                1. Bass Guitar &bull; 2. Keys &bull; 3. Kick Drum &bull; 4. Snare &bull; 5. Low/Floor Tom &bull; 6. Cajon/Stomp &bull; 7. Synth Pad
+              </div>
+              <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.78rem; color: #fca5a5;">
+                <strong>❌ Excluded from Sub:</strong> Vocals, Acoustic Guitars, Speech mics, and Ambient room mics.
+              </div>
+            </div>
+          </div>
+
+          <!-- Pillar 3: Stage Box vs Local Preamp Split -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-amber); display: flex; align-items: center; gap: 0.5rem;">
+              <span>🔌</span> Stage Box vs. Local Preamp Split
+            </h3>
+            <ul class="step-actions-list" style="margin: 0.4rem 0;">
+              <li class="step-action-item">
+                <span class="step-action-number">1</span>
+                <div>
+                  <strong>Local Inputs (1–23):</strong> Standard floor stage boxes (Far Left, Front Left, Center Front, Front Right, Far Right, and Drum Left Plate) map 1:1 directly to local Si Impact analog preamps 1–23.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">2</span>
+                <div>
+                  <strong>Drum Cage Digital Snake (MADI 17–24):</strong> The right-side drum cage wall plate bypasses local analog preamps and feeds directly into the <strong>Mini Stagebox 32i</strong> via the color-coded MADI snake (Brown, Red, Orange, Yellow, Green, Blue, Purple, Grey).
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pillar 4: Aviom Personal Monitor Mapping -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #c084fc; display: flex; align-items: center; gap: 0.5rem;">
+              <span>🎧</span> Aviom Personal Monitor Mapping
+            </h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; font-size: 0.78rem; margin: 0.4rem 0;">
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 1:</strong> Drums</div>
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 2:</strong> Bass</div>
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 3:</strong> Talkback</div>
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 4:</strong> Keys</div>
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 5:</strong> Elec. Guitar</div>
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 9:</strong> Vocals 1 & 2</div>
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 10:</strong> Vocals 3 & 4</div>
+              <div style="background: var(--bg-input); padding: 0.35rem 0.5rem; border-radius: 4px; border: 1px solid var(--border-subtle);"><strong style="color: var(--accent-blue);">Mix 11:</strong> Acoustic 1 & 2</div>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+              <strong>Flex Sends:</strong> <em>Mix 6 (Flex 1)</em> = Guest / Violin monitor feed &bull; <em>Mix 7 (Flex 2)</em> = Open utility send.
+            </p>
+          </div>
+
+          <!-- Pillar 5: Live Stream & Broadcast (Mix 14) -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.5rem;">
+              <span>📡</span> Live Stream Feed & tOTEM Rule
+            </h3>
+            <ul class="step-actions-list" style="margin: 0.4rem 0;">
+              <li class="step-action-item">
+                <span class="step-action-number">1</span>
+                <div>
+                  <strong>Dedicated Stream Mix:</strong> <strong>Mix 14</strong> feeds the live stream broadcast and Reaper DAW independently from the sanctuary house mix.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">2</span>
+                <div>
+                  <strong>tOTEM Follow Mode Rule:</strong> Any new stage source or guest input MUST be manually sent to Mix 14 (press <strong>MIX 14</strong> button ➔ raise fader) in addition to Mix 12/13.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">3</span>
+                <div>
+                  <strong>Ambient Mics:</strong> Mix 14 includes ambient room/crowd mics for broadcast atmosphere (which are strictly excluded from house speakers).
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pillar 6: DAW Tracking & Lexicon FX Returns (Layer C) -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-rose); display: flex; align-items: center; gap: 0.5rem;">
+              <span>🎛️</span> DAW & Lexicon FX Returns (Layer C)
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 0.4rem 0;">
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.78rem;">
+                <strong style="color: var(--accent-blue);">DAW Reaper Tracking:</strong><br>
+                &bull; <strong>Fader 18 (To Reaper):</strong> Sends console audio to DAW on Booth PC.<br>
+                &bull; <strong>Fader 19 (From Reap):</strong> Receives audio return from Reaper / Wavecast.
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.78rem;">
+                <strong style="color: var(--accent-emerald);">Internal Lexicon FX Returns (Faders 21–24):</strong><br>
+                &bull; <strong>Fader 21:</strong> Vocal Reverb &bull; <strong>Fader 22:</strong> Drum Plate<br>
+                &bull; <strong>Fader 23:</strong> Snare Verb &bull; <strong>Fader 24:</strong> Acoustic / Pad Reverb
+              </div>
+            </div>
+          </div>
+
+          <!-- Pillar 7: Embrace Room TV & Video Extender System -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-teal); display: flex; align-items: center; gap: 0.5rem;">
+              <span>📺</span> Embrace Room TV & Video Extender
+            </h3>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.4rem;">
+              Dedicated HDMI-over-Ethernet extender system transmitting sound booth video across Cat6 network lines:
+            </div>
+            <ul class="step-actions-list" style="margin: 0.4rem 0;">
+              <li class="step-action-item">
+                <span class="step-action-number">TX</span>
+                <div>
+                  <strong>Transmitter (Sound Booth):</strong> Located <strong>underneath the desk inside the main sound booth</strong>, connected to power, HDMI input, and Cat6 Ethernet.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">RX</span>
+                <div>
+                  <strong>Receiver (Behind TV):</strong> Small receiver box mounted <strong>directly behind the Embrace Room TV</strong>, connected to HDMI out, Ethernet in, and power.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">⚡</span>
+                <div>
+                  <strong>Power Source (Nest Timer):</strong> The receiver is powered by the <strong>same wall outlet timer that controls the room's Nest camera</strong>.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pillar 8: Sound Booth Electrical Panels (Panel S & Lighting Panel) -->
+          <div class="calc-card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-amber); display: flex; align-items: center; gap: 0.5rem;">
+              <span>⚡</span> Electrical Panels (Panel S & Lighting)
+            </h3>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.4rem;">
+              Located inside back sound booth on wall:
+            </div>
+            <ul class="step-actions-list" style="margin: 0.4rem 0;">
+              <li class="step-action-item">
+                <span class="step-action-number">S</span>
+                <div>
+                  <strong>Gray Panel S (AV & Stage AC):</strong> Powers stage floor pockets, platform outlets, booth quad outlets, sanctuary TVs, projectors & subwoofers.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">💡</span>
+                <div>
+                  <strong>Black Lighting Panel:</strong> Next to Panel S — dedicated exclusively to sanctuary and theatrical stage lighting control.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">4,6</span>
+                <div>
+                  <strong>Stage Power Reset:</strong> Cycle <strong>Breakers 4 & 6</strong> (<em>Floor Recept. Stage</em>) OFF and ON if pedalboards/stage boxes die.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pillar 9: Show File Management & Safety -->
+          <div class="calc-card" style="grid-column: 1 / -1; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.04);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: #f87171; display: flex; align-items: center; gap: 0.5rem;">
+                <span>💾</span> Soundcraft Show File Startup & Safety Protocol
+              </h3>
+              <span style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 4px;">
+                🛑 STRICT RULE: DO NOT OVERWRITE 1NormalSunday
+              </span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; font-size: 0.8rem;">
+              <div style="background: var(--bg-input); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
+                <strong style="color: var(--accent-blue);">How to Load:</strong><br>
+                1. Press <strong>MENU</strong> button next to touchscreen.<br>
+                2. Tap <strong>SHOW</strong> ➔ Tap <strong>LOAD</strong>.<br>
+                3. Use <strong>SCROLL encoder</strong> to highlight Sunday show file on MMC / USB.<br>
+                4. Press illuminated <strong>APPLY</strong> button ➔ Confirm prompt.
+              </div>
+              <div style="background: rgba(239, 68, 68, 0.1); padding: 0.65rem 0.85rem; border-radius: 6px; border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5;">
+                <strong style="color: #f87171;">⚠️ Protection Rule:</strong><br>
+                <code>1NormalSunday</code> is the church's master reference baseline. <strong>NEVER overwrite or save over <code>1NormalSunday</code></strong>. If creating custom settings for special events, always use <strong>SAVE AS</strong> with a new dated name.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Channel Detail Modal / Drawer -->
+  <div class="detail-modal-backdrop" id="channelDetailModal">
+    <div class="detail-modal-card">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span class="port-num-badge" id="modalFaderNum">Fader 1</span>
+          <h3 id="modalScribble" style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">Voc 1</h3>
+        </div>
+        <button id="modalCloseBtn" class="search-clear-btn" style="display: block; font-size: 1.1rem;">✕</button>
+      </div>
+      <div class="modal-body" id="modalBodyContent">
+        <!-- Dynamically Populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Guest QR Display Modal -->
+  <div class="detail-modal-backdrop" id="guestQrModal">
+    <div class="detail-modal-card" style="max-width: 760px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.3rem;">📱</span>
+          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">WaveCAST Guest Connection & Wi-Fi Card</h3>
+        </div>
+        <button id="modalQrCloseBtn" class="search-clear-btn" style="display: block; font-size: 1.1rem;">✕</button>
+      </div>
+      <div class="modal-body" id="modalQrBody">
+        <!-- Dynamically Cloned / Populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    Sound Booth Operations System &bull; Soundcraft Si Impact &bull; Mini Stagebox 32i &bull; Waypoint Church Production &bull; 
+    <a href="https://docs.google.com/document/d/13H1LsbhdocR-NE9Hpa9k5cjeHOpi8mQa-IBDHi4dhpI/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style="color: var(--accent-blue); text-decoration: underline;">
+      📄 Open Master Documentation (Google Doc) ↗
+    </a>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="qrcode.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
