@@ -4,6 +4,6 @@ services:
   web:
     build: .
     ports:
-      - "80"
+      - "7291:80"
     restart: unless-stopped
     container_name: waypoint-av-pwa
