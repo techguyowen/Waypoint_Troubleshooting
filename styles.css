@@ -1854,60 +1854,369 @@ body {
   margin-top: auto;
 }
 
+/* Print Action Button (Subtle header/card button) */
+.btn-print-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-print-action:hover {
+  background: var(--bg-card);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  transform: translateY(-1px);
+}
+
+.btn-print-action:active {
+  transform: translateY(0);
+}
+
+/* Print-only complete guide container (hidden on screen) */
+.wizard-print-all-phases {
+  display: none;
+}
+
 /* ==========================================================================
-   Print Media Styles (1-Click Welcome Desk Card & Cheat Sheet Printing)
+   Print Media Styles (High-Contrast, Clean Layout for Physical Cheat Sheets)
    ========================================================================== */
 @media print {
-  body {
-    background: #fff !important;
-    color: #000 !important;
+  /* Reset Page & Color Palette */
+  @page {
+    margin: 0.5in;
+    size: auto;
   }
-  .app-header, .nav-tabs-bar, .app-footer, .header-quick-actions, .search-container, .volunteer-cards-grid, .wizard-canvas, .detail-modal-backdrop {
+
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 10.5pt !important;
+    line-height: 1.4 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide Navigation, Header, Footers, Search, and Interactive Controls */
+  .app-header,
+  .nav-tabs-bar,
+  .app-footer,
+  .header-quick-actions,
+  .search-container,
+  .layer-switch-group,
+  .filter-chip-bar,
+  .btn-print-action,
+  .search-clear-btn,
+  .wizard-decision-box,
+  .detail-modal-backdrop,
+  .log-template-btn,
+  #logEntryForm,
+  #btnResetChecklist,
+  #btnExportLog,
+  #btnClearLog,
+  .progress-steps-dots,
+  .wizard-progress-track {
     display: none !important;
   }
+
+  /* Main Container Layout */
+  .app-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Hide Inactive Tab Panes, Show Active One Cleanly */
   .tab-pane {
     display: none !important;
   }
-  #pane-embrace-hub {
+  .tab-pane.active {
     display: block !important;
   }
-  .guest-card-container {
-    background: #fff !important;
-    color: #000 !important;
-    border: 2px solid #000 !important;
+
+  /* --------------------------------------------------------------------------
+     1. Troubleshooting Wizard Print Mode (Full Multi-Phase Guide)
+     -------------------------------------------------------------------------- */
+  #pane-volunteer-hub .volunteer-cards-grid {
+    display: none !important;
+  }
+
+  #pane-volunteer-hub .wizard-canvas {
+    display: block !important;
+    background: #ffffff !important;
+    border: 2px solid #0f172a !important;
+    border-radius: 8px !important;
+    padding: 1.25rem !important;
+    margin: 0 !important;
+  }
+
+  /* Hide interactive single step on print */
+  #pane-volunteer-hub .wizard-title-bar,
+  #pane-volunteer-hub .step-card {
+    display: none !important;
+  }
+
+  /* Display full multi-phase print guide */
+  .wizard-print-all-phases {
+    display: block !important;
+  }
+
+  .wizard-print-doc-header {
+    border-bottom: 2px solid #0f172a !important;
+    padding-bottom: 0.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .wizard-print-doc-header h4 {
+    font-size: 8.5pt !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    color: #475569 !important;
+    margin: 0 0 0.25rem 0 !important;
+    font-weight: 700 !important;
+  }
+
+  .wizard-print-doc-header h2 {
+    font-size: 16pt !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin: 0 0 0.35rem 0 !important;
+  }
+
+  .wizard-print-doc-header p {
+    font-size: 10pt !important;
+    color: #334155 !important;
+    margin: 0 !important;
+  }
+
+  .wizard-print-phase-block {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    padding: 0.85rem !important;
+    margin-top: 0.85rem !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .wizard-print-phase-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+    padding-bottom: 0.4rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .wizard-print-phase-num {
+    font-size: 11pt !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     2. General Cards & Sections High-Contrast Print Rules
+     -------------------------------------------------------------------------- */
+  .calc-card,
+  .step-card,
+  .guest-card-container,
+  .checklist-container,
+  .stage-explorer-layout,
+  .stage-inspector-panel {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
     box-shadow: none !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .section-header {
+    border-bottom: 2px solid #0f172a !important;
+    padding-bottom: 0.65rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .section-title {
+    font-size: 15pt !important;
+    color: #0f172a !important;
+    font-weight: 800 !important;
+  }
+
+  .section-desc {
+    font-size: 9.5pt !important;
+    color: #475569 !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  p, span, div, li {
+    color: #1e293b !important;
+  }
+
+  /* Badges & Location Pills */
+  .location-pill, .brand-badge, .bus-pill {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border: 1px solid #94a3b8 !important;
+    font-weight: 700 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Action Step Numbers */
+  .step-action-item {
+    color: #0f172a !important;
+    margin-bottom: 0.4rem !important;
+  }
+
+  .step-action-number {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    border: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Tip & Warning Boxes */
+  .step-tip-box {
+    background: #f8fafc !important;
+    border-left: 3px solid #0f172a !important;
+    color: #334155 !important;
+    border-top: 1px solid #e2e8f0 !important;
+    border-right: 1px solid #e2e8f0 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 0.5rem 0.75rem !important;
+    break-inside: avoid !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     3. WaveCAST Guest Handout (Printable QR Flyer)
+     -------------------------------------------------------------------------- */
+  .guest-card-container {
+    border: 2px solid #0f172a !important;
     padding: 1.5rem !important;
     margin: 0 auto !important;
     max-width: 100% !important;
   }
+
   .guest-card-header h3 {
-    color: #000 !important;
+    color: #0f172a !important;
+    font-size: 15pt !important;
   }
+
   .guest-card-header p {
     color: #475569 !important;
   }
-  .location-pill {
-    background: #f1f5f9 !important;
-    color: #0f172a !important;
-    border: 1px solid #cbd5e1 !important;
-  }
-  .step-action-item {
-    color: #0f172a !important;
-  }
-  .step-action-number {
-    background: #e2e8f0 !important;
-    color: #0f172a !important;
-  }
-  .step-tip-box {
-    background: #f8fafc !important;
-    border-left: 3px solid #000 !important;
-    color: #334155 !important;
-  }
+
   .qr-codes-holder {
     background: #f8fafc !important;
     border: 1px solid #cbd5e1 !important;
+    padding: 0.75rem !important;
   }
+
   .qr-label {
-    color: #000 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  .qr-block svg {
+    max-width: 120px !important;
+    height: auto !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     4. Pre-Service Checklist Print Layout (Physical Clipboard View)
+     -------------------------------------------------------------------------- */
+  #pane-checklist .checklist-items-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  #pane-checklist .check-item-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0.5rem 0.75rem !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  #pane-checklist .check-item-checkbox {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 16px !important;
+    height: 16px !important;
+    border: 2px solid #0f172a !important;
+    border-radius: 3px !important;
+    background: #ffffff !important;
+    margin-right: 0.4rem !important;
+    display: inline-block !important;
+    flex-shrink: 0 !important;
+  }
+
+  #pane-checklist .check-item-text {
+    font-size: 9.5pt !important;
+    color: #0f172a !important;
+  }
+
+  #pane-checklist .checklist-progress-bar-wrap {
+    display: none !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     5. Mix Buses & Breaker Panels Tables
+     -------------------------------------------------------------------------- */
+  .mixbus-table-wrap,
+  .breaker-grid {
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .mixbus-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 9pt !important;
+  }
+
+  .mixbus-table th,
+  .mixbus-table td {
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    padding: 4px 6px !important;
+    text-align: left !important;
+  }
+
+  .mixbus-table th {
+    background: #f1f5f9 !important;
+    font-weight: 800 !important;
+  }
+
+  .mixbus-table tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 }

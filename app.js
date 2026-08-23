@@ -294,14 +294,38 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
 
+    // Generate all phases HTML for high-contrast multi-phase printout
+    const allPhasesPrintHtml = scenario.phases.map((p, idx) => `
+      <div class="wizard-print-phase-block">
+        <div class="wizard-print-phase-header">
+          <span class="wizard-print-phase-num">Phase ${idx + 1}: ${p.title}</span>
+          <span class="location-pill" style="font-size: 0.72rem;">📍 ${p.location}</span>
+        </div>
+        <ol class="step-actions-list" style="margin: 0.4rem 0;">
+          ${p.actionSteps.map((act, sIdx) => `
+            <li class="step-action-item">
+              <span class="step-action-number">${sIdx + 1}</span>
+              <div>${act}</div>
+            </li>
+          `).join('')}
+        </ol>
+        ${p.tip ? `<div class="step-tip-box" style="margin-top: 0.4rem; font-size: 0.78rem;"><strong>💡 Pro Tip:</strong> ${p.tip}</div>` : ''}
+      </div>
+    `).join('');
+
     wizardCanvas.innerHTML = `
       <div class="wizard-title-bar">
         <div>
           <h3 class="wizard-main-title">${scenario.title}</h3>
         </div>
-        <div class="wizard-progress-track">
-          <span>Phase ${state.scenarioStepIndex + 1} of ${totalSteps}</span>
-          <div class="progress-steps-dots">${dotsHtml}</div>
+        <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+          <div class="wizard-progress-track">
+            <span>Phase ${state.scenarioStepIndex + 1} of ${totalSteps}</span>
+            <div class="progress-steps-dots">${dotsHtml}</div>
+          </div>
+          <button class="btn-print-action" id="btnPrintScenario" title="Print this complete troubleshooting guide">
+            <span>🖨️</span> Print Guide
+          </button>
         </div>
       </div>
 
@@ -332,7 +356,24 @@ document.addEventListener('DOMContentLoaded', () => {
           ${state.scenarioStepIndex < totalSteps - 1 ? '<button id="btnNoNext" class="btn-next-step">No, Next Phase →</button>' : ''}
         </div>
       </div>
+
+      <!-- Hidden on screen, formatted for 1-click clean printing -->
+      <div class="wizard-print-all-phases">
+        <div class="wizard-print-doc-header">
+          <h4>Waypoint Church &bull; Sound Booth Operations Guide</h4>
+          <h2>${scenario.title}</h2>
+          <p>${scenario.summary}</p>
+        </div>
+        ${warningBannerHtml}
+        ${guestBoxHtml}
+        ${allPhasesPrintHtml}
+      </div>
     `;
+
+    const btnPrintScenario = document.getElementById('btnPrintScenario');
+    if (btnPrintScenario) {
+      btnPrintScenario.addEventListener('click', () => window.print());
+    }
 
     document.getElementById('btnYesResolved').addEventListener('click', () => {
       state.scenarioResolved = true;
@@ -442,7 +483,12 @@ document.addEventListener('DOMContentLoaded', () => {
               <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0;">
                 ${s.title}
               </h4>
-              <span class="bus-pill" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">${s.category}</span>
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span class="bus-pill" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">${s.category}</span>
+                <button class="btn-print-action" onclick="window.print()" title="Print this guide">
+                  <span>🖨️</span> Print
+                </button>
+              </div>
             </div>
             <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 0.5rem 0;">${s.summary}</p>
             ${phasesHtml}
