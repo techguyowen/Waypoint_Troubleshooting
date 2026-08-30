@@ -149,6 +149,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Livestream Sub-Navigation (Inside Livestream & Slides Hub)
+  const livestreamSubButtons = document.querySelectorAll('#livestreamSubNavGroup .layer-btn');
+  const livestreamSubPanes = document.querySelectorAll('.livestream-subpane');
+
+  function switchLivestreamSub(subId) {
+    livestreamSubButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.livesub === subId);
+    });
+    livestreamSubPanes.forEach(pane => {
+      pane.style.display = pane.id === `livesub-${subId.replace('sub-', '')}` ? 'block' : 'none';
+    });
+  }
+
+  livestreamSubButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchLivestreamSub(btn.dataset.livesub);
+    });
+  });
+
+  // Direct Scenario launcher cards
+  document.querySelectorAll('[data-directscenario]').forEach(card => {
+    card.addEventListener('click', () => {
+      const scenId = card.dataset.directscenario;
+      switchTab('volunteer-hub');
+      selectScenario(scenId);
+      if (wizardCanvas) {
+        wizardCanvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
   // Audio Sub-Navigation (Inside Sound Engineer Hub)
   function switchAudioSub(subId) {
     state.activeAudioSub = subId;
@@ -189,7 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const filter = chip.dataset.filter;
         filterChips.forEach(c => c.classList.toggle('active', c === chip));
         quickProblemCards.forEach(card => {
-          if (filter === 'all' || card.dataset.category === filter) {
+          const cardCats = (card.dataset.category || '').split(/\s+/);
+          if (filter === 'all' || cardCats.includes(filter)) {
             card.style.display = 'flex';
           } else {
             card.style.display = 'none';
@@ -320,8 +352,10 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
           <div class="wizard-progress-track">
-            <span>Phase ${state.scenarioStepIndex + 1} of ${totalSteps}</span>
-            <div class="progress-steps-dots">${dotsHtml}</div>
+            ${totalSteps > 1 
+              ? `<span>Phase ${state.scenarioStepIndex + 1} of ${totalSteps}</span><div class="progress-steps-dots">${dotsHtml}</div>`
+              : `<span style="background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.75rem;">⚡ Quick-Fix Guide</span>`
+            }
           </div>
           <button class="btn-print-action" id="btnPrintScenario" title="Print this complete troubleshooting guide">
             <span>🖨️</span> Print Guide
@@ -349,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="wizard-decision-box">
-        <span class="decision-prompt">Did this step fix the problem?</span>
+        <span class="decision-prompt">${totalSteps === 1 ? 'Did this resolve the issue?' : 'Did this step fix the problem?'}</span>
         <div class="decision-buttons">
           ${state.scenarioStepIndex > 0 ? '<button id="btnPrevStep" class="btn-prev-step">← Previous Phase</button>' : ''}
           <button id="btnYesResolved" class="btn-resolved">✓ Yes, It Worked!</button>
@@ -1045,14 +1079,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 8. Guest QR Code Card Generation & Printing
+  // 8. QR Code Generation (Guest Wi-Fi, Apps & Google Report Form)
   // --------------------------------------------------------------------------
   function generateGuestQRCodes() {
     if (typeof QRCode === 'undefined') return;
 
-    // Exact iOS & Android URLs
+    // Exact iOS, Android & Google Report Form URLs
     const iosUrl = "https://itunes.apple.com/us/app/wavecast-receiver/id1458383632?mt=8";
     const androidUrl = "https://play.google.com/store/apps/details?id=com.williamsav.wavecast_receiver&hl=en_US&gl=US";
+    const reportFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFImqNTuJq3KzdKxDhbLq4z-KST0zfMgCA9eWDbDU3pfhEUw/viewform?usp=dialog";
     const wifiQr = AV_DATA.wifiCredentials.qrString;
 
     const qrOpts = {
@@ -1066,6 +1101,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
+    const qrOptsReport = {
+      type: 'svg',
+      margin: 2,
+      errorCorrectionLevel: 'M',
+      width: 190,
+      color: {
+        dark: '#0f172a',
+        light: '#ffffff'
+      }
+    };
+
     if (qrWifi) {
       QRCode.toString(wifiQr, qrOpts).then(svg => { qrWifi.innerHTML = svg; }).catch(console.error);
     }
@@ -1074,6 +1120,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (qrGooglePlay) {
       QRCode.toString(androidUrl, qrOpts).then(svg => { qrGooglePlay.innerHTML = svg; }).catch(console.error);
+    }
+    const qrReportForm = document.getElementById('qrReportForm');
+    if (qrReportForm) {
+      QRCode.toString(reportFormUrl, qrOptsReport).then(svg => { qrReportForm.innerHTML = svg; }).catch(console.error);
     }
   }
 
@@ -1084,6 +1134,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn) {
           btn.textContent = '✓ Copied!';
           setTimeout(() => { btn.textContent = '📋'; }, 2000);
+        }
+      });
+    }
+
+    if (e.target && (e.target.id === 'btnCopyFormUrl' || e.target.closest('#btnCopyFormUrl'))) {
+      const btn = e.target.id === 'btnCopyFormUrl' ? e.target : e.target.closest('#btnCopyFormUrl');
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFImqNTuJq3KzdKxDhbLq4z-KST0zfMgCA9eWDbDU3pfhEUw/viewform?usp=dialog";
+      navigator.clipboard.writeText(formUrl).then(() => {
+        if (btn) {
+          btn.textContent = '✓ Link Copied!';
+          setTimeout(() => { btn.textContent = '📋 Copy Link to Form'; }, 2000);
         }
       });
     }
@@ -1104,183 +1165,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 9. Digital Sound Booth Logbook Logic
+  // 9. Sound Booth Issue & Maintenance Report
   // --------------------------------------------------------------------------
-  function saveLogbook() {
-    localStorage.setItem('av_booth_logbook', JSON.stringify(state.logEntries));
-    renderLogbook();
-  }
-
   function renderLogbook() {
-    if (!logbookEntriesList) return;
-    logbookEntriesList.innerHTML = '';
-
-    const openCount = state.logEntries.filter(e => e.status === 'open').length;
-
-    let filtered = state.logEntries;
-    if (state.logFilter === 'open') {
-      filtered = state.logEntries.filter(e => e.status === 'open');
-    } else if (state.logFilter === 'resolved') {
-      filtered = state.logEntries.filter(e => e.status === 'resolved');
-    }
-
-    if (filtered.length === 0) {
-      logbookEntriesList.innerHTML = `
-        <div style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">
-          No log entries match the current filter.
-        </div>
-      `;
-      return;
-    }
-
-    filtered.forEach(entry => {
-      const item = document.createElement('div');
-      item.className = `log-entry-item ${entry.status === 'resolved' ? 'resolved' : ''}`;
-      
-      let statusBadgeClass = 'badge-info';
-      let statusLabel = 'Info';
-      if (entry.status === 'open') {
-        statusBadgeClass = 'badge-open';
-        statusLabel = '⚠️ Needs Attention';
-      } else if (entry.status === 'resolved') {
-        statusBadgeClass = 'badge-resolved';
-        statusLabel = '✅ Resolved';
-      }
-
-      item.innerHTML = `
-        <div class="log-entry-header">
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span class="log-cat-badge">${entry.category}</span>
-            <span class="scenario-tag ${statusBadgeClass}">${statusLabel}</span>
-          </div>
-          <span class="log-timestamp">${entry.timestamp} by <strong>${entry.author}</strong></span>
-        </div>
-
-        <p class="log-text-content">${entry.details}</p>
-
-        <div class="log-footer-actions">
-          <div style="display: flex; gap: 0.4rem;">
-            ${entry.status === 'open' ? 
-              `<button class="btn-prev-step btn-resolve-log" data-id="${entry.id}" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; color: var(--accent-emerald);">Mark Fixed ✓</button>` : 
-              `<button class="btn-prev-step btn-reopen-log" data-id="${entry.id}" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;">Reopen ↩</button>`
-            }
-          </div>
-          <button class="btn-prev-step btn-delete-log" data-id="${entry.id}" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; color: #f87171;">Delete ✕</button>
-        </div>
-      `;
-
-      item.querySelector('.btn-delete-log').addEventListener('click', () => {
-        if (confirm('Delete this log entry?')) {
-          state.logEntries = state.logEntries.filter(e => e.id !== entry.id);
-          saveLogbook();
-        }
-      });
-
-      const resolveBtn = item.querySelector('.btn-resolve-log');
-      if (resolveBtn) {
-        resolveBtn.addEventListener('click', () => {
-          entry.status = 'resolved';
-          saveLogbook();
-        });
-      }
-
-      const reopenBtn = item.querySelector('.btn-reopen-log');
-      if (reopenBtn) {
-        reopenBtn.addEventListener('click', () => {
-          entry.status = 'open';
-          saveLogbook();
-        });
-      }
-
-      logbookEntriesList.appendChild(item);
-    });
-  }
-
-  // Logbook Filter Switchers
-  logFilterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      logFilterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.logFilter = btn.dataset.filter;
-      renderLogbook();
-    });
-  });
-
-  // Log Form Submission
-  if (logEntryForm) {
-    logEntryForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const now = new Date();
-      const timestamp = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-      const newEntry = {
-        id: `log-${Date.now()}`,
-        category: logCategory.value,
-        status: logStatus.value,
-        author: logAuthor.value.trim(),
-        timestamp: timestamp,
-        details: logDetails.value.trim()
-      };
-
-      state.logEntries.unshift(newEntry);
-      saveLogbook();
-      logDetails.value = '';
-    });
-  }
-
-  // Quick Template Buttons
-  logTemplateButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tmpl = btn.dataset.tmpl;
-      if (tmpl === 'cable') {
-        logCategory.value = 'Hardware / Cable';
-        logStatus.value = 'open';
-        logDetails.value = 'XLR cable / DI box on stage box port [ ] is crackling/dead. Needs testing and replacement.';
-      } else if (tmpl === 'battery') {
-        logCategory.value = 'Battery / Wireless';
-        logStatus.value = 'resolved';
-        logDetails.value = 'Replaced fresh AA/9V batteries in [Pastor / Lead Vocal] wireless transmitter.';
-      } else if (tmpl === 'splitter') {
-        logCategory.value = 'Video / Splitter';
-        logStatus.value = 'resolved';
-        logDetails.value = 'Power cycled Ceiling HDMI splitter above stage-left choir closet. Display signal restored.';
-      } else if (tmpl === 'extender') {
-        logCategory.value = 'Video / Splitter';
-        logStatus.value = 'resolved';
-        logDetails.value = 'Reseated HDMI cable on Embrace Room TV receiver (RX) / verified Nest camera outlet timer & sound booth transmitter (TX). Video signal restored.';
-      } else if (tmpl === 'breaker') {
-        logCategory.value = 'Hardware / Cable';
-        logStatus.value = 'resolved';
-        logDetails.value = 'Reset tripped breaker [Breakers 4 & 6 Stage Floor Recept / Breaker 9 Sound Rm Lights] in Sound Booth Panel S. AC power restored.';
-      } else if (tmpl === 'guest') {
-        logCategory.value = 'Service Note';
-        logStatus.value = 'info';
-        logDetails.value = 'Guest musician ([Instrument]) patched to Aux 1 (Input 3) on Front Left Box, routed to Mix 12 House and Mix 6 Flex 1.';
-      }
-      logDetails.focus();
-    });
-  });
-
-  // Export Log
-  if (btnExportLog) {
-    btnExportLog.addEventListener('click', () => {
-      const textSummary = state.logEntries.map(e => `[${e.timestamp}] [${e.category.toUpperCase()}] (${e.status.toUpperCase()}) By: ${e.author}\n${e.details}\n`).join('\n----------------------------------------\n\n');
-      const blob = new Blob([textSummary], { type: 'text/plain' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `SoundBooth_Log_${new Date().toISOString().slice(0, 10)}.txt`;
-      a.click();
-    });
-  }
-
-  // Clear Log
-  if (btnClearLog) {
-    btnClearLog.addEventListener('click', () => {
-      if (confirm('Clear all log entries? This cannot be undone.')) {
-        state.logEntries = [];
-        saveLogbook();
-      }
-    });
+    // Form and QR code are rendered statically & via generateGuestQRCodes()
   }
 
   // --------------------------------------------------------------------------
@@ -1307,7 +1195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: sc.title,
         subtitle: `${sc.summary} (${sc.phases.length} Phases)`,
         badge: 'Quick-Fix',
-        keywords: `${sc.title} ${sc.summary} ${sc.category} ${sc.phases.map(p => p.title + ' ' + p.location + ' ' + p.actionSteps.join(' ')).join(' ')} tv tvs screen hdmi splitter obs project embrace lontium extender transmitter tx receiver rx nest camera outlet timer ethernet cat6 wavecast reaper dead mic audio captions subtitles cloud speech transcription asio wireless microphone shure sennheiser battery batteries mute crackle dropout static proclaim freeze slides slide lyrics wrong screen extend display mirroring on air off air`,
+        keywords: `${sc.title} ${sc.summary} ${sc.category} ${sc.phases.map(p => p.title + ' ' + p.location + ' ' + p.actionSteps.join(' ')).join(' ')} tv tvs screen hdmi splitter obs project embrace lontium extender transmitter tx receiver rx nest camera outlet timer ethernet cat6 wavecast reaper dead mic audio captions subtitles cloud speech transcription asio wireless microphone shure sennheiser battery batteries rechargeable color code receiver rack mute crackle dropout static proclaim freeze slides slide lyrics wrong screen extend display mirroring on air off air mixing station ipad tablet disconnected backup search aviom sends gain in-ear monitors in-ears feedback ringing pastor lapel preset cajon mute band group venue live 360 venue360 speakers quiet silent ubnt ubiquiti switch sdi box camera black under desk birddog confidence monitor toggle switch button buzz hum ground loop ground lift di box lift switch ac power high pass filter hpf 80hz 60hz computer audio mac audio video sound macbook speakers line out spotify background music fader 22 fader 23 pc sound system startup boot order pop prevention power up crown amp atlas qsc foyer tv foyer audio lobby speakers fader 24 foyer bus`,
         action: () => {
           switchTab('volunteer-hub');
           selectScenario(sc.id);
@@ -1317,7 +1205,60 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // 2. Embrace & Accessibility Hub Items
+    // 2. Livestream, Proclaim & Presentation Hub Items
+    items.push({
+      type: 'livestream',
+      category: '📡 Livestream & Presentation',
+      title: 'YouTube Livestream & ATEM Switcher Setup',
+      subtitle: 'Unlock Laptop ➔ studio.youtube.com ➔ ON AIR on ATEM ➔ Go Live ~15 min prior',
+      badge: 'Livestream Hub',
+      keywords: 'livestream live stream broadcast youtube studio.youtube.com atem on air go live rec backup recording foyer tv wide stage second service mix 14 audio verify phone no audio sound pc left of stage red tape cord',
+      action: () => {
+        switchTab('livestream-hub');
+        switchLivestreamSub('sub-setup');
+      }
+    });
+
+    items.push({
+      type: 'livestream',
+      category: '📡 Livestream & Presentation',
+      title: 'Livestream Station & YouTube Studio Access',
+      subtitle: 'Broadcast laptop setup • studio.youtube.com • ATEM Mini controls',
+      badge: 'Broadcast Hub',
+      keywords: 'laptop broadcast youtube live stream account access studio.youtube.com atem setup',
+      action: () => {
+        switchTab('livestream-hub');
+        switchLivestreamSub('sub-setup');
+      }
+    });
+
+    items.push({
+      type: 'proclaim',
+      category: '📡 Livestream & Presentation',
+      title: 'Proclaim Presentation & Slides Hub',
+      subtitle: 'Open service order ➔ On Air ➔ Sanctuary TV HDMI Splitter & Stage Confidence',
+      badge: 'Proclaim Hub',
+      keywords: 'proclaim slides lyrics presentation on air off air normal f9 blank f10 clear f11 logo f12 virtual screen display settings sanctuary tvs',
+      action: () => {
+        switchTab('livestream-hub');
+        switchLivestreamSub('sub-proclaim');
+      }
+    });
+
+    items.push({
+      type: 'lighting',
+      category: '💡 Sound Booth Lighting',
+      title: 'Sound Booth Lighting Controller (7 Wall Presets)',
+      subtitle: '1: Before/After • 2: Songs/Music • 3: Everything Else • 4: Video • 5: Full 100% • 6: Spoken Word • 7: Off',
+      badge: '7 Presets',
+      keywords: 'lighting levels level 1 level 2 level 3 level 4 level 5 level 6 level 7 button 1 button 2 button 3 button 4 button 5 button 6 button 7 before after service songs music worship everything else video showing show video full 100 spoken word preaching sermon off shutdown wall keypad controller sticky note',
+      action: () => {
+        switchTab('livestream-hub');
+        switchLivestreamSub('sub-lights');
+      }
+    });
+
+    // 3. Embrace & Accessibility Hub Items
     items.push({
       type: 'embrace',
       category: '🤝 Embrace & Accessibility',
@@ -1409,7 +1350,146 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 4. Stage Boxes & Input Channels
+    // 4. Weekend Pre-Service Checklist
+    items.push({
+      type: 'checklist',
+      category: '📋 Weekend Checklist',
+      title: 'Weekend Pre-Service Readiness Checklist',
+      subtitle: 'Standard weekly startup verification for audio, visuals, livestream, and booth',
+      badge: 'Weekend Routine',
+      keywords: 'checklist pre service pre-service readiness Sunday weekend routine tasks startup verify test audio proclaim atem youtube stream lighting',
+      action: () => {
+        switchTab('checklist');
+      }
+    });
+
+    // 5. Sound Booth Issue & Maintenance Report (Google Form)
+    items.push({
+      type: 'report',
+      category: '📋 Issue & Maintenance Report',
+      title: 'Sound Booth Issue & Maintenance Report (Google Form)',
+      subtitle: 'Scan QR code or open form to report broken cables, bad gear, or request repairs',
+      badge: 'Google Form',
+      keywords: 'report issue maintenance google form broken cable bad jack dead battery repair fix feedback log request replacement',
+      action: () => {
+        switchTab('logbook');
+      }
+    });
+
+    // 6. Saturday Practice & Line Check Workflow
+    items.push({
+      type: 'rehearsal',
+      category: '🎸 Saturday Rehearsal & Line Check',
+      title: 'Saturday Line Check & Rehearsal Workflow',
+      subtitle: 'Systematic sound check protocol: Gain (-8 to -10 dB) ➔ Tone presets ➔ Aviom confirmation ➔ M.A.S.S. Rehearsal',
+      badge: 'Line Check',
+      keywords: 'saturday practice rehearsal line check workflow sound check gain target -8 -10 db mass protocol drums bass keys guitar vocal aviom talkback owens layer',
+      action: () => {
+        switchTab('audio-hub');
+        switchAudioSub('sub-rehearsal');
+      }
+    });
+
+    items.push({
+      type: 'rehearsal',
+      category: '🎸 Saturday Rehearsal & Line Check',
+      title: 'Strict Hardware Boot Order (Console to Amps)',
+      subtitle: '1. Board ➔ 2. Wireless Rack ➔ 3. ATLAS ➔ 4. House AMP ➔ 5. QSC Wall Speakers ➔ 6. ATEM ➔ 7. AVIOM Switch',
+      badge: 'Boot Order',
+      keywords: 'boot order power up hardware power on sequence board console wireless rack atlas house amp qsc speakers atem aviom switch stage left shutdown reverse',
+      action: () => {
+        switchTab('audio-hub');
+        switchAudioSub('sub-rehearsal');
+      }
+    });
+
+    items.push({
+      type: 'rehearsal',
+      category: '🎸 Saturday Rehearsal & Line Check',
+      title: 'Saving Show File Protocol (Never Overwrite 1NormalSunday)',
+      subtitle: 'Menu ➔ Show ➔ Save As ➔ [MM.DD.YYYY] ➔ Apply ➔ MMC ➔ Other Folder ➔ OK',
+      badge: 'Show File',
+      keywords: 'save show file 1normalsunday date format mm.dd.yyyy save as mmc other folder never overwrite show scene soundcraft',
+      action: () => {
+        switchTab('audio-hub');
+        switchAudioSub('sub-rehearsal');
+      }
+    });
+
+    items.push({
+      type: 'guest',
+      category: '🎻 Guest & Playback Patching',
+      title: 'iPad & Mobile Audio Playback (Through Aviom & House)',
+      subtitle: 'Method 1: Click cable into spare instrument port (Layer A) • Method 2: Click channel send to Mix 12',
+      badge: 'iPad Playback',
+      keywords: 'ipad iphone phone audio playback music practice tracks aviom and house click cable aux 1 spare instrument vocal port practice caution sunday',
+      action: () => {
+        switchTab('audio-hub');
+        switchAudioSub('sub-guest');
+      }
+    });
+
+    items.push({
+      type: 'guide',
+      category: '💻 Computer & Playback Audio',
+      title: 'Computer Audio / Mac Video Playback Has No Sound',
+      subtitle: 'macOS Output device ➔ Si Impact Layer A Fader 23 (Mac) / Fader 22 (PC) ➔ Mix 12 House',
+      badge: 'Mac/PC Audio',
+      keywords: 'computer audio mac video sound no sound from mac laptop youtube video sermon clip spotify proclaim audio fader 23 fader 22 layer a mix 12 house master lr',
+      action: () => {
+        switchTab('volunteer-hub');
+        selectScenario('computer-audio-no-sound');
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    items.push({
+      type: 'guide',
+      category: '⚡ Stage Noise & Audio Tools',
+      title: 'Loud Buzz / Ground Hum on Stage (DI Box Ground Lift)',
+      subtitle: 'Flip GND / LIFT switch on DI box (#1 fix) ➔ Panel S Breakers 4 & 6 ➔ 80Hz HPF',
+      badge: 'Ground Lift',
+      keywords: 'buzz hum ground loop ground lift di box stage noise 60hz guitar buzz pedalboard acoustic guitar keys noise breaker 4 breaker 6 hpf',
+      action: () => {
+        switchTab('volunteer-hub');
+        selectScenario('ground-hum-buzz');
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    items.push({
+      type: 'guide',
+      category: '⚡ Power & Startup Sequence',
+      title: 'Sound Booth Morning System Startup & Boot Order',
+      subtitle: '1. Board ➔ 2. Wireless ➔ 3. ATLAS ➔ 4. House AMP ➔ 5. QSC Wall Speakers ➔ 6. ATEM ➔ 7. Aviom',
+      badge: 'Boot Order',
+      keywords: 'system boot startup boot order power sequence morning power on pop prevention speaker pop crown amp atlas qsc speakers soundcraft venue live 360',
+      action: () => {
+        switchTab('volunteer-hub');
+        selectScenario('system-boot-order');
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    items.push({
+      type: 'guide',
+      category: '📺 Screens & Lobby Displays',
+      title: 'Foyer TV & Lobby Audio Feed (Foyer Bus)',
+      subtitle: 'Foyer TV HDMI 1 • ATEM wide stage key • Layer A Fader 24 Foyer audio bus',
+      badge: 'Foyer AV',
+      keywords: 'foyer tv lobby tv audio feed foyer bus layer a fader 24 wide stage key second service gathering',
+      action: () => {
+        switchTab('volunteer-hub');
+        selectScenario('foyer-tv-audio');
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // 7. Stage Boxes & Input Channels
     AV_DATA.stageBoxes.forEach(box => {
       items.push({
         type: 'stagebox',

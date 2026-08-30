@@ -71,6 +71,9 @@
       <button class="nav-tab-btn active" data-tab="volunteer-hub">
         <span>🚨</span> Troubleshooting
       </button>
+      <button class="nav-tab-btn" data-tab="livestream-hub">
+        <span>📡</span> Livestream & Slides
+      </button>
       <button class="nav-tab-btn" data-tab="embrace-hub">
         <span>🤝</span> Embrace Room
       </button>
@@ -81,7 +84,7 @@
         <span>📋</span> Checklist
       </button>
       <button class="nav-tab-btn" data-tab="logbook">
-        <span>📝</span> Logbook
+        <span>📝</span> Report Issue
       </button>
 
       <!-- Sound Engineer Section Separator -->
@@ -128,45 +131,73 @@
 
       <!-- Category Filter Chips -->
       <div class="problem-filter-bar" id="problemFilterBar">
-        <button class="filter-chip active" data-filter="all"><span>⚡</span> All</button>
+        <button class="filter-chip active" data-filter="all"><span>⚡</span> All Issues</button>
+        <button class="filter-chip" data-filter="livestream"><span>📡</span> Livestream & Cameras</button>
+        <button class="filter-chip" data-filter="audio"><span>🎛️</span> Audio & Mics</button>
+        <button class="filter-chip" data-filter="screens"><span>📺</span> Screens & Slides</button>
         <button class="filter-chip" data-filter="embrace"><span>🤝</span> Embrace</button>
-        <button class="filter-chip" data-filter="audio"><span>🎛️</span> Audio</button>
-        <button class="filter-chip" data-filter="screens"><span>📺</span> Screens</button>
         <button class="filter-chip" data-filter="power"><span>⚡</span> Power</button>
       </div>
 
       <!-- Quick Issue Selector Cards -->
       <div class="volunteer-cards-grid" id="volunteerCardsGrid">
         
-        <!-- 1. Embrace Group Category -->
-        <div class="quick-problem-card" data-scenario="embrace-obs" data-category="embrace">
-          <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📺</div>
+        <!-- 1. Livestream & Cameras Category -->
+        <div class="quick-problem-card" data-scenario="atem-no-video" data-category="livestream">
+          <div class="problem-card-icon" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">📹</div>
           <div class="problem-card-body">
-            <h3 class="problem-card-title">Embrace Room TV: No Signal</h3>
-            <p class="problem-card-desc">Check TV receiver HDMI cable, Nest camera outlet timer, booth transmitter (TX), or OBS LONTIUM projector.</p>
-            <span class="problem-card-action">Fix Embrace TV ➔</span>
-          </div>
-        </div>
-
-        <div class="quick-problem-card" data-scenario="obs-captions" data-category="embrace">
-          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">💬</div>
-          <div class="problem-card-body">
-            <h3 class="problem-card-title">OBS Cloud Closed Captions</h3>
-            <p class="problem-card-desc">Tools ➔ Cloud Closed Captions ➔ Check Captioning Enabled ➔ Click preview box to transcribe.</p>
-            <span class="problem-card-action">Fix Closed Captions ➔</span>
-          </div>
-        </div>
-
-        <div class="quick-problem-card" data-scenario="williams-av-wavecast" data-category="embrace">
-          <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🎧</div>
-          <div class="problem-card-body">
-            <h3 class="problem-card-title">WaveCAST Assistive Listening</h3>
-            <p class="problem-card-desc">Guest Wi-Fi check, Reaper DAW meters bouncing, volume/distortion fix, or Williams AV reboot.</p>
-            <span class="problem-card-action">Fix WaveCAST ➔</span>
+            <h3 class="problem-card-title">ATEM Switcher: Camera Feed Black</h3>
+            <p class="problem-card-desc">Both black = Ubiquiti white switch under desk. One black = restart camera on switch or under-desk SDI box.</p>
+            <span class="problem-card-action">Restore Camera Video ➔</span>
           </div>
         </div>
 
         <!-- 2. Soundboard, Mics & Audio Category -->
+        <div class="quick-problem-card" data-scenario="feedback-triage" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">📢</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Mic Feedback / Ringing (Pastor & Cajon)</h3>
+            <p class="problem-card-desc">Pastor Lapel: Reduce dB & recall channel preset (stop over-EQing). Cajon mic: Mute on Fader 21 (in Band Group).</p>
+            <span class="problem-card-action">Fix Feedback & Ringing ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="sanctuary-speakers-quiet" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🔊</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Sanctuary Speakers Completely Silent</h3>
+            <p class="problem-card-desc">Power cycle the Venue Live 360 speaker box (unplug/replug until it turns on) & check Master LR fader.</p>
+            <span class="problem-card-action">Restore Sanctuary Audio ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="aviom-dead-station" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">🎧</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Aviom: "Nothing in My Ears" / Dead Station</h3>
+            <p class="problem-card-desc">Bypass bad headphone extender cable (#1 failure), check 1/4" adapter, stage-left switch Cat5, and console sends.</p>
+            <span class="problem-card-action">Fix Dead Aviom Station ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="aviom-sends-volume" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">🎛️</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Aviom Sends (Tablet & Soundboard)</h3>
+            <p class="problem-card-desc">Tablet: Click channel ➔ Sends (right) ➔ raise Aviom mix (or Gain if maxed). Board: Click Aviom mix ➔ push fader.</p>
+            <span class="problem-card-action">Adjust Aviom Sends ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="wireless-mic-issues" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">🎙️</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Wireless Mic Cuts Out, Crackles, or Dead</h3>
+            <p class="problem-card-desc">Swap 2x fresh rechargeable AA batteries, color-match mic to receiver rack box & Layer B un-mute.</p>
+            <span class="problem-card-action">Fix Wireless Mic ➔</span>
+          </div>
+        </div>
+
         <div class="quick-problem-card" data-scenario="click-track-patch" data-category="audio">
           <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">⏱️</div>
           <div class="problem-card-body">
@@ -185,12 +216,30 @@
           </div>
         </div>
 
-        <div class="quick-problem-card" data-scenario="wireless-mic-issues" data-category="audio">
-          <div class="problem-card-icon" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">🎙️</div>
+        <div class="quick-problem-card" data-scenario="computer-audio-no-sound" data-category="audio screens">
+          <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">💻</div>
           <div class="problem-card-body">
-            <h3 class="problem-card-title">Wireless Mic Cuts Out, Crackles, or Dead</h3>
-            <p class="problem-card-desc">Physical mute switch, 2x fresh AA batteries, receiver RF meter & Layer B un-mute.</p>
-            <span class="problem-card-action">Fix Wireless Mic ➔</span>
+            <h3 class="problem-card-title">Computer Audio / Mac Video Has No Sound</h3>
+            <p class="problem-card-desc">Check macOS sound output device, un-mute Layer A Fader 23 ('Mac') / Fader 22 ('PC') & Mix 12 House send.</p>
+            <span class="problem-card-action">Restore Computer Audio ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="ground-hum-buzz" data-category="audio power">
+          <div class="problem-card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">⚡</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Loud Buzz / Ground Hum on Stage (DI Box)</h3>
+            <p class="problem-card-desc">Flip the GND / LIFT switch on stage DI box, plug into stage pocket circuit & engage 80Hz HPF.</p>
+            <span class="problem-card-action">Kill Stage Buzz ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="mixing-station-disconnect" data-category="audio">
+          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">📱</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Mixing Station iPad Disconnected</h3>
+            <p class="problem-card-desc">Back arrow to Home screen ➔ tap 'Backup search' to locate and reconnect to the Soundcraft console.</p>
+            <span class="problem-card-action">Reconnect iPad App ➔</span>
           </div>
         </div>
 
@@ -208,13 +257,31 @@
           </div>
         </div>
 
-        <!-- 3. Screens & Video Category -->
+        <!-- 3. Screens & Slides Category -->
         <div class="quick-problem-card" data-scenario="sanctuary-tvs" data-category="screens">
           <div class="problem-card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">📺</div>
           <div class="problem-card-body">
             <h3 class="problem-card-title">Front Sanctuary TVs are Blank</h3>
             <p class="problem-card-desc">Restart choir closet ceiling splitter, verify Mac power strip & HDMI 1 remote input.</p>
             <span class="problem-card-action">Fix TVs Step-by-Step ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="foyer-tv-audio" data-category="screens audio">
+          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">📺</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Foyer TV & Lobby Audio Feed</h3>
+            <p class="problem-card-desc">Check Foyer TV HDMI 1, ATEM wide stage key & un-mute Layer A Fader 24 ('Foyer' bus).</p>
+            <span class="problem-card-action">Restore Foyer AV ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="confidence-monitor-switch" data-category="screens">
+          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">🖥️</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Stage Confidence TV: Wrong View</h3>
+            <p class="problem-card-desc">Press the toggle switch UNDER the booth desk (labeled on top) to switch between Static Slide & BirdDog view.</p>
+            <span class="problem-card-action">Switch Confidence View ➔</span>
           </div>
         </div>
 
@@ -227,7 +294,44 @@
           </div>
         </div>
 
-        <!-- 4. Power & Electrical Breakers Category -->
+        <!-- 4. Embrace Group Category -->
+        <div class="quick-problem-card" data-scenario="embrace-obs" data-category="embrace">
+          <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📺</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Embrace Room TV: No Signal</h3>
+            <p class="problem-card-desc">Check TV receiver HDMI cable, Nest camera outlet timer, booth transmitter (TX), or OBS LONTIUM projector.</p>
+            <span class="problem-card-action">Fix Embrace TV ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="williams-av-wavecast" data-category="embrace">
+          <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🎧</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">WaveCAST Assistive Listening</h3>
+            <p class="problem-card-desc">Guest Wi-Fi check, Reaper DAW meters bouncing, volume/distortion fix, or Williams AV reboot.</p>
+            <span class="problem-card-action">Fix WaveCAST ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="obs-captions" data-category="embrace">
+          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">💬</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">OBS Cloud Closed Captions</h3>
+            <p class="problem-card-desc">Tools ➔ Cloud Closed Captions ➔ Check Captioning Enabled ➔ Click preview box to transcribe.</p>
+            <span class="problem-card-action">Fix Closed Captions ➔</span>
+          </div>
+        </div>
+
+        <!-- 5. Power & Electrical Breakers Category -->
+        <div class="quick-problem-card" data-scenario="system-boot-order" data-category="power audio">
+          <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🔌</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Morning System Startup & Boot Order</h3>
+            <p class="problem-card-desc">Power up in strict 7-step sequence (Board ➔ Wireless ➔ Atlas ➔ Amps ➔ Speakers) to prevent loud pops.</p>
+            <span class="problem-card-action">View Boot Sequence ➔</span>
+          </div>
+        </div>
+
         <div class="quick-problem-card" data-scenario="stage-power-breakers" data-category="power">
           <div class="problem-card-icon" style="background: rgba(234, 179, 8, 0.15); color: #facc15;">⚡</div>
           <div class="problem-card-body">
@@ -248,7 +352,538 @@
     </section>
 
     <!-- ====================================================================
-         SECTION 2: EMBRACE & ACCESSIBILITY OPERATIONS HUB
+         SECTION: LIVESTREAM, PROCLAIM SLIDES & BOOTH LIGHTING HUB
+         ==================================================================== -->
+    <section id="pane-livestream-hub" class="tab-pane">
+      <div class="section-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.35rem;">
+            <span>📡</span> Broadcast, Presentation & Lighting
+          </div>
+          <h2 class="section-title">Livestream & Presentation Hub</h2>
+          <p class="section-desc">YouTube Studio, ATEM Switcher, Proclaim Presentation Software, Sanctuary Displays, and Booth Lighting Operations.</p>
+        </div>
+
+        <!-- Sub-Nav Switcher for Livestream Hub -->
+        <div class="layer-switch-group" id="livestreamSubNavGroup">
+          <button class="layer-btn active" data-livesub="sub-setup">📡 Livestream & ATEM</button>
+          <button class="layer-btn" data-livesub="sub-proclaim">📑 Proclaim & Slides</button>
+          <button class="layer-btn" data-livesub="sub-lights">💡 Lighting Levels</button>
+          <button class="layer-btn" data-livesub="sub-troubleshoot">🚨 Quick-Fix Tools</button>
+        </div>
+      </div>
+
+      <!-- Sub-Pane 1: Livestream & ATEM Setup -->
+      <div id="livesub-setup" class="livestream-subpane active">
+        
+        <!-- Live Credentials & Access Bar -->
+        <div class="guest-card-container" style="border-left: 4px solid var(--accent-blue); margin-bottom: 1.25rem;">
+          <div class="guest-card-header" style="flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div class="brand-badge" style="background: linear-gradient(135deg, #ef4444, #dc2626);">▶️</div>
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff;">YouTube Broadcast Credentials & Access</h3>
+                <p style="font-size: 0.825rem; color: #94a3b8;">Livestream Station &bull; Blackmagic ATEM Mini &bull; Broadcast Laptop</p>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="location-pill" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.1);">
+                💻 Broadcast Laptop
+              </span>
+              <a href="https://studio.youtube.com" target="_blank" rel="noopener noreferrer" class="btn-print-action" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; text-decoration: none;">
+                <span>↗️</span> Open YouTube Studio
+              </a>
+              <button class="btn-print-action" onclick="window.print()" title="Print Livestream Setup Guide">
+                <span>🖨️</span> Print Guide
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="wizard-grid" style="grid-template-columns: 1.15fr 0.85fr; gap: 1.25rem;">
+          <!-- Left Column: Pre-Service Setup Protocol -->
+          <div class="calc-card" style="border-left: 4px solid var(--accent-emerald);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                <span>🚀</span> 1. Pre-Service Livestream Setup
+              </h3>
+              <span class="location-pill" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399; background: rgba(16, 185, 129, 0.1);">
+                ~15 Min Before Service
+              </span>
+            </div>
+
+            <ol class="step-actions-list" style="margin: 0.25rem 0;">
+              <li class="step-action-item">
+                <span class="step-action-number">a</span>
+                <div>
+                  <strong>Unlock Broadcast Laptop:</strong> Power on and unlock the sound booth broadcast laptop.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">b</span>
+                <div>
+                  <strong>Open Livestream Site:</strong> In Google Chrome, go to <a href="https://studio.youtube.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent-blue); text-decoration: underline;">studio.youtube.com</a>.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">c</span>
+                <div>
+                  <strong>Access Live Control Room:</strong> Click <strong>"Create"</strong> (top right) or navigate directly to the <strong>"Live control room"</strong>.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">d</span>
+                <div>
+                  <strong>Engage ATEM "ON AIR":</strong> Press the illuminated physical <strong>"ON AIR"</strong> button on the ATEM switcher board.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">e</span>
+                <div>
+                  <strong>Verify Video Preview:</strong> Ensure the live camera/switcher preview shows correctly and smoothly in YouTube Studio.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">f</span>
+                <div>
+                  <strong>"Go Live" on YouTube:</strong> Click the blue <strong>"Go Live"</strong> button in YouTube Studio approximately <strong>15 minutes before</strong> service starts.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">g</span>
+                <div>
+                  <strong>Public Stream Verification (Smartphone):</strong> At the beginning and throughout the service, use your phone to view the public YouTube livestream. <strong>Ensure both video and audio (Mix 14 feed from soundboard) are working clearly</strong>.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">h</span>
+                <div>
+                  <strong>Start ATEM Backup Recording:</strong> Press the physical <strong>"REC"</strong> button in the top right of the ATEM board to capture a local backup to USB storage.
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <!-- Right Column: Shutdown Protocol & Details -->
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Shutdown Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-rose);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: #fb7185; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                  <span>🛑</span> 2. Post-Service Shutdown Protocol
+                </h3>
+                <span class="location-pill" style="border-color: rgba(244, 63, 94, 0.4); color: #fb7185; background: rgba(244, 63, 94, 0.1);">
+                  End of Service
+                </span>
+              </div>
+
+              <ol class="step-actions-list" style="margin: 0.25rem 0;">
+                <li class="step-action-item">
+                  <span class="step-action-number">a</span>
+                  <div>
+                    <strong>Stop ATEM Recording:</strong> Press <strong>"STOP"</strong> recording on the top right of the physical ATEM switcher board.
+                  </div>
+                </li>
+                <li class="step-action-item">
+                  <span class="step-action-number">b</span>
+                  <div>
+                    <strong>End YouTube Stream:</strong> Click <strong>"End Stream"</strong> in YouTube Studio approximately <strong>2 minutes</strong> after the end of service.
+                  </div>
+                </li>
+                <li class="step-action-item">
+                  <span class="step-action-number">c</span>
+                  <div>
+                    <strong>Foyer TV / Second Service:</strong> Leave the stream / video switcher on a <strong>wide view of the stage with the key on</strong> for the foyer TV during the second service.
+                  </div>
+                </li>
+              </ol>
+            </div>
+
+            <!-- Notes & Google Keep Banner -->
+            <div class="step-tip-box" style="background: rgba(234, 179, 8, 0.08); border-left-color: var(--accent-amber);">
+              <strong style="color: var(--accent-amber);">📝 Additional Broadcast Notes:</strong><br>
+              See the church <strong>Google Keep note</strong> for more details, emergency backup stream keys, and custom event presets.
+            </div>
+
+            <!-- Livestream Audio Troubleshooting (No Audio / ATEM Connection) -->
+            <div class="step-tip-box" style="background: rgba(239, 68, 68, 0.08); border-left-color: var(--accent-rose);">
+              <strong style="color: #fb7185;">🎧 Livestream Audio Troubleshooting (No Sound / Missing Audio):</strong><br>
+              If there is no audio playing on the YouTube livestream:
+              <ul style="margin: 0.35rem 0 0 1.25rem; padding: 0; font-size: 0.8rem; color: var(--text-primary); line-height: 1.45;">
+                <li>Verify that the <strong>PC to the left of the stage</strong> is powered <strong>ON</strong>.</li>
+                <li>Verify that the audio cable is securely plugged into the <strong>back of the ATEM switcher board</strong> (look for the cord marked with <strong>red tape</strong>).</li>
+                <li>Confirm audio is streaming from the soundboard on <strong>Mix 14</strong> and reaching the broadcast interface.</li>
+              </ul>
+            </div>
+
+            <!-- ATEM Camera Video Troubleshooting (Black / Missing Camera Feeds) -->
+            <div class="step-tip-box" style="background: rgba(244, 63, 94, 0.08); border-left-color: #fb7185;">
+              <strong style="color: #fb7185;">📹 ATEM Camera Video Troubleshooting (Feeds Black / Missing):</strong><br>
+              <ul style="margin: 0.35rem 0 0 1.25rem; padding: 0; font-size: 0.8rem; color: var(--text-primary); line-height: 1.45;">
+                <li><strong>IF BOTH CAMERAS ARE BLACK:</strong> Check the <strong>Ubiquiti white network switch located underneath the sound booth desk</strong>. Ensure it has power and restart it.</li>
+                <li><strong>IF ONLY ONE CAMERA IS BLACK:</strong> Unplug that camera from the <strong>Ubiquiti white switch under the desk</strong> to reboot, or check its <strong>labeled SDI converter box underneath the desk</strong> (cycle power).</li>
+                <li><strong>LOOSE CABLE ON TRIPOD:</strong> Re-seat the HDMI/SDI video cable directly on the camera body/mount on stage.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Pane 2: Proclaim Presentation & Slides -->
+      <div id="livesub-proclaim" class="livestream-subpane" style="display: none;">
+        <div class="wizard-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          
+          <!-- Column 1: Proclaim Operations -->
+          <div class="calc-card" style="border-left: 4px solid var(--accent-blue);">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-blue); display: flex; align-items: center; gap: 0.5rem;">
+              <span>📑</span> Proclaim Software Step-by-Step
+            </h3>
+
+            <ol class="step-actions-list" style="margin: 0.25rem 0;">
+              <li class="step-action-item">
+                <span class="step-action-number">1</span>
+                <div>
+                  <strong>Launch Proclaim:</strong> Open Proclaim presentation software from the macOS Dock or Applications folder.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">2</span>
+                <div>
+                  <strong>Open Service Order:</strong> Click <strong>"Open Service"</strong> and select today's date. Slides and lyrics will synchronize automatically.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">3</span>
+                <div>
+                  <strong>Go 'On Air':</strong> Click the large red <strong>"On Air"</strong> button in the top right corner. The button will illuminate red to indicate active presentation.
+                </div>
+              </li>
+              <li class="step-action-item">
+                <span class="step-action-number">4</span>
+                <div>
+                  <strong>Advance Slides:</strong> Click any slide thumbnail in the middle preview grid, or use the <strong>Right Arrow (➔)</strong> / <strong>Spacebar</strong> key to advance lyrics in sync with worship.
+                </div>
+              </li>
+            </ol>
+
+            <div class="step-tip-box" style="margin-top: 0.5rem; background: rgba(59, 130, 246, 0.08); border-left-color: var(--accent-blue);">
+              <strong style="color: var(--accent-blue);">Proclaim Virtual Screen Routing (Settings ➔ Display):</strong><br>
+              &bull; <strong>Application:</strong> Mac built-in desk screen (Operator Grid)<br>
+              &bull; <strong>Virtual Screen (Slides):</strong> External HDMI Splitter ➔ Sanctuary Front TVs<br>
+              &bull; <strong>Virtual Screen (Confidence):</strong> Stage Confidence Monitor
+            </div>
+          </div>
+
+          <!-- Column 2: Quick Screen Modes & Confidence Monitor Switch -->
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            
+            <!-- Stage Confidence Monitor Under-Desk Switch Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-cyan);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                  <span>🖥️</span> Stage Confidence TV View Switch
+                </h3>
+                <span class="location-pill" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8; background: rgba(14, 165, 233, 0.1);">Under Desk</span>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0.25rem 0 0.5rem 0;">
+                The rear stage TV has two switchable display modes:
+              </p>
+              <ul style="margin: 0 0 0.5rem 1.25rem; padding: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                <li><strong>Static Slide View:</strong> Mirror of the front sanctuary TV slide.</li>
+                <li><strong>BirdDog View:</strong> True confidence monitor with lyrics, clock & next line.</li>
+              </ul>
+              <div class="step-tip-box" style="margin: 0; background: rgba(14, 165, 233, 0.08); border-left-color: var(--accent-cyan);">
+                <strong style="color: #38bdf8;">🔘 How to Switch:</strong> Locate the <strong>label on top of the sound booth desk</strong> and reach directly <strong>underneath the desk</strong> to press the push button once.
+              </div>
+            </div>
+
+            <!-- Quick Screen Modes Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-amber);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-amber); display: flex; align-items: center; gap: 0.5rem;">
+                <span>⌨️</span> Proclaim Quick Screen Modes
+              </h3>
+              <p style="font-size: 0.825rem; color: var(--text-secondary); margin: 0;">
+                Located at the bottom right corner of Proclaim during live service:
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: var(--accent-emerald);">Normal (F9):</strong><br>Standard slide & lyrics presentation.
+                </div>
+                <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: #f87171;">Blank (F10):</strong><br>Instantly cuts display to solid black.
+                </div>
+                <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: var(--accent-blue);">Clear (F11):</strong><br>Hides lyric text while keeping background video.
+                </div>
+                <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: #c084fc;">Logo (F12):</strong><br>Displays church logo slide immediately.
+                </div>
+              </div>
+            </div>
+
+            <!-- macOS Extended Desktop Setting -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-teal);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-teal); display: flex; align-items: center; gap: 0.5rem;">
+                <span>🖥️</span> macOS Extended Desktop Setting
+              </h3>
+              <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+                If Sanctuary TVs show Mac desktop wallpaper instead of slides: Open <strong>Apple Menu  ➔ System Settings ➔ Displays</strong>. Ensure external display is set to <strong>"Stop Mirroring" / "Use as Separate Display" (Extended Desktop)</strong>, NOT Mirror Built-in Display.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Sub-Pane 3: Booth Lighting Levels -->
+      <div id="livesub-lights" class="livestream-subpane" style="display: none;">
+        <div class="wizard-grid" style="grid-template-columns: 1.15fr 0.85fr; gap: 1.25rem;">
+          
+          <!-- Lighting Levels Card -->
+          <div class="calc-card" style="border-left: 4px solid var(--accent-amber);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: #facc15; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                <span>💡</span> Sound Booth Lighting Controller (7 Presets)
+              </h3>
+              <span class="location-pill" style="border-color: rgba(234, 179, 8, 0.4); color: #facc15; background: rgba(234, 179, 8, 0.1);">
+                Wall Keypad Controller
+              </span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+              Push the corresponding numbered button on the wall controller to transition sanctuary and stage lighting states:
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin: 0.25rem 0;">
+              
+              <!-- Button 1 -->
+              <div style="background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.25); border-radius: 8px; padding: 0.75rem 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                  <strong style="color: #facc15; font-size: 0.925rem;">🔘 1. BEFORE / AFTER SERVICE</strong>
+                  <span style="background: rgba(234, 179, 8, 0.2); color: #facc15; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 4px;">Before, After, During</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+                  <strong>When to press:</strong> Pre-service gathering, fellowship, service opening, and post-service dismissal. Balanced house and platform light.
+                </p>
+              </div>
+
+              <!-- Button 2 -->
+              <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 0.75rem 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                  <strong style="color: #c084fc; font-size: 0.925rem;">🔘 2. SONGS / MUSIC</strong>
+                  <span style="background: rgba(168, 85, 247, 0.2); color: #c084fc; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 4px;">Worship Music</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+                  <strong>When to press:</strong> During <strong>worship sets & congregational songs</strong>. Dims house lighting and brings up warm atmospheric stage focus on the band.
+                </p>
+              </div>
+
+              <!-- Button 3 -->
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                  <strong style="color: var(--text-primary); font-size: 0.925rem;">🔘 3. EVERYTHING ELSE</strong>
+                  <span style="background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 4px;">General Flow</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">
+                  <strong>When to press:</strong> General service transitions, announcements, and offering.
+                </p>
+              </div>
+
+              <!-- Button 4 -->
+              <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 8px; padding: 0.75rem 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                  <strong style="color: #60a5fa; font-size: 0.925rem;">🔘 4. VIDEO SHOWING</strong>
+                  <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 4px;">Show Video</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+                  <strong>When to press:</strong> When <strong>video clips or media presentations</strong> are shown on the sanctuary TVs for maximum visual contrast.
+                </p>
+              </div>
+
+              <!-- Button 5 -->
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                  <strong style="color: var(--text-primary); font-size: 0.925rem;">🔘 5. FULL 100%</strong>
+                  <span style="background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 4px;">Full Brightness</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">
+                  <strong>When to press:</strong> Rehearsals, setup, cleaning, and booth maintenance (100% max brightness on all fixtures).
+                </p>
+              </div>
+
+              <!-- Button 6 -->
+              <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 0.75rem 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                  <strong style="color: #34d399; font-size: 0.925rem;">🔘 6. SPOKEN WORD</strong>
+                  <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 4px;">Sermon / Preaching</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+                  <strong>When to press:</strong> Sermon preaching, scripture reading, and speaker podium spotlighting with comfortable congregation room light.
+                </p>
+              </div>
+
+              <!-- Button 7 -->
+              <div style="background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 8px; padding: 0.75rem 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem;">
+                  <strong style="color: #fb7185; font-size: 0.925rem;">🔘 7. OFF</strong>
+                  <span style="background: rgba(244, 63, 94, 0.2); color: #fb7185; font-size: 0.68rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 4px;">Shutdown</span>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-primary); margin: 0;">
+                  <strong>When to press:</strong> At final post-service shutdown to power off all sanctuary lighting fixtures.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Sticky Note Cheat Sheet & Safety -->
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            
+            <!-- Sticky Note Replica Card -->
+            <div class="calc-card" style="background: rgba(254, 240, 138, 0.08); border: 1px solid rgba(234, 179, 8, 0.35); position: relative;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                <h4 style="font-size: 0.95rem; font-weight: 800; color: #facc15; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+                  <span>📝</span> Wall Keypad & Sticky Note Reference
+                </h4>
+                <span style="font-size: 0.7rem; color: var(--text-muted); background: var(--bg-surface); padding: 0.15rem 0.45rem; border-radius: 4px;">Sound Booth Wall</span>
+              </div>
+
+              <!-- Wall Tape Markings -->
+              <div style="background: rgba(255, 255, 255, 0.04); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 6px; padding: 0.5rem 0.65rem; margin-bottom: 0.6rem; font-size: 0.78rem;">
+                <strong style="color: #facc15; display: block; margin-bottom: 0.25rem;">Wall Tape Quick Markings:</strong>
+                <div>• <strong>1</strong> - Before, After, During</div>
+                <div>• <strong>2</strong> - SONG / Music</div>
+                <div>• <strong>3</strong> - X</div>
+                <div>• <strong>4</strong> - Show Video</div>
+              </div>
+
+              <!-- Sticky Note Full 1-7 List -->
+              <div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem;">
+                <div style="padding: 0.35rem 0.55rem; background: var(--bg-input); border-radius: 4px; border-left: 3px solid #facc15;">
+                  <strong>1. BEFORE / AFTER SERVICE</strong>
+                </div>
+                <div style="padding: 0.35rem 0.55rem; background: var(--bg-input); border-radius: 4px; border-left: 3px solid #c084fc;">
+                  <strong>2. SONGS / MUSIC</strong>
+                </div>
+                <div style="padding: 0.35rem 0.55rem; background: var(--bg-input); border-radius: 4px; border-left: 3px solid #94a3b8;">
+                  <strong>3. EVERYTHING ELSE</strong>
+                </div>
+                <div style="padding: 0.35rem 0.55rem; background: var(--bg-input); border-radius: 4px; border-left: 3px solid #60a5fa;">
+                  <strong>4. VIDEO SHOWING</strong>
+                </div>
+                <div style="padding: 0.35rem 0.55rem; background: var(--bg-input); border-radius: 4px; border-left: 3px solid #cbd5e1;">
+                  <strong>5. FULL 100%</strong>
+                </div>
+                <div style="padding: 0.35rem 0.55rem; background: var(--bg-input); border-radius: 4px; border-left: 3px solid #34d399;">
+                  <strong>6. SPOKEN WORD</strong>
+                </div>
+                <div style="padding: 0.35rem 0.55rem; background: var(--bg-input); border-radius: 4px; border-left: 3px solid #fb7185;">
+                  <strong>7. OFF</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Electrical Panel Safety Note -->
+            <div class="step-tip-box" style="background: rgba(148, 163, 184, 0.08); border-left-color: var(--text-muted);">
+              <strong style="color: var(--text-primary);">💡 Large Black Lighting Panel vs. Gray Panel S:</strong><br>
+              The large black panel on the sound booth wall controls the dimmers for these 7 lighting presets. Never use lighting breakers for stage audio, musician pedalboard, or video power issues (use <strong>Gray Panel S Breakers 4 & 6</strong>).
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Sub-Pane 4: Quick-Fix Diagnostics for Video & Slides -->
+      <div id="livesub-troubleshoot" class="livestream-subpane" style="display: none;">
+        <div style="margin-bottom: 0.75rem;">
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">
+            🚨 Video, Display & Stream Diagnostics
+          </h3>
+          <p style="font-size: 0.825rem; color: var(--text-secondary); margin: 0;">
+            Click any issue below to jump directly into the step-by-step interactive troubleshooting wizard:
+          </p>
+        </div>
+
+        <div class="volunteer-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          
+          <div class="quick-problem-card" data-directscenario="atem-no-video">
+            <div class="problem-card-icon" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">📹</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">ATEM Switcher: Camera Feed Black</h3>
+              <p class="problem-card-desc">Both black = Ubiquiti white switch under desk. One black = restart camera on switch or under-desk SDI box.</p>
+              <span class="problem-card-action">Restore Camera Video ➔</span>
+            </div>
+          </div>
+
+          <div class="quick-problem-card" data-directscenario="confidence-monitor-switch">
+            <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">🖥️</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">Stage Confidence TV: Wrong View</h3>
+              <p class="problem-card-desc">Press the toggle switch UNDER the booth desk (labeled on top) to switch between Static Slide & BirdDog view.</p>
+              <span class="problem-card-action">Switch Confidence View ➔</span>
+            </div>
+          </div>
+
+          <div class="quick-problem-card" data-directscenario="proclaim-slides-freeze">
+            <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">📑</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">Proclaim Slides Frozen / Wrong Screen</h3>
+              <p class="problem-card-desc">Cycle Off/On Air, fix Proclaim Virtual Screen Display output, check macOS Extended Desktop, or Force Quit.</p>
+              <span class="problem-card-action">Fix Proclaim Slides ➔</span>
+            </div>
+          </div>
+
+          <div class="quick-problem-card" data-directscenario="sanctuary-tvs">
+            <div class="problem-card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">📺</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">Front Sanctuary TVs are Blank</h3>
+              <p class="problem-card-desc">Restart choir closet ceiling splitter, verify Mac power strip & HDMI 1 remote input.</p>
+              <span class="problem-card-action">Fix TVs Step-by-Step ➔</span>
+            </div>
+          </div>
+
+          <div class="quick-problem-card" data-directscenario="embrace-obs">
+            <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">📺</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">Embrace Room TV: No Signal</h3>
+              <p class="problem-card-desc">Check TV receiver HDMI cable, Nest camera outlet timer, booth transmitter (TX), or OBS LONTIUM projector.</p>
+              <span class="problem-card-action">Fix Embrace TV ➔</span>
+            </div>
+          </div>
+
+          <div class="quick-problem-card" data-directscenario="obs-captions">
+            <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">💬</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">OBS Cloud Closed Captions</h3>
+              <p class="problem-card-desc">Tools ➔ Cloud Closed Captions ➔ Check Captioning Enabled ➔ Click preview box to transcribe.</p>
+              <span class="problem-card-action">Fix Closed Captions ➔</span>
+            </div>
+          </div>
+
+          <div class="quick-problem-card" data-directscenario="foyer-tv-audio">
+            <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">📺</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">Foyer TV & Lobby Audio Feed</h3>
+              <p class="problem-card-desc">Check Foyer TV HDMI 1, ATEM wide stage key & un-mute Layer A Fader 24 ('Foyer' bus).</p>
+              <span class="problem-card-action">Restore Foyer AV ➔</span>
+            </div>
+          </div>
+
+          <div class="quick-problem-card" data-directscenario="computer-audio-no-sound">
+            <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">💻</div>
+            <div class="problem-card-body">
+              <h3 class="problem-card-title">Computer Audio / Mac Video Has No Sound</h3>
+              <p class="problem-card-desc">Check macOS sound output device, un-mute Layer A Fader 23 ('Mac') / Fader 22 ('PC') & Mix 12 House send.</p>
+              <span class="problem-card-action">Restore Computer Audio ➔</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================================
+         SECTION 3: EMBRACE & ACCESSIBILITY OPERATIONS HUB
          ==================================================================== -->
     <section id="pane-embrace-hub" class="tab-pane">
       <div class="section-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
@@ -511,7 +1146,21 @@
         </div>
 
         <div class="step-tip-box" style="margin-top: 1rem; background: rgba(239, 68, 68, 0.1); border-left-color: var(--accent-rose); color: #fca5a5;">
-          <strong style="color: #f87171;">⚠️ Strict Routing Rule:</strong> Click Track is routed <strong>EXCLUSIVELY to Aviom In-Ear Monitors</strong>. Ensure Click is <strong>NEVER</strong> routed to <strong>MIX 12 (Stereo House)</strong> or <strong>Master LR</strong> so the congregation does not hear the metronome.
+          <strong style="color: #f87171;">⚠️ Strict Routing Rule:</strong> Click Track is routed <strong>EXCLUSIVELY to Aviom In-Ear Monitors</strong>. Ensure Click is <strong>NEVER</strong> routed to <strong>MIX 12 (Stereo House)</strong> or <strong>Master LR</strong> during a live service so the congregation does not hear the metronome.
+        </div>
+
+        <div style="margin-top: 1rem; background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 8px; padding: 0.85rem; font-size: 0.825rem;">
+          <div style="display: flex; align-items: center; gap: 0.4rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.35rem;">
+            <span>📱</span> Playing iPad / Mobile Audio Through Aviom & House (Rehearsal Practice Mode)
+          </div>
+          <p style="margin: 0 0 0.5rem 0; color: var(--text-primary); line-height: 1.45;">
+            Need to play practice tracks or reference audio from an iPad/phone through both the in-ears and main sanctuary speakers?
+          </p>
+          <ul style="margin: 0 0 0 1.25rem; padding: 0; line-height: 1.45; color: var(--text-secondary); font-size: 0.8rem;">
+            <li><strong>Method 1 (Recommended):</strong> Plug the click cable into the iPad, connect the other end to <strong>any spare instrument port</strong> (e.g. Aux 1) or an unused vocal port on stage, and control it on Layer A like a normal channel.</li>
+            <li><strong>Method 2 (Advanced):</strong> Select the Click channel on Layer B and raise its send to <strong>Mix 12 (House)</strong>.</li>
+            <li><strong style="color: #f87171;">⚠️ Caution for Live Services:</strong> Ensure Click sends to Mix 12 (House) are turned OFF before Sunday morning service!</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -522,8 +1171,8 @@
     <section id="pane-checklist" class="tab-pane">
       <div class="section-header">
         <div>
-          <h2 class="section-title"><span>📋</span> Pre-Service Sound Booth Readiness Checklist</h2>
-          <p class="section-desc">Interactive volunteer checklist to verify sound, video, broadcast, and assistive listening systems before rehearsal.</p>
+          <h2 class="section-title"><span>📋</span> Weekend Pre-Service Readiness Checklist</h2>
+          <p class="section-desc">Standard weekly startup checklist for audio, visuals, livestream, and sound booth systems.</p>
         </div>
         <div style="display: flex; align-items: center; gap: 0.5rem;">
           <button class="btn-print-action" onclick="window.print()" title="Print physical clipboard checklist">
@@ -551,101 +1200,86 @@
     </section>
 
     <!-- ====================================================================
-         SECTION 5: BOOTH MAINTENANCE LOGBOOK
+         SECTION 5: BOOTH ISSUE & MAINTENANCE REPORTING (GOOGLE FORM QR)
          ==================================================================== -->
     <section id="pane-logbook" class="tab-pane">
-      <div class="section-header">
+      <div class="section-header" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
         <div>
-          <h2 class="section-title"><span>📝</span> Sound Booth Shift Log & Maintenance Notes</h2>
-          <p class="section-desc">Log broken cables, dead batteries, guest musician adjustments, and maintenance issues that persist across sessions.</p>
+          <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(59, 130, 246, 0.15); color: #60a5fa; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.35rem;">
+            <span>📋</span> Tech Team Maintenance & Feedback
+          </div>
+          <h2 class="section-title">Sound Booth Issue & Maintenance Report</h2>
+          <p class="section-desc">Report broken cables, dead gear, battery problems, or submit suggestions directly to the church AV tech team.</p>
         </div>
-        <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <button class="btn-print-action" onclick="window.print()" title="Print shift log notes">
-            <span>🖨️</span> Print Log
-          </button>
-          <button id="btnExportLog" class="btn-prev-step" style="border-color: var(--border-prominent);">
-            📥 Export Log
-          </button>
-          <button id="btnClearLog" class="btn-prev-step" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
-            🗑️ Clear All
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFImqNTuJq3KzdKxDhbLq4z-KST0zfMgCA9eWDbDU3pfhEUw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="btn-print-action" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; text-decoration: none; font-weight: 700;">
+            <span>↗️</span> Open Google Form
+          </a>
+          <button class="btn-print-action" onclick="window.print()" title="Print QR Code Sheet">
+            <span>🖨️</span> Print QR Code
           </button>
         </div>
       </div>
 
-      <div class="wizard-grid" style="grid-template-columns: 360px 1fr;">
-        <!-- Log Entry Form -->
-        <div class="calc-card">
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-blue);">
-            ✍️ Add New Log Entry
-          </h3>
-
-          <!-- Quick Template Pills -->
-          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-            <label class="calc-label">Quick Templates:</label>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
-              <button class="log-template-btn" data-tmpl="cable">🔌 Bad Cable</button>
-              <button class="log-template-btn" data-tmpl="battery">🔋 Mic Batteries</button>
-              <button class="log-template-btn" data-tmpl="splitter">📺 Splitter Reboot</button>
-              <button class="log-template-btn" data-tmpl="extender">📺 Embrace TV / Extender</button>
-              <button class="log-template-btn" data-tmpl="breaker">⚡ Tripped Breaker (Panel S)</button>
-              <button class="log-template-btn" data-tmpl="guest">🎻 Guest Musician</button>
-            </div>
+      <div class="wizard-grid" style="grid-template-columns: 340px 1fr; gap: 1.5rem; align-items: start; margin-top: 1rem;">
+        <!-- Left Column: Google Form QR Code Card -->
+        <div class="calc-card" style="border-left: 4px solid var(--accent-blue); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem;">
+          <div class="brand-badge" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); width: 44px; height: 44px; font-size: 1.4rem; margin-bottom: 0.75rem;">📝</div>
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.35rem;">Scan to Report an Issue</h3>
+          <p style="font-size: 0.8rem; color: #94a3b8; margin: 0 0 1rem 0;">Scan with your phone camera to open our Google Form.</p>
+          
+          <!-- QR Code SVG Container -->
+          <div id="qrReportForm" style="background: #ffffff; padding: 0.75rem; border-radius: 12px; display: inline-flex; justify-content: center; align-items: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); margin-bottom: 1.25rem;">
+            <!-- Generated via QRCode.js -->
           </div>
 
-          <form id="logEntryForm" style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.5rem;">
-            <div class="calc-field-group">
-              <label class="calc-label" for="logCategory">Category:</label>
-              <select id="logCategory" class="calc-select" required>
-                <option value="Hardware / Cable">🔌 Hardware / Broken Cable</option>
-                <option value="Battery / Wireless">🔋 Battery / Wireless Mic</option>
-                <option value="Video / Splitter">📺 Video / TVs / Splitter</option>
-                <option value="Service Note">🎵 Service Note / Patching</option>
-                <option value="Assistive Listening">🎧 Wavecast / Assistive Audio</option>
-                <option value="General">📝 General Observation</option>
-              </select>
-            </div>
-
-            <div class="calc-field-group">
-              <label class="calc-label" for="logStatus">Status / Priority:</label>
-              <select id="logStatus" class="calc-select">
-                <option value="open">⚠️ Open (Needs Fix / Attention)</option>
-                <option value="resolved">✅ Resolved / Fixed</option>
-                <option value="info">ℹ️ Info Only</option>
-              </select>
-            </div>
-
-            <div class="calc-field-group">
-              <label class="calc-label" for="logAuthor">Logged By (Name / Initials):</label>
-              <input type="text" id="logAuthor" class="calc-input" placeholder="e.g. Owen / Sound Lead" required>
-            </div>
-
-            <div class="calc-field-group">
-              <label class="calc-label" for="logDetails">Notes & Details:</label>
-              <textarea id="logDetails" class="calc-input" rows="3" placeholder="Describe the issue, stage location, or action taken..." required style="resize: vertical;"></textarea>
-            </div>
-
-            <button type="submit" class="btn-resolved" style="justify-content: center; margin-top: 0.5rem;">
-              ➕ Save to Logbook
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFImqNTuJq3KzdKxDhbLq4z-KST0zfMgCA9eWDbDU3pfhEUw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="btn-resolved" style="justify-content: center; text-decoration: none; font-size: 0.875rem;">
+              <span>↗️</span> Open Form in Browser
+            </a>
+            <button id="btnCopyFormUrl" class="btn-prev-step" style="justify-content: center; font-size: 0.8rem;">
+              📋 Copy Link to Form
             </button>
-          </form>
+          </div>
         </div>
 
-        <!-- Log Entries Feed & Filter -->
-        <div class="calc-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem;">
-            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">
-              📋 Maintenance History & Service Notes
+        <!-- Right Column: Information Blurb & Guidelines -->
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="calc-card" style="border-left: 4px solid var(--accent-emerald);">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span>💬</span> About the Sound Booth Issue Form
             </h3>
-            <!-- Filter Group -->
-            <div class="layer-switch-group" style="padding: 0.2rem;" id="logFilterGroup">
-              <button class="layer-btn active" data-filter="all" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">All</button>
-              <button class="layer-btn" data-filter="open" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">Open Issues</button>
-              <button class="layer-btn" data-filter="resolved" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">Resolved</button>
-            </div>
+            <p style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.6; margin: 0 0 0.75rem 0;">
+              Notice something broken, crackling, or acting up during Sunday service? Rather than letting it slip by, submit a quick report through this Google Form so our tech lead and team can repair, test, or replace it before the next service!
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Submissions go directly to the church AV tech team and notify team leads so no issue falls through the cracks.
+            </p>
           </div>
 
-          <div id="logbookEntriesList" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 620px; overflow-y: auto; padding-right: 0.3rem;">
-            <!-- Dynamically Populated -->
+          <!-- Common Items to Report -->
+          <div class="calc-card" style="border-left: 4px solid var(--accent-amber);">
+            <h4 style="font-size: 0.95rem; font-weight: 700; color: #facc15; margin: 0 0 0.75rem 0; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🛠️</span> What to Report in the Form:
+            </h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; font-size: 0.825rem;">
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.65rem 0.75rem;">
+                <strong style="color: #f87171; display: block; margin-bottom: 0.2rem;">🔌 Cables & DI Boxes</strong>
+                Crackling XLRs, loose 1/4" guitar jacks, bad stage snake channels, or failing direct boxes.
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.65rem 0.75rem;">
+                <strong style="color: #fbbf24; display: block; margin-bottom: 0.2rem;">🔋 Microphones & Batteries</strong>
+                Wireless mic dropouts, damaged clips/stands, dead rechargeables, or transmitter door issues.
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.65rem 0.75rem;">
+                <strong style="color: #60a5fa; display: block; margin-bottom: 0.2rem;">📺 Video, TVs & Proclaim</strong>
+                Sanctuary TV HDMI flicker, Embrace TV extender disconnects, or slide software bugs.
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.65rem 0.75rem;">
+                <strong style="color: #34d399; display: block; margin-bottom: 0.2rem;">🎧 Booth Supplies & Accessories</strong>
+                Low gaff tape, missing 1/4" headphone adapters, broken mic clips, or needed booth supplies.
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -667,17 +1301,295 @@
 
         <!-- Sub-Nav Switcher for Audio Tech -->
         <div class="layer-switch-group" id="audioSubNavGroup">
-          <button class="layer-btn active" data-audiosub="sub-stage">🗺️ Stage Map</button>
+          <button class="layer-btn active" data-audiosub="sub-rehearsal">🎸 Saturday Rehearsal</button>
+          <button class="layer-btn" data-audiosub="sub-stage">🗺️ Stage Map</button>
           <button class="layer-btn" data-audiosub="sub-console">🎛️ Virtual Console</button>
           <button class="layer-btn" data-audiosub="sub-buses">🔀 Mix Buses (1-14)</button>
           <button class="layer-btn" data-audiosub="sub-guest">🎻 Guest Patching</button>
-          <button class="layer-btn" data-audiosub="sub-power">⚡ Breaker Panel S</button>
+          <button class="layer-btn" data-audiosub="sub-power">⚡ Boot Order & Panel S</button>
           <button class="layer-btn" data-audiosub="sub-arch">📐 Architecture</button>
         </div>
       </div>
 
+      <!-- Sub-Tab 0: Saturday Line Check & Rehearsal Workflow (NEW) -->
+      <div id="audiosub-rehearsal" class="audio-subpane active">
+        
+        <!-- Workflow Goal Banner -->
+        <div class="guest-card-container" style="border-left: 4px solid var(--accent-blue); margin-bottom: 1.25rem;">
+          <div class="guest-card-header" style="flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div class="brand-badge" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">🎸</div>
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff;">Saturday Line Check & Rehearsal Workflow</h3>
+                <p style="font-size: 0.825rem; color: #94a3b8;">Systematic Sound Engineering & Relational Worship Team Support</p>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="location-pill" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; background: rgba(59, 130, 246, 0.1);">
+                🎯 Target Gain: <strong>-8 to -10 dB</strong>
+              </span>
+              <button class="btn-print-action" onclick="window.print()" title="Print Rehearsal Workflow Guide">
+                <span>🖨️</span> Print Workflow
+              </button>
+            </div>
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-primary); line-height: 1.5; background: rgba(255, 255, 255, 0.03); padding: 0.6rem 0.85rem; border-radius: 6px;">
+            <strong>The Goal:</strong> To efficiently set the technical foundation for rehearsal while relationally supporting the worship team. A great line check is systematic, clear, encouraging, and creates a predictable rhythm every week.
+          </div>
+        </div>
+
+        <div class="wizard-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          
+          <!-- Column 1: Boot Order, Preparation & Arrival -->
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            
+            <!-- 1. Preparation & Boot Order Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-emerald);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                  <span>🔌</span> 1. Preparation & Strict Boot Order
+                </h3>
+                <span class="location-pill" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399; background: rgba(16, 185, 129, 0.1);">
+                  Before Team Arrives
+                </span>
+              </div>
+              <p style="font-size: 0.825rem; color: var(--text-secondary); margin: 0 0 0.65rem 0;">
+                Follow the strict hardware boot order to protect speaker cones, amplifiers, and ensure digital sync:
+              </p>
+
+              <!-- Hardware Boot Sequence List -->
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem;">
+                <strong style="color: var(--accent-emerald); font-size: 0.8rem; display: block; margin-bottom: 0.4rem;">⚡ Hardware Boot Order:</strong>
+                <ol class="step-actions-list" style="margin: 0;">
+                  <li class="step-action-item" style="padding: 0.25rem 0;">
+                    <span class="step-action-number" style="min-width: 1.3rem; height: 1.3rem; font-size: 0.7rem;">1</span>
+                    <div style="font-size: 0.8rem;"><strong>Board (Console):</strong> Soundcraft Si Impact.</div>
+                  </li>
+                  <li class="step-action-item" style="padding: 0.25rem 0;">
+                    <span class="step-action-number" style="min-width: 1.3rem; height: 1.3rem; font-size: 0.7rem;">2</span>
+                    <div style="font-size: 0.8rem;"><strong>Wireless Rack:</strong> Shure / Sennheiser receivers.</div>
+                  </li>
+                  <li class="step-action-item" style="padding: 0.25rem 0;">
+                    <span class="step-action-number" style="min-width: 1.3rem; height: 1.3rem; font-size: 0.7rem;">3</span>
+                    <div style="font-size: 0.8rem;"><strong>ATLAS:</strong> Atlas sound processor unit.</div>
+                  </li>
+                  <li class="step-action-item" style="padding: 0.25rem 0;">
+                    <span class="step-action-number" style="min-width: 1.3rem; height: 1.3rem; font-size: 0.7rem;">4</span>
+                    <div style="font-size: 0.8rem;"><strong>House AMP:</strong> Crown main house amplifier.</div>
+                  </li>
+                  <li class="step-action-item" style="padding: 0.25rem 0;">
+                    <span class="step-action-number" style="min-width: 1.3rem; height: 1.3rem; font-size: 0.7rem;">5</span>
+                    <div style="font-size: 0.8rem;"><strong>QSC Wall Speakers:</strong> Active sanctuary wall speakers.</div>
+                  </li>
+                  <li class="step-action-item" style="padding: 0.25rem 0;">
+                    <span class="step-action-number" style="min-width: 1.3rem; height: 1.3rem; font-size: 0.7rem;">6</span>
+                    <div style="font-size: 0.8rem;"><strong>All Video ATEM:</strong> Video switcher (only if there is an event).</div>
+                  </li>
+                  <li class="step-action-item" style="padding: 0.25rem 0;">
+                    <span class="step-action-number" style="min-width: 1.3rem; height: 1.3rem; font-size: 0.7rem;">7</span>
+                    <div style="font-size: 0.8rem;"><strong>AVIOM Switch:</strong> Personal monitor network switch (located on <strong>left side of stage</strong> with bundle of ethernet cables).</div>
+                  </li>
+                </ol>
+              </div>
+
+              <!-- Pre-Arrival Setup Tasks -->
+              <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.8rem;">
+                <div style="padding: 0.4rem 0.6rem; background: rgba(59, 130, 246, 0.06); border-radius: 6px; border-left: 3px solid var(--accent-blue);">
+                  <strong>Scene & Power:</strong> Load <code style="color: #60a5fa;">1NormalSunday</code> scene (Show ➔ Save As Date.show).
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(234, 179, 8, 0.06); border-radius: 6px; border-left: 3px solid var(--accent-amber);">
+                  <strong>Confirm Roster:</strong> Review Planning Center services list to confirm who is playing and any stage changes.
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(239, 68, 68, 0.06); border-radius: 6px; border-left: 3px solid #f87171;">
+                  <strong>Mute Foyer:</strong> Ensure foyer speaker feeds are muted on <strong>Layer A</strong> during setup.
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: var(--bg-input); border-radius: 6px; border-left: 3px solid var(--border-prominent);">
+                  <strong>PC & Talkback:</strong> Power on PC (only start Reaper if track recording). Prep talkback wireless mic (White/Blue Pastor mic on "Owens layer" with fresh battery).
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Team Arrival & Hospitality Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-teal);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-teal); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span>🤝</span> 2. The Arrival: Supporting the Team
+              </h3>
+              <p style="font-size: 0.825rem; color: var(--text-primary); margin: 0 0 0.5rem 0;">
+                How you welcome the team sets the tone for the entire rehearsal:
+              </p>
+              <ul style="margin: 0 0 0.75rem 1.25rem; padding: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;">
+                <li><strong>Greet by name:</strong> A personal greeting shows care and builds relational trust.</li>
+                <li><strong>Help them settle in:</strong> Assist with direct boxes (located in the <strong>closet to the right of the stage</strong>), help find stage box ports, and ask <em>"Do you have everything you need?"</em>.</li>
+              </ul>
+
+              <!-- Click Track Patching Box -->
+              <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 8px; padding: 0.75rem;">
+                <strong style="color: #38bdf8; font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.35rem;">
+                  <span>⏱️</span> Click Track Patching Procedure (Console Layer B)
+                </strong>
+                <ol style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.78rem; color: var(--text-primary); line-height: 1.45;">
+                  <li>Navigate to <strong>Layer B</strong> on the Soundcraft console.</li>
+                  <li>Press the <strong>SEL</strong> button above <strong>Fader 2</strong> (labeled "Click").</li>
+                  <li>On the main soundboard touchscreen menu, press <strong>Inputs</strong>.</li>
+                  <li>Patch input source:
+                    <br>&bull; <strong>Front Click:</strong> FX1 ➔ recorder (or <strong>Mic 12 / Input 12</strong> on Center Front Box).
+                    <br>&bull; <strong>Drum Cage Click:</strong> <strong>Mic 20 / Input 20</strong> on Drum Cage Left Plate.
+                  </li>
+                  <li>Click <strong>Menu twice</strong> to exit.</li>
+                </ol>
+
+                <div style="margin-top: 0.65rem; padding: 0.5rem 0.65rem; background: rgba(59, 130, 246, 0.08); border-radius: 6px; border: 1px dashed rgba(59, 130, 246, 0.35); font-size: 0.76rem;">
+                  <strong style="color: #60a5fa;">💡 Practice Tip — Playing iPad Audio Through Aviom & House:</strong><br>
+                  If someone wants to play reference tracks or rehearsal audio from an iPad/phone through both Aviom and House, plug the click cable into the iPad and connect to <strong>any spare instrument or vocal port</strong> on stage (e.g. Aux 1), then control on Layer A like normal. <em>Advanced:</em> You can also raise Click channel sends to Mix 12 (House).<br>
+                  <strong style="color: #f87171;">⚠️ Service Caution:</strong> Use caution for live services—ensure Click sends to Mix 12 (House) are muted before Sunday service!
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Show File Saving Card (CRITICAL) -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-rose);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: #fb7185; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                  <span>💾</span> 5. Saving Show File Protocol
+                </h3>
+                <span style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; font-size: 0.7rem; font-weight: 800; padding: 0.15rem 0.45rem; border-radius: 4px;">CRITICAL RULE</span>
+              </div>
+              <div class="step-tip-box" style="background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444; margin-bottom: 0.65rem;">
+                <strong style="color: #f87171;">⚠️ CRUCIAL: DO NOT OVERWRITE '1NORMALSUNDAY' EVER ⚠️</strong><br>
+                Always save Saturday changes as a separate date show file so Sunday baseline presets remain intact.
+              </div>
+
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; font-size: 0.8rem;">
+                <strong style="color: #fff; display: block; margin-bottom: 0.35rem;">Exact Console Touchscreen Steps:</strong>
+                <ol style="margin: 0 0 0 1.25rem; padding: 0; line-height: 1.45; color: var(--text-primary);">
+                  <li>Go to <strong>Menu ➔ Show</strong> (use touchscreen navigation knob).</li>
+                  <li>Press <strong>Save As</strong>.</li>
+                  <li>Set show name using current date format: <code style="color: #60a5fa; background: rgba(59, 130, 246, 0.15); padding: 0.1rem 0.3rem; border-radius: 3px;">[MM.DD.YYYY]</code> (e.g. <code>08.23.2026.show</code>).</li>
+                  <li>Press <strong>Apply</strong>.</li>
+                  <li>Select <strong>MMC ➔ Other Folder</strong>.</li>
+                  <li>Press <strong>OK</strong> to confirm.</li>
+                </ol>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Column 2: Line Check Process, Order & MASS Rehearsal -->
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            
+            <!-- 3. Line Check Process Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-amber);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: #facc15; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                  <span>🎚️</span> 3. Systematic Line Check Process
+                </h3>
+                <span class="location-pill" style="border-color: rgba(234, 179, 8, 0.4); color: #facc15; background: rgba(234, 179, 8, 0.1);">
+                  Per-Musician Workflow
+                </span>
+              </div>
+              <p style="font-size: 0.825rem; color: var(--text-secondary); margin: 0 0 0.65rem 0;">
+                Use your wireless talkback mic for all communication. Work through each musician step-by-step:
+              </p>
+
+              <!-- Step-by-step per musician -->
+              <div style="display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.8rem;">
+                <div style="padding: 0.45rem 0.65rem; background: rgba(234, 179, 8, 0.08); border-radius: 6px; border-left: 3px solid #facc15;">
+                  <strong style="color: #facc15;">1. Set the Gain (#1 Job):</strong> Using the channel gain knob (left of channel strip), dial signal to hit <strong>-8 to -10 dB</strong> on the meter (to the right of volume fader on Mixing Station). <em>Gain impacts Aviom in-ears directly!</em>
+                </div>
+                <div style="padding: 0.45rem 0.65rem; background: rgba(168, 85, 247, 0.08); border-radius: 6px; border-left: 3px solid #c084fc;">
+                  <strong style="color: #c084fc;">2. Tone & Presets:</strong> Mixing Station App: Select Channel ➔ Folder ➔ Local Presets. Copy/Paste: Folder ➔ Copy ➔ Paste.<br>
+                  <strong style="color: #f87171;">⚠️ CAUTION:</strong> Double-check routing, gain, and phantom power (red <strong>+48V</strong> button) after pasting!
+                </div>
+                <div style="padding: 0.45rem 0.65rem; background: var(--bg-input); border-radius: 6px; border-left: 3px solid var(--border-prominent);">
+                  <strong style="color: #fff;">3. Tech Adjustments:</strong> Correct only noticeable EQ flaws to preserve preset consistency while honoring individual channel acoustics.
+                </div>
+                <div style="padding: 0.45rem 0.65rem; background: rgba(59, 130, 246, 0.08); border-radius: 6px; border-left: 3px solid var(--accent-blue);">
+                  <strong style="color: #60a5fa;">4. Confirm Aviom Signal:</strong> Ask: <em>"Are you getting a good signal of yourself in your Aviom?"</em> (Fixes personal mix issues early).
+                </div>
+                <div style="padding: 0.45rem 0.65rem; background: rgba(16, 185, 129, 0.08); border-radius: 6px; border-left: 3px solid var(--accent-emerald);">
+                  <strong style="color: #34d399;">5. Set House Level:</strong> Bring their fader up in the main house mix to a starting position.
+                </div>
+              </div>
+
+              <!-- Standard Line Check Order -->
+              <div style="margin-top: 0.85rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem;">
+                <strong style="color: #facc15; font-size: 0.825rem; display: block; margin-bottom: 0.4rem;">🥁 The Standard Order (Build Foundation First):</strong>
+                <ol style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.78rem; line-height: 1.45; color: var(--text-primary);">
+                  <li><strong>Drums:</strong> Check each mic individually (kick, snare, toms) ➔ Tom balance check ➔ Simple steady beat for whole kit.</li>
+                  <li><strong>Bass:</strong> Ensure sub-bass and house levels sound full and tight.</li>
+                  <li><strong>Keyboards / Piano:</strong> Stereo width and patch level consistency.</li>
+                  <li><strong>Violin / Special Instruments:</strong> Allow extra setup time and EQ work.</li>
+                  <li><strong>Guitars:</strong> Acoustic clean signal ➔ Electric main rhythm + <strong>engage lead/boost pedals</strong> to test volume jump!</li>
+                  <li><strong>Vocals:</strong> Background vocalists first ➔ Worship leader last (sing a line from a worship song, not "test 1, 2").</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- M.A.S.S. Protocol & Handoff Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-blue);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--accent-blue); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span>🎵</span> Rehearsal Phase (M.A.S.S. Protocol)
+              </h3>
+              <p style="font-size: 0.825rem; color: var(--text-secondary); margin: 0 0 0.65rem 0;">
+                Once line check is complete, transition into full band rehearsal:
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">
+                <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: #60a5fa;">M — Mix the Band:</strong><br>Blend instruments and vocals into a cohesive sanctuary mix.
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: #34d399;">A — Around Room:</strong><br>Walk around sanctuary to check speaker coverage and balance.
+                </div>
+                <div style="background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.25); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: #facc15;">S — Songs:</strong><br>Learn arrangements, musical cues, and vocal dynamics.
+                </div>
+                <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 6px; padding: 0.5rem 0.65rem; font-size: 0.8rem;">
+                  <strong style="color: #c084fc;">S — Subs:</strong><br>Check sub-bass performance and punch in the low end.
+                </div>
+              </div>
+
+              <!-- 4. Final Handoff & 6. Shutdown Order -->
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; font-size: 0.78rem; color: var(--text-primary); line-height: 1.45;">
+                <div style="margin-bottom: 0.4rem;">
+                  <strong style="color: #fff;">4. Final Check & Handoff:</strong> Ask <em>"Everyone hearing what you need?"</em>. Use the first song to lock in FOH mix. Check wireless battery levels for Sunday (recharge above).
+                </div>
+                <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.4rem;">
+                  <strong style="color: #fb7185;">6. Hardware Shutdown Order (Exact Reverse):</strong><br>
+                  <code>AVIOM ➔ ATEM (if on) ➔ QSC (6 switches) ➔ House AMP ➔ ATLAS ➔ Wireless Rack ➔ Board</code><br>
+                  <em style="color: var(--text-muted);">Note: Leave Aviom ON after set rehearsal if Sunday is next.</em>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fast Rehearsal Audio Troubleshooting Card -->
+            <div class="calc-card" style="border-left: 4px solid var(--accent-rose);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: #fb7185; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span>🚨</span> Fast Audio Fixes During Rehearsal
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.78rem;">
+                <div style="background: rgba(239, 68, 68, 0.08); border-left: 3px solid #f87171; padding: 0.45rem 0.6rem; border-radius: 6px;">
+                  <strong style="color: #f87171;">📢 Pastor Lapel Feedback:</strong> Pull down 2-4 dB & <strong>recall the Pastor Lapel channel preset</strong> in Mixing Station (Folder ➔ Local Presets). <em>Do not randomly boost EQ bands!</em>
+                </div>
+                <div style="background: rgba(234, 179, 8, 0.08); border-left: 3px solid #facc15; padding: 0.45rem 0.6rem; border-radius: 6px;">
+                  <strong style="color: #facc15;">🥁 Front Cajon Feedback:</strong> Must be <strong>MUTED whenever cajon is inactive</strong>. Mute directly on <strong>Layer A Fader 21</strong> (note: it is grouped inside the Band Group).
+                </div>
+                <div style="background: rgba(59, 130, 246, 0.08); border-left: 3px solid #60a5fa; padding: 0.45rem 0.6rem; border-radius: 6px;">
+                  <strong style="color: #60a5fa;">🔊 Room Silent / Meters Bouncing:</strong> <strong>Venue Live 360 speaker box is off</strong>. Unplug and replug its power cable until it boots, and confirm Master LR red fader is up.
+                </div>
+                <div style="background: rgba(168, 85, 247, 0.08); border-left: 3px solid #c084fc; padding: 0.45rem 0.6rem; border-radius: 6px;">
+                  <strong style="color: #c084fc;">🎧 Aviom "Nothing in Ears":</strong> #1 failure is the <strong>headphone extender cable</strong>—plug earbuds directly into the Aviom unit to bypass. Check stage-left Aviom switch and Layer D masters.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
       <!-- Sub-Tab 1: Stage Map Explorer -->
-      <div id="audiosub-stage" class="audio-subpane active">
+      <div id="audiosub-stage" class="audio-subpane" style="display: none;">
         <div class="stage-explorer-layout">
           <!-- Stage Visual Diagram -->
           <div class="stage-visual-container">
@@ -836,6 +1748,80 @@
               <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
                 <strong style="color: #c084fc;">Acoustic & Electric Guitars:</strong> Select fader on Layer A ➔ Inputs ➔ Select matching bracketed number on scribble strip (e.g. In 15 for Acou1, In 11 for Elec1).
               </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: #38bdf8;">Mixing Station iPad App:</strong> If disconnected, tap back arrow to Home ➔ use <strong>Backup search</strong> to reconnect to console.
+              </div>
+              <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: var(--accent-amber);">Aviom In-Ear Sends:</strong> Tablet: Tap channel ➔ <strong>Sends</strong> (right side) ➔ raise Aviom mix (if maxed, add Preamp Gain). Board: Click target Aviom MIX button ➔ push fader.
+              </div>
+              <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: var(--accent-blue);">📦 Stage DI Boxes Location:</strong> Spare and primary direct boxes are stored in the <strong>closet to the right of the stage</strong>.
+              </div>
+              <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 6px; padding: 0.75rem 0.85rem; font-size: 0.825rem;">
+                <strong style="color: #c084fc;">🎸 Electric Guitar Level Check:</strong> Always check their main rhythm sound, then ask them to <strong>engage their lead/boost pedal</strong> to test and control the volume jump for solos!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dedicated iPad / Mobile Audio Playback Card (NEW) -->
+        <div class="guest-card-container" style="border-left: 4px solid var(--accent-blue); margin-top: 1.25rem;">
+          <div class="guest-card-header" style="flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div class="brand-badge" style="background: linear-gradient(135deg, #0ea5e9, #3b82f6); font-size: 1.25rem;">📱</div>
+              <div>
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #fff;">iPad / Mobile Audio Playback (Playing Through Aviom & House)</h3>
+                <p style="font-size: 0.8rem; color: #94a3b8;">Rehearsal song reference, practice tracks, and multi-destination routing</p>
+              </div>
+            </div>
+            <span class="location-pill" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8; background: rgba(14, 165, 233, 0.1);">
+              Practice & Rehearsal Workflow
+            </span>
+          </div>
+
+          <!-- Service Caution Warning Box -->
+          <div class="step-tip-box" style="background: rgba(239, 68, 68, 0.08); border-left-color: #ef4444; margin-top: 0.85rem; margin-bottom: 0.85rem;">
+            <strong style="color: #f87171; display: flex; align-items: center; gap: 0.35rem;">
+              <span>⚠️</span> CAUTION FOR SUNDAY SERVICES (Rehearsal vs Live Service Rule):
+            </strong>
+            <span style="font-size: 0.825rem; color: var(--text-primary); line-height: 1.45; display: block; margin-top: 0.25rem;">
+              While routing playback through both the House and Avioms is ideal for <strong>Saturday practices and rehearsals</strong>, <strong>exercise caution during a live service</strong>! If you alter Click channel sends or patch through the Click line, ensure Click is <strong>NEVER routed to House (Mix 12 / Master LR) during a service</strong> so metronome clicks do not accidentally broadcast to the congregation.
+            </span>
+          </div>
+
+          <!-- Two Methods Grid -->
+          <div class="wizard-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <!-- Method 1: Physical Patch -->
+            <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem; font-size: 0.8rem;">
+              <div style="display: flex; align-items: center; gap: 0.4rem; font-weight: 700; color: #34d399; margin-bottom: 0.4rem;">
+                <span>🔌</span> Method 1: Repurpose Click Cable to Instrument Port (Recommended)
+              </div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0 0 0.5rem 0;">
+                Quickest, safest, and most flexible method on stage:
+              </p>
+              <ol style="margin: 0 0 0 1.25rem; padding: 0; line-height: 1.45; color: var(--text-primary); font-size: 0.78rem;">
+                <li>Take the <strong>1/8" (3.5mm) click cable</strong> on stage and plug it into the iPad / phone adapter.</li>
+                <li>Instead of plugging the other end into the click input, plug it into <strong>any spare instrument port</strong> (e.g. <em>Aux 1 on Front Left Box / Input 3</em>) or an unused vocal port.</li>
+                <li>On the soundboard (<strong>Layer A</strong>) or Mixing Station app, navigate to that corresponding channel fader.</li>
+                <li>Control the port like normal: push up the fader for <strong>House sound</strong> (Master LR / Mix 12), and raise channel sends for the band's <strong>Aviom in-ears</strong>.</li>
+              </ol>
+            </div>
+
+            <!-- Method 2: Advanced Console Routing -->
+            <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem; font-size: 0.8rem;">
+              <div style="display: flex; align-items: center; gap: 0.4rem; font-weight: 700; color: #60a5fa; margin-bottom: 0.4rem;">
+                <span>🎛️</span> Method 2: Advanced Console Routing (Modify Click Channel Sends)
+              </div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0 0 0.5rem 0;">
+                Route directly without moving stage cables:
+              </p>
+              <ol style="margin: 0 0 0 1.25rem; padding: 0; line-height: 1.45; color: var(--text-primary); font-size: 0.78rem;">
+                <li>Keep the iPad plugged into the standard <strong>Click cable</strong> on <strong>Layer B, Fader 2 ("Click")</strong>.</li>
+                <li>On the console or Mixing Station app, select the Click channel and open its <strong>Sends / Bus Routing</strong>.</li>
+                <li>Raise the send from the Click channel to <strong>Mix 12 (House)</strong> and uncheck/unmute any House routing restrictions.</li>
+                <li>Audio will now play through both House speakers and Aviom in-ears simultaneously.</li>
+                <li><strong style="color: #f87171;">⚠️ Reset Before Service:</strong> Always set the Click channel's House send back to -∞ (OFF) before Sunday morning!</li>
+              </ol>
             </div>
           </div>
         </div>
@@ -843,6 +1829,43 @@
 
       <!-- Sub-Tab 5: Sound Booth Breaker Panel S & Electrical Directory -->
       <div id="audiosub-power" class="audio-subpane" style="display: none;">
+        
+        <!-- Hardware Boot & Shutdown Sequence Card (NEW) -->
+        <div class="calc-card" style="border-left: 4px solid var(--accent-emerald); margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+              <span>⚡</span> Strict Hardware Boot & Shutdown Sequence
+            </h3>
+            <span class="location-pill" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399; background: rgba(16, 185, 129, 0.1);">Power Sequencing Rule</span>
+          </div>
+          <div class="wizard-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; font-size: 0.8rem;">
+              <strong style="color: var(--accent-emerald); display: block; margin-bottom: 0.35rem;">🚀 Power-Up Order (Console to Amps):</strong>
+              <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                <div><strong>1.</strong> Board (Soundcraft Si Impact Console)</div>
+                <div><strong>2.</strong> Wireless Rack (Mic receivers)</div>
+                <div><strong>3.</strong> ATLAS (Audio processor)</div>
+                <div><strong>4.</strong> House AMP (Crown main amplifier)</div>
+                <div><strong>5.</strong> QSC Wall Speakers</div>
+                <div><strong>6.</strong> All Video ATEM (if event)</div>
+                <div><strong>7.</strong> AVIOM Switch (left side of stage)</div>
+              </div>
+            </div>
+            <div style="background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.75rem; font-size: 0.8rem;">
+              <strong style="color: #fb7185; display: block; margin-bottom: 0.35rem;">🛑 Power-Down Order (Exact Reverse):</strong>
+              <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                <div><strong>1.</strong> AVIOM (Leave on after rehearsal if Sunday is next)</div>
+                <div><strong>2.</strong> ATEM (Video switcher)</div>
+                <div><strong>3.</strong> QSC Wall Speakers (6 switches)</div>
+                <div><strong>4.</strong> House AMP (Crown amplifier)</div>
+                <div><strong>5.</strong> ATLAS (Audio processor)</div>
+                <div><strong>6.</strong> Wireless Rack</div>
+                <div><strong>7.</strong> Board (Soundcraft Console LAST)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Two Panels Overview -->
         <div class="wizard-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 1.25rem;">
           <div class="calc-card" style="border-left: 4px solid var(--accent-amber);">

@@ -735,7 +735,7 @@ const AV_DATA = {
       icon: "tv",
       category: "Video / Proclaim / TVs",
       severity: "high",
-      summary: "Follow these 4 sequential phases ordered from most common quick fix to system checks.",
+      summary: "Follow these sequential steps from the 90% quick fix (ceiling splitter) to source & TV input checks.",
       phases: [
         {
           phase: "Phase 1: Primary Hardware Reset",
@@ -755,40 +755,26 @@ const AV_DATA = {
           phase: "Phase 2: Source and Power Verification",
           badge: "Mac & Booth Power",
           stepNumber: 2,
-          title: "Verify Mac Presentation Computer Connections and Power Strip",
-          location: "Sound Booth: Behind the main presentation Mac.",
+          title: "Verify Mac Presentation Computer Connections & Under-Desk Splitter",
+          location: "Sound Booth: Behind the main presentation Mac & under desk.",
           actionSteps: [
             "Inspect the back of the Mac: Ensure the HDMI cable is pushed all the way firmly into its port (not hanging loosely).",
-            "Locate the power strip directly behind the Mac: Confirm it is switched ON (the switch light must be illuminated) and the circuit breaker has not tripped.",
-            "Perform a booth sweep: Verify all computer monitors, converters, and distribution boxes have power LEDs lit."
+            "Locate the power strip directly behind the Mac: Confirm it is switched ON (the switch light must be illuminated).",
+            "Locate the secondary HDMI splitter underneath the main desk inside the booth. Unplug power cable for 10 seconds and replug to power cycle it."
           ]
         },
         {
-          phase: "Phase 3: Booth Routing & Proclaim Software",
-          badge: "Booth Desk Splitter & Proclaim",
+          phase: "Phase 3: Proclaim 'On Air' & TV Remote Input",
+          badge: "Proclaim & TV Remote",
           stepNumber: 3,
-          title: "Restart Booth Splitter & Check Proclaim 'On Air'",
-          location: "Sound Booth: Underneath the main sound booth desk.",
+          title: "Verify Proclaim 'On Air' & TV Remote Input (HDMI 1)",
+          location: "Sound Booth Presentation Mac & Sanctuary TVs",
           actionSteps: [
-            "Locate the secondary HDMI splitter underneath the main desk inside the booth.",
-            "Unplug the power cable, wait 10 seconds, and plug it back in to power cycle it.",
-            "Open Proclaim presentation software on the Mac.",
-            "Verify the presentation is active and set to 'On Air' (top right button in Proclaim).",
-            "Check Proclaim display settings: Ensure the presentation output feed is routed to the external displays (Sanctuary Screens) rather than just previewing on the local operator screen."
-          ]
-        },
-        {
-          phase: "Phase 4: Final Cable Reseating & TV Remote Input",
-          badge: "Endpoints & TV Input",
-          stepNumber: 4,
-          title: "Inspect Booth HDMI Cables & Verify TV Input (HDMI 1)",
-          location: "Sanctuary Front Wall & Booth Desk.",
-          actionSteps: [
-            "Booth HDMI Cable Check: Trace the HDMI cables running from the Mac to the under-desk splitter. Disconnect each end and plug back in firmly.",
-            "Verify Sanctuary TVs Power: Confirm both TVs at the front of the sanctuary are physically turned on (no standby red dot).",
-            "TV Input Remote Check: Using the TV remote, verify the TV input is set to HDMI 1.",
-            "Important note: The system relies purely on direct HDMI cable runs (no network signal extenders). Remote button clicks or power glitches frequently reset TVs to HDMI 2 or TV Tuner."
-          ]
+            "Open Proclaim presentation software on the Mac: Verify the presentation is active and set to red <strong>'On Air'</strong>.",
+            "Confirm both front TVs are physically turned ON (no red standby dot).",
+            "<strong>TV Remote Check:</strong> Using the TV remote, verify the TV input is set to <strong>HDMI 1</strong> (remote clicks or power glitches frequently reset TVs to HDMI 2 or TV Tuner)."
+          ],
+          tip: "The system relies on direct HDMI runs. Power glitches frequently reset TVs back to HDMI 2."
         }
       ]
     },
@@ -799,63 +785,34 @@ const AV_DATA = {
       icon: "tv",
       category: "Embrace Group / TV & Video Extender",
       severity: "medium",
-      summary: "Troubleshooting guide for the Embrace Conference Room TV HDMI-over-Ethernet extender system (TX/RX), Nest camera outlet timer, and OBS fullscreen projection.",
+      summary: "Troubleshooting guide for the Embrace Conference Room TV HDMI extender system (RX/TX), Nest camera outlet timer, and OBS fullscreen projection.",
       phases: [
         {
-          phase: "Phase 1: Inspect HDMI Cable (Behind TV)",
+          phase: "Phase 1: Behind TV Receiver & Outlet Timer",
           badge: "Behind Embrace TV",
           stepNumber: 1,
-          title: "Inspect HDMI Cable on Receiver Box (Behind TV)",
+          title: "Inspect HDMI Cable on Receiver Box & Check Shared Outlet Timer",
           location: "Embrace Conference Room: Mounted directly behind the Embrace Room TV.",
           actionSteps: [
-            "Locate the small HDMI receiver box (RX) mounted directly behind the Embrace Room TV.",
-            "Check the HDMI cable connected to the small receiver box behind the TV.",
-            "Make sure both ends (receiver HDMI out to TV HDMI input) are fully seated, as this cable often gets bumped, strained, or unplugged."
+            "<strong>Inspect Receiver & HDMI:</strong> Check the small HDMI receiver box (RX) mounted behind the TV. Ensure HDMI cables at both ends (receiver out to TV input) are fully seated (cable often gets bumped or strained).",
+            "<strong>Check Power & Shared Outlet Timer:</strong> Verify the receiver box has power lights on. Because the receiver shares an outlet timer with the Nest camera, ensure the timer is active and currently supplying power.",
+            "<strong>Quick Indicator:</strong> If the room's Nest camera is also unpowered / offline, the shared outlet timer is switched OFF. Toggle or override the timer to restore power."
           ],
           tip: "Because the TV is wall-mounted, cable strain or physical movement frequently unseats the HDMI connector."
         },
         {
-          phase: "Phase 2: Check Power & Outlet Timer",
-          badge: "Power & Nest Camera Timer",
+          phase: "Phase 2: Sound Booth Transmitter & OBS Projector",
+          badge: "Sound Booth & OBS",
           stepNumber: 2,
-          title: "Check Power & Nest Camera Outlet Timer",
-          location: "Embrace Conference Room: Wall outlet timer controlling Nest camera & TV receiver.",
+          title: "Check Booth Transmitter (TX) & Project OBS Preview to LONTIUM",
+          location: "Sound Booth: Underneath desk & OBS Studio computer",
           actionSteps: [
-            "Verify that the small receiver box (RX) behind the TV has power lights on.",
-            "Check the shared power source: Because the receiver shares an outlet timer with the Nest camera, ensure the timer is active and currently supplying power to the outlet.",
-            "If the timer is currently in an 'OFF' state or cycle, toggle or override the timer to restore AC power to both the receiver box and Nest camera."
-          ],
-          tip: "Quick Indicator: If the room's Nest camera is also unpowered / offline, the shared outlet timer is switched OFF."
-        },
-        {
-          phase: "Phase 3: Inspect Transmitter (Sound Booth)",
-          badge: "Sound Booth TX Unit",
-          stepNumber: 3,
-          title: "Inspect Transmitter Unit (Under Sound Booth Desk)",
-          location: "Sound Booth: Underneath the desk inside the main sound booth.",
-          actionSteps: [
-            "Locate the transmitter unit (TX) situated underneath the desk in the sound room.",
-            "Confirm that the power cable is firmly plugged in and the power LED is illuminated.",
-            "Check the HDMI input cable (feeding video from the computer / video switcher) and ensure it is fully inserted.",
-            "Inspect the Ethernet cable run and confirm that the active link / power status LEDs are lit and communicating."
-          ],
-          tip: "An active link light on both TX (booth) and RX (room) confirms the Cat6 network video bridge is healthy."
-        },
-        {
-          phase: "Phase 4: OBS Studio Fullscreen Projection Setup",
-          badge: "OBS Studio / LONTIUM",
-          stepNumber: 4,
-          title: "Project OBS Video Preview to LONTIUM External Display",
-          location: "Sound Booth Broadcast Computer (OBS Studio)",
-          actionSteps: [
-            "Open OBS Studio on the broadcast computer.",
-            "Locate the main video preview window (where your stream / recording is visible).",
-            "Right-click anywhere on the video preview window.",
-            "In the context menu, hover over 'Fullscreen Projector (Preview)'.",
-            "Select 'LONTIUM' from the list of available displays.",
+            "<strong>Inspect Transmitter Unit (TX):</strong> Underneath the booth desk, confirm transmitter power is ON, HDMI input cable is fully inserted, and Cat6 link status LEDs are lit.",
+            "<strong>Open OBS Studio:</strong> On the broadcast computer, right-click anywhere on the main video preview window.",
+            "Hover over <strong>'Fullscreen Projector (Preview)'</strong> and select <strong>'LONTIUM'</strong> from the list of available displays.",
             "The OBS feed will instantly project onto the Embrace conference room TV screen."
           ],
-          tip: "Quick Tip: If you ever need the preview in a movable window instead of full screen, choose 'Windowed Projector (Preview)' from that same right-click menu."
+          tip: "An active link light on both TX (booth) and RX (room) confirms the Cat6 network video bridge is healthy."
         }
       ]
     },
@@ -866,45 +823,33 @@ const AV_DATA = {
       icon: "captions",
       category: "Embrace Group / Closed Captions",
       severity: "medium",
-      summary: "How to enable the Cloud Closed Captions plugin in OBS Studio and resolve blank preview, ASIO driver disconnects, and text lag.",
+      summary: "How to enable Cloud Closed Captions in OBS Studio and resolve blank preview, ASIO driver disconnects, and text lag.",
       phases: [
         {
-          phase: "Phase 1: How to Enable the Plugin",
+          phase: "Phase 1: Launch Caption Dock & Enable",
           badge: "Plugin Startup",
           stepNumber: 1,
           title: "Launch Caption Dock & Turn On Captioning",
           location: "Sound Booth Broadcast Computer (OBS Studio)",
           actionSteps: [
-            "<strong>Open the Plugin Menu:</strong> In the top OBS menu bar, click <strong>Tools ➔ Cloud Closed Captions</strong>.",
-            "<strong>Turn On Captioning:</strong> In the Caption Preview dock/window, make sure the <strong>Captioning Enabled</strong> box is checked.",
-            "<strong>Click the Preview Box:</strong> Click the preview box inside the caption dock to make it turn on and start transcribing."
+            "In the top OBS menu bar, click <strong>Tools ➔ Cloud Closed Captions</strong>.",
+            "In the Caption Preview dock/window, ensure <strong>Captioning Enabled</strong> is checked.",
+            "Click the preview box inside the caption dock to start transcribing."
           ],
           tip: "Ensure the Caption Preview dock is docked or visible in OBS for quick monitoring during service."
         },
         {
-          phase: "Phase 2: No Captions Generating (Preview Blank)",
+          phase: "Phase 2: Audio Mixer, Internet & Stream Reset",
           badge: "Audio & Network Check",
           stepNumber: 2,
-          title: "Verify Active Scene, ASIO Input & Internet Connection",
-          location: "OBS Audio Mixer & Status Bar",
+          title: "Verify Active Scene Audio, Internet Connection & Reset Stream",
+          location: "OBS Audio Mixer & Caption Settings",
           actionSteps: [
-            "<strong>Active Scene Check:</strong> The plugin only transcribes audio when the selected audio source is active and unmuted in the currently active scene. Ensure the microphone fader is unmuted in the OBS Audio Mixer.",
-            "<strong>Red Indicator Dot:</strong> If the status line at the bottom displays a <strong>red dot next to CC (ASIO Input Capture) for Preview</strong>, verify that the ASIO interface / Soundcraft soundboard USB driver is connected and receiving audio signal.",
-            "<strong>Internet Connection:</strong> The plugin uses the <strong>Google Cloud Speech Recognition API</strong>, which requires an active internet connection to transcribe in real time. Verify the booth PC has internet access."
+            "<strong>Active Scene Audio:</strong> The plugin only transcribes audio when the selected audio source is active and unmuted in the currently active scene. Ensure the microphone fader is unmuted in OBS Audio Mixer.",
+            "<strong>Status Indicator:</strong> If a red dot appears next to CC (ASIO Input Capture), verify the soundboard USB driver is connected and confirm the PC has internet access (uses Google Cloud Speech API).",
+            "<strong>Fix Lag / Overflow:</strong> In Caption Settings, verify Line Length (~32). Uncheck and recheck <strong>Captioning Enabled</strong> to clear accumulated lag."
           ],
           tip: "A green status dot indicates active ASIO streaming to Google Cloud Speech API."
-        },
-        {
-          phase: "Phase 3: Captions Cutting Off or Lagging",
-          badge: "Formatting & Stream Reset",
-          stepNumber: 3,
-          title: "Fix Text Formatting & Restart Recognition Stream",
-          location: "OBS ➔ Tools ➔ Cloud Closed Captions ➔ Caption Settings",
-          actionSteps: [
-            "<strong>Text Formatting:</strong> In <strong>Caption Settings ➔ File Output</strong>, verify <strong>Line Length</strong> (default ~32) and <strong>Lines</strong> (default ~3) are set appropriately so lines do not overflow the screen boundary.",
-            "<strong>Restart Plugin Session:</strong> Uncheck and recheck <strong>Captioning Enabled</strong> at the top of the settings window to restart the cloud recognition stream and clear any accumulated network lag."
-          ],
-          tip: "If text is running off the stream canvas, reducing Line Length to 30-32 will wrap phrases onto clean new lines."
         }
       ]
     },
@@ -915,7 +860,7 @@ const AV_DATA = {
       icon: "hearing",
       category: "Embrace Group / WaveCAST Assistive Audio",
       severity: "high",
-      summary: "Guest connection setup and troubleshooting for deaf / hard-of-hearing assistive listening app.",
+      summary: "Guest connection setup, Wi-Fi QR, Reaper DAW audio meters, and distortion troubleshooting.",
       guestInstructions: [
         "1. Connect smartphone to Wi-Fi 'Waypoint Guest' (Password: Psalm27:4!).",
         "2. Download & open the WaveCAST App from Apple App Store or Google Play Store.",
@@ -923,53 +868,39 @@ const AV_DATA = {
       ],
       phases: [
         {
-          phase: "Scenario 1: Guests Can't See 'Waypoint Church' in App",
-          badge: "WiFi / App Issue",
+          phase: "Phase 1: Guest Wi-Fi Verification & App Setup",
+          badge: "Wi-Fi & App",
           stepNumber: 1,
-          title: "Guest Device Wi-Fi Verification & Force Restart",
+          title: "Connect to 'Waypoint Guest' & Launch WaveCAST App",
           location: "Guest Phone / Sound Booth Hardware",
           actionSteps: [
-            "Verify Wi-Fi: Phone must be on 'Waypoint Guest' (Password: Psalm27:4!) and NOT on cellular 5G/LTE.",
-            "Restart WaveCAST App: Have guest completely force-close the app (swipe up to kill) and reopen it while connected to Waypoint Guest Wi-Fi.",
-            "Hardware Check: Check Williams AV unit on top of computer in sound booth. Ensure rear Ethernet cable is securely clicked in.",
-            "Unit Restart: If still not broadcasting, press front power button on Williams AV unit to reboot."
+            "<strong>Verify Wi-Fi:</strong> Phone must be on <strong>'Waypoint Guest'</strong> (Password: <code>Psalm27:4!</code>) and NOT on cellular 5G/LTE.",
+            "<strong>Restart WaveCAST App:</strong> Have guest force-close the app (swipe up to kill) and reopen it while connected to Waypoint Guest Wi-Fi.",
+            "<strong>Hardware Check:</strong> Check Williams AV unit on top of computer in sound booth. Ensure rear Ethernet cable is securely clicked in.",
+            "<strong>Unit Restart:</strong> If still not broadcasting, press the front power button on Williams AV unit to reboot."
           ]
         },
         {
-          phase: "Scenario 2: No Audio Playing on App (Shows Connected)",
+          phase: "Phase 2: Sound Booth Reaper DAW Volume Meters",
           badge: "Audio Signal Flow",
           stepNumber: 2,
           title: "Check Reaper Software Meters & Audio Patch Cables",
-          location: "Sound Booth PC (Reaper DAW)",
+          location: "Sound Booth PC (Reaper DAW) & Soundcraft Console",
           actionSteps: [
-            "Check Reaper Meters: Look at the computer screen with Reaper DAW open. Are green volume bars bouncing? If NOT, the computer is not receiving audio from the Soundcraft console.",
-            "Check Console DAW Sends: On the Si Impact, verify Layer C Fader 18 ('To Reaper') is up and unmuted, or Mix 14 broadcast bus is feeding Reaper.",
-            "Check Physical Audio Cables: Ensure the audio cables from the soundboard into the PC interface, and from PC to the Williams AV unit, are firmly pushed in.",
-            "Check Smartphone Volume: Remind the guest to check physical volume rocker buttons on the side of their phone and unmute headphones."
+            "<strong>Check Reaper Meters:</strong> Look at the computer screen with Reaper DAW open. Are green volume bars bouncing? If NOT, the computer is not receiving audio from the Soundcraft console.",
+            "<strong>Check Console DAW Sends:</strong> On the Si Impact, verify Layer C Fader 18 ('To Reaper') is up and unmuted, or Mix 14 broadcast bus is feeding Reaper.",
+            "<strong>Check Physical Cables:</strong> Ensure audio cables from the soundboard into the PC interface, and from PC to the Williams AV unit, are firmly pushed in."
           ]
         },
         {
-          phase: "Scenario 3: Audio Sounds Distorted, Scratchy, or 'Blown Out'",
-          badge: "Gain Staging / Clipping",
+          phase: "Phase 3: Fix Distorted Audio or Frozen DAW",
+          badge: "Distortion & Reset",
           stepNumber: 3,
-          title: "Lower Clipping Master / DAW Levels",
+          title: "Lower Clipping Levels & Reaper Force Restart",
           location: "Soundcraft Si Impact & Reaper DAW",
           actionSteps: [
-            "The audio signal entering the Williams AV transmitter is clipping.",
-            "Lower the master send fader on your soundboard feeding the DAW (or Layer C Fader 18 / Mix 14).",
-            "Lower the main output fader inside Reaper until the meters stay in the green/yellow zone (never hitting red 0dBFS clipping)."
-          ]
-        },
-        {
-          phase: "Scenario 4: Reaper is Frozen or Unresponsive",
-          badge: "Software / PC Lockup",
-          stepNumber: 4,
-          title: "Reaper Force Restart & PC Reboot Protocol",
-          location: "Sound Booth Computer",
-          actionSteps: [
-            "Restart Software: Close / Force Quit Reaper and reopen it.",
-            "Full Reboot: If the PC itself is lagging, perform a quick system restart of the PC.",
-            "Note: Reaper is configured to start up automatically when Windows boots."
+            "<strong>Fix Distortion / Blown-Out Audio:</strong> If audio is distorted, the signal is clipping. Lower the master send fader on the soundboard (Mix 14 / Layer C Fader 18) or lower main output fader in Reaper into the green/yellow zone.",
+            "<strong>Reaper Frozen / Unresponsive:</strong> Close / Force Quit Reaper and reopen it (or restart the PC—Reaper auto-launches on boot)."
           ]
         }
       ]
@@ -980,55 +911,44 @@ const AV_DATA = {
       icon: "mixer",
       category: "Audio Console / Stage Patch",
       severity: "high",
-      summary: "Systematic 4-point signal path diagnostic to trace missing audio in 60 seconds.",
+      summary: "Systematic 3-phase signal path diagnostic to trace missing audio in 60 seconds.",
       phases: [
         {
-          phase: "Point 1: Physical Stage Connection",
+          phase: "Phase 1: Physical Stage Box & DI Check",
           badge: "Stage Box",
           stepNumber: 1,
-          title: "Verify Stage Box Port & Cable",
+          title: "Verify Stage Box Port, XLR Cable & DI Phantom Power",
           location: "Stage Floor Boxes",
           actionSteps: [
-            "Identify the physical box (Far Left, Front Left, Back Left, Center Front, Front Right, Far Right, or Drum Cage).",
-            "Confirm the performer is plugged into the correct input number (e.g. Center Front Box Input 11 for Electric Guitar, Input 13 for Acoustic Guitar 2).",
-            "Check XLR / DI box: Test with a known good XLR cable, make sure DI boxes are switched ON with 48V phantom power if active."
+            "Confirm performer is plugged into the correct stage box input (e.g. Center Front Input 11 for Electric Guitar, Input 13 for Acoustic Guitar 2, Far Left Input 1 for Violin).",
+            "Check XLR cable: Test with a known good XLR cable.",
+            "Check DI box: Ensure active DI boxes are switched ON with +48V phantom power engaged on console."
           ]
         },
         {
-          phase: "Point 2: Soft Patch Assignment (SEL Button)",
-          badge: "Si Impact Soft Patching",
+          phase: "Phase 2: Soft Patch Assignment on Touchscreen",
+          badge: "Si Impact Soft Patch",
           stepNumber: 2,
-          title: "Verify Digital Soft Patching on Touchscreen",
-          location: "Soundcraft Si Impact Console",
+          title: "Verify Digital Soft Patching (SEL Button ➔ Inputs)",
+          location: "Soundcraft Si Impact Console (Layer A or B)",
           actionSteps: [
             "Navigate to the correct fader layer (Layer A for main instruments, Layer B for wireless/utility).",
-            "Press the 'SEL' (Select) button above the channel's fader (button illuminates).",
-            "On the main touchscreen menu, press 'Inputs'.",
-            "Verify that the digital channel is patched to the correct physical hardware input number (e.g., Violin -> Input 1, Acou1 -> Input 15, Aux 1 -> Input 3)."
+            "Press the illuminated <strong>SEL</strong> (Select) button above the channel fader.",
+            "On the main touchscreen menu, tap <strong>Inputs</strong>.",
+            "Verify that the digital channel is patched to the correct physical hardware input number (e.g. Violin ➔ Input 1, Acou1 ➔ Input 15, Aux 1 ➔ Input 3)."
           ]
         },
         {
-          phase: "Point 3: Preamp Gain & 48V Phantom Power",
-          badge: "Console Channel Strip",
+          phase: "Phase 3: Preamp Gain & Mix 12 House Routing",
+          badge: "Gain & Routing",
           stepNumber: 3,
-          title: "Check Preamp Gain, 48V Phantom & High Pass Filter",
-          location: "Si Impact Channel Strip Controls",
+          title: "Set Preamp Gain, Check Mutes & Verify Mix 12 (House) Fader",
+          location: "Si Impact Channel Strip & Mix Buttons",
           actionSteps: [
-            "With channel selected, check the Preamp Gain knob. Ensure gain is set adequately so the input meter LED bounces during playing.",
-            "For condenser microphones, choir mics (Front Left Box 5 & 6), or active DI boxes: ensure the 48V phantom button is engaged.",
-            "Ensure the channel MUTE button is not engaged (red glow)."
-          ]
-        },
-        {
-          phase: "Point 4: Mix Bus Routing (House & Monitors)",
-          badge: "Routing & Masters",
-          stepNumber: 4,
-          title: "Verify Channel Routing to Mix 12 (House) and Aviom Sends",
-          location: "Si Impact Mix Buttons",
-          actionSteps: [
-            "With the channel SEL button on, press MIX 12 (Stereo House). Ensure the fader is raised to nominal (0dB).",
-            "Press the 'LR' button next to the screen to confirm the Stereo House bus is feeding the Master LR bus.",
-            "For monitors: Press the target Aviom mix button (e.g. MIX 1 for Drums, MIX 4 for Keys, MIX 6 for Violin/Guest) and push up the channel fader to send level to their in-ears."
+            "With channel selected, adjust the <strong>Preamp Gain knob</strong> until input meter bounces comfortably (<strong>-8 to -10 dB</strong>).",
+            "For condenser/choir mics or active DIs: ensure red <strong>+48V</strong> button is engaged.",
+            "Verify channel <strong>MUTE</strong> is OFF (not glowing red).",
+            "Press <strong>MIX 12 (Stereo House)</strong>: ensure channel fader is raised to 0 dB, and press <strong>LR</strong> to verify Master LR routing."
           ]
         }
       ]
@@ -1039,58 +959,23 @@ const AV_DATA = {
       icon: "folder",
       category: "Soundboard / Startup",
       severity: "medium",
-      summary: "Follow this exact sequence to load the primary Sunday show file from internal memory (MMC) or USB key without overwriting 1NormalSunday.",
+      summary: "Sequence to load the primary Sunday show file from internal memory (MMC) or USB without overwriting 1NormalSunday.",
       phases: [
         {
-          phase: "Phase 1: Open Show Navigation",
-          badge: "Menu & Touchscreen",
+          phase: "Step-by-Step Procedure",
+          badge: "Show Storage",
           stepNumber: 1,
-          title: "Press MENU Button & Access SHOW Storage",
-          location: "Physical Console Controls (Left of Touchscreen)",
+          title: "Menu ➔ Show ➔ Load ➔ Scroll to File ➔ Press Apply",
+          location: "Physical Console Controls & Main Touchscreen",
           actionSteps: [
-            "Press the physical <strong>MENU</strong> button located next to the touchscreen to open the Main Menu.",
-            "Tap <strong>SHOW</strong> on the touchscreen.",
-            "Tap <strong>LOAD</strong> to open the show file storage navigation screen."
+            "Press the physical <strong>MENU</strong> button next to the touchscreen to open the Main Menu.",
+            "Tap <strong>SHOW</strong> on the touchscreen, then tap <strong>LOAD</strong> to open the storage list.",
+            "Turn the physical <strong>SCROLL encoder knob</strong> (right of screen) to highlight the primary Sunday show file on internal memory (MMC) or USB.",
+            "Press the illuminated physical <strong>APPLY</strong> button and tap <strong>YES / CONFIRM</strong> when prompted to load the show.",
+            "Wait 3-5 seconds while motorized faders calibrate and digital patches engage.",
+            "<strong>🛑 GOLDEN RULE: NEVER OVERWRITE '1NormalSunday'</strong> — It is the master baseline reference template. Always save custom adjustments under a separate dated name (Menu ➔ Show ➔ Save As ➔ [Date].show)."
           ],
-          tip: "The screen will display available show files stored on internal memory (MMC) or any connected USB thumb drive."
-        },
-        {
-          phase: "Phase 2: Locate & Highlight Show File",
-          badge: "Scroll Encoder",
-          stepNumber: 2,
-          title: "Use SCROLL Encoder to Highlight Primary Sunday Show",
-          location: "Physical Rotary Encoder (Right of Touchscreen)",
-          actionSteps: [
-            "Turn the physical <strong>SCROLL encoder knob</strong> to browse through available files.",
-            "Highlight the primary Sunday show file on the internal memory (MMC) or connected USB key.",
-            "Verify the selected file name matches the current service or default Sunday template."
-          ],
-          tip: "Do not rush—ensure the correct show file is distinctly highlighted on screen."
-        },
-        {
-          phase: "Phase 3: Apply & Load Show",
-          badge: "Apply Button",
-          stepNumber: 3,
-          title: "Press APPLY Button & Confirm Overwrite Prompt",
-          location: "Physical Console Buttons",
-          actionSteps: [
-            "Press the illuminated physical <strong>APPLY</strong> button.",
-            "When the console asks for confirmation to overwrite current memory, tap <strong>YES / CONFIRM</strong>.",
-            "Wait 3-5 seconds while motorized faders calibrate and digital soft-patches load."
-          ]
-        },
-        {
-          phase: "Phase 4: Golden Master Protection Rule",
-          badge: "Crucial Warning",
-          stepNumber: 4,
-          title: "NEVER Overwrite '1NormalSunday'",
-          location: "Show File Safety Protocol",
-          actionSteps: [
-            "<strong>STRICT PROTECTION RULE:</strong> Do <strong>NOT</strong> overwrite the <code>1NormalSunday</code> show file.",
-            "<code>1NormalSunday</code> is the church's master reference baseline template with all default gain structures, Aviom sends, and routing.",
-            "If making permanent adjustments for a special event or guest artist, always save under a new custom name (e.g. <em>2026-Sunday-Special</em>)."
-          ],
-          tip: "Keeping 1NormalSunday clean and pristine guarantees the team can always recover a working Sunday state in seconds."
+          tip: "Never overwrite 1NormalSunday! Keeping it clean ensures the church can always recover a working state in seconds."
         }
       ]
     },
@@ -1100,65 +985,52 @@ const AV_DATA = {
       icon: "mic",
       category: "Audio / Wireless Mics / Stage",
       severity: "high",
-      summary: "Sequential 4-phase fix for dead audio, RF dropouts, physical mutes, and dead batteries during service.",
+      summary: "Step-by-step fix: fresh rechargeable AA battery swap, color-match mic to receiver rack box, and soundboard Layer B unmuting.",
       phases: [
         {
-          phase: "Phase 1: Physical Mute Switch & Power Check",
-          badge: "Handheld & Bodypack Check",
+          phase: "Phase 1: Swap Fresh Rechargeable AA Batteries (#1 Fix)",
+          badge: "Rechargeable AA Swap",
           stepNumber: 1,
-          title: "Check Physical Mute Switch & Power on Mic Body",
-          location: "On-Stage / In Speaker's Hand",
+          title: "Swap with 2 Fresh Rechargeable AA Batteries",
+          location: "Stage Battery Charger / Sound Booth Drawer",
           actionSteps: [
-            "Inspect the handheld mic or beltpack transmitter body: verify the power switch is in the <strong>ON</strong> position (not in <strong>MUTE / STANDBY</strong>).",
-            "<strong>Beltpack slide switch check:</strong> Many bodypacks have a top slide mute switch that gets bumped by clothing when clipped to a belt.",
-            "Check the small LCD screen on the mic body: confirm the backlight turns on and shows an active channel number without flashing <code>MUTE</code> or <code>LOW BATT</code>.",
-            "On handheld mics, ensure the power/mute button LED is <strong>solid green</strong> (not solid amber or flashing red)."
+            "<strong>RF Interference is Rare:</strong> In our sanctuary, signal dropouts or audio crackles are almost always caused by a dying battery, not RF frequency interference.",
+            "Open the transmitter battery compartment (slide latch on bodypack or unscrew lower half of handheld mic).",
+            "Remove existing batteries and place them into the recharge tray above the sound booth.",
+            "Insert <strong>two fresh rechargeable AA batteries</strong> from the green 'Ready' charger dock, observing positive (<code>+</code>) and negative (<code>-</code>) polarity.",
+            "Power on the transmitter and confirm the battery gauge illuminates with full bars."
           ],
-          tip: "9 times out of 10 during pre-service, the speaker accidentally bumped the top physical mute switch while pinning the bodypack to their belt or collar."
+          tip: "Always grab fresh rechargeable AAs from the charging station before each service or rehearsal."
         },
         {
-          phase: "Phase 2: Instant Battery Replacement Protocol",
-          badge: "Battery Replacement",
+          phase: "Phase 2: Color Match Mic Body to Receiver Rack Box",
+          badge: "Color-Code Match",
           stepNumber: 2,
-          title: "Swap with 2 Fresh AA Alkaline Batteries",
-          location: "Sound Booth Drawer / Stage Battery Station",
+          title: "Match Color Band on Mic to Color on Receiver Box",
+          location: "Sound Booth / AV Wireless Receiver Rack",
           actionSteps: [
-            "Open the transmitter battery compartment (slide open latch on bodypack or unscrew bottom half of handheld mic).",
-            "Remove existing batteries and discard immediately into the used battery bin to avoid re-use.",
-            "Insert <strong>two fresh AA Alkaline batteries</strong>, observing positive (<code>+</code>) and negative (<code>-</code>) polarity orientation.",
-            "Power on the transmitter: confirm battery indicator shows a full 3 or 4 bars. (Note: A dying battery may show 1 bar in idle but immediately collapses to 0 bars under RF transmission load)."
+            "<strong>Wrong Channel / Mismatched Mic Check:</strong> Microphones sometimes get mixed up or handed to the wrong speaker.",
+            "Look at the <strong>color tape / band on the bottom of the handheld mic or bodypack</strong> (e.g. <em>White, Blue, Gray, Red, Orange, Yellow-Green, Green, Yellow, or Pastor/Headset</em>).",
+            "Locate the wireless receiver boxes in the sound booth equipment rack.",
+            "<strong>Compare color on mic to color label on receiver box:</strong> Ensure the receiver with the matching color has green/blue RF signal LEDs lit.",
+            "Tap or speak into the mic: confirm AF (Audio) green meter bars bounce on that specific colored receiver unit."
           ],
-          tip: "Always use brand-new AA alkaline batteries from the fresh battery drawer before Sunday morning rehearsal."
+          tip: "Each wireless mic has a matching color-labeled receiver in the rack. If AF meters bounce on the receiver, the mic is 100% working!"
         },
         {
-          phase: "Phase 3: Wireless Receiver Rack & RF Meter Verification",
-          badge: "Wireless Receiver Rack",
-          stepNumber: 3,
-          title: "Check RF & Audio Level on Wireless Rack",
-          location: "Sound Booth / AV Equipment Rack (Wireless Receivers)",
-          actionSteps: [
-            "Locate the wireless receiver unit corresponding to the active mic (Pastor, Headset, White, Blue, Gray, Red, Orange, Yel-Gre, Green, Yellow).",
-            "<strong>RF Signal Bars:</strong> Check if solid blue/green RF bars illuminate when the mic is turned on. If NO RF bars appear, the mic and receiver are on mismatched frequency groups or the mic is powered off.",
-            "<strong>Audio Meter (AF):</strong> Tap or speak into the mic. Do the green AF (Audio Frequency) level meters bounce on the receiver unit? If AF bounces on the rack unit, the wireless link and mic capsule are 100% working—the issue is downstream at the soundboard.",
-            "<strong>Antennas:</strong> Confirm the dual antenna cables on the back of the receiver rack are securely fastened and pointing in a 45° 'V' shape towards the stage."
-          ],
-          tip: "If AF level meters bounce on the receiver rack screen, the wireless microphone is functioning perfectly. Direct your attention immediately to the soundboard fader on Layer B."
-        },
-        {
-          phase: "Phase 4: Soundboard Layer B Fader & Routing",
+          phase: "Phase 3: Soundboard Layer B Fader & Unmute",
           badge: "Si Impact Layer B",
-          stepNumber: 4,
+          stepNumber: 3,
           title: "Verify Soundboard Layer B Fader, Preamp & House Routing",
           location: "Soundcraft Si Impact Console (Layer B)",
           actionSteps: [
-            "Press the <strong>Layer B</strong> button on the Si Impact console (all wireless mics live on Layer B Faders 3–13).",
-            "Locate the corresponding fader: <em>Fader 3 (Pastor)</em>, <em>Fader 4 (Wht Mic)</em>, <em>Fader 5 (Blu Mic)</em>, <em>Fader 6 (Headset)</em>, or <em>Faders 8–13 (Gray, Red, Orange, Yel-Gre, Green, Yellow)</em>.",
-            "Verify the channel <strong>MUTE</strong> button is NOT glowing red.",
-            "Push the fader up to nominal level (<strong>0 dB</strong> or designated tape mark).",
-            "Press <strong>SEL</strong> above the fader: check <strong>Preamp Gain</strong> knob to ensure input meter bounces when speaking.",
-            "Press <strong>MIX 12 (Stereo House)</strong>: ensure the fader is raised to send audio to the sanctuary speakers."
-          ],
-          tip: "If the speaker was handed a different colored mic than usual (e.g. Blue Mic instead of White Mic), simply navigate to Layer B and un-mute that specific colored fader."
+            "Press <strong>Layer B</strong> on the Si Impact console (all wireless mics live on Layer B Faders 3–13).",
+            "Locate the corresponding fader (Pastor Fader 3, Wht Mic 4, Blu Mic 5, Headset 6, Gray/Red/Orange/Yel-Gre/Green/Yellow 8–13).",
+            "Verify channel <strong>MUTE</strong> is NOT glowing red.",
+            "Push fader up to nominal level (<strong>0 dB</strong> or designated tape mark).",
+            "Press <strong>SEL</strong> above fader: check <strong>Preamp Gain knob</strong> so meter bounces.",
+            "Press <strong>MIX 12 (Stereo House)</strong>: ensure fader is raised to send audio to sanctuary speakers."
+          ]
         }
       ]
     },
@@ -1168,7 +1040,7 @@ const AV_DATA = {
       icon: "presentation",
       category: "Video / Presentation / Proclaim",
       severity: "high",
-      summary: "Fast troubleshooting for stuck lyric slides, frozen presentation Mac, desktop showing on sanctuary TVs, and display output misconfiguration.",
+      summary: "Cycle Off/On Air, check Quick Screen buttons, verify Proclaim Virtual Screen Display output, check macOS Extended Desktop, or Force Quit.",
       phases: [
         {
           phase: "Phase 1: Quick 'On Air' Cycle & Slide Unfreeze",
@@ -1177,59 +1049,39 @@ const AV_DATA = {
           title: "Cycle Off Air / On Air & Check Quick Screen Mode",
           location: "Sound Booth Presentation Mac (Proclaim)",
           actionSteps: [
-            "Look at the top right corner of Proclaim: verify whether the red <strong>On Air</strong> button is illuminated.",
-            "If slides are stuck or unresponsive: click <strong>Off Air</strong>, wait 3 seconds, then click <strong>On Air</strong> again to reboot the slide rendering pipeline.",
-            "Test slide advance: click a slide thumbnail in the middle preview pane, or press the <strong>Right Arrow (➔)</strong> / <strong>Spacebar</strong> key.",
-            "<strong>Check Quick Screen Buttons:</strong> Look at the bottom right corner of Proclaim to ensure <strong>Blank (F10)</strong> or <strong>Clear (F11)</strong> wasn't accidentally triggered. If active, click <strong>Normal</strong> or <strong>Logo</strong> to restore lyrics."
+            "Look at top right of Proclaim: verify whether red <strong>On Air</strong> button is illuminated.",
+            "If slides are stuck: click <strong>Off Air</strong>, wait 3 seconds, then click <strong>On Air</strong> again to reboot GPU slide rendering.",
+            "Test slide advance: click a slide thumbnail in the middle preview pane or press <strong>Spacebar</strong>.",
+            "<strong>Check Quick Screen Buttons:</strong> Look at bottom right corner of Proclaim: make sure <strong>Blank (F10)</strong> or <strong>Clear (F11)</strong> wasn't accidentally triggered. Click <strong>Normal (F9)</strong> or <strong>Logo (F12)</strong>."
           ],
-          tip: "Toggling Off Air and back On Air forces Proclaim's GPU slide engine to clear its cache and re-establish video display sync."
+          tip: "Toggling Off Air and back On Air clears cached GPU slide buffers and re-syncs video output instantly."
         },
         {
-          phase: "Phase 2: Display Output Assignment Verification",
-          badge: "Proclaim Settings",
+          phase: "Phase 2: Proclaim Displays & macOS Extended Desktop",
+          badge: "Display Configuration",
           stepNumber: 2,
-          title: "Configure Virtual Screen Displays in Proclaim Settings",
-          location: "Proclaim ➔ Settings ➔ Display",
+          title: "Configure Virtual Screens & Verify 'Extend Desktop'",
+          location: "Proclaim ➔ Settings ➔ Display & Apple Menu ",
           actionSteps: [
-            "In Proclaim, click <strong>Settings</strong> (gear icon in the top right / menu bar) and select <strong>Display</strong>.",
-            "Inspect the Virtual Screen assignments:",
-            "• <strong>Application (Operator Screen):</strong> Must be assigned to <em>Custom / Primary Display (Built-in Mac monitor / Desk screen)</em>.",
-            "• <strong>Virtual Screen: Slides (Sanctuary TVs):</strong> Must be assigned to <em>External Display (HDMI Splitter)</em>.",
-            "• <strong>Virtual Screen: Confidence (Stage Display):</strong> If using confidence monitors, assign to <em>Secondary External Display</em>.",
-            "If an output displays <em>'Not Connected'</em> or <em>'Desktop'</em>, click the dropdown menu and re-select the connected HDMI display.",
-            "Click <strong>Save / Close Settings</strong>, then click <strong>On Air</strong>."
-          ],
-          tip: "If an HDMI cable was disconnected and reconnected, macOS may re-index the display (e.g. Display 2 became Display 3). Re-selecting it in Proclaim Display settings resolves this in seconds."
+            "In Proclaim, click <strong>Settings ➔ Display</strong>:",
+            "• <strong>Application:</strong> Must be assigned to <em>Primary Display (Built-in Mac screen)</em>.",
+            "• <strong>Virtual Screen: Slides:</strong> Must be assigned to <em>External Display (HDMI Splitter)</em>.",
+            "• <strong>Virtual Screen: Confidence:</strong> Assign to <em>Secondary External Display</em>.",
+            "<strong>macOS Extended Desktop:</strong> If TVs show Mac wallpaper, open <strong> ➔ System Settings ➔ Displays</strong> and ensure external display is set to <strong>'Stop Mirroring' / 'Use as Separate Display'</strong> (Extended Desktop)."
+          ]
         },
         {
-          phase: "Phase 3: macOS Displays & Mirroring Configuration",
-          badge: "macOS System Settings",
-          stepNumber: 3,
-          title: "Verify 'Extend Desktop' (Turn Off Screen Mirroring)",
-          location: "Mac Desktop ➔ Apple Menu  ➔ System Settings ➔ Displays",
-          actionSteps: [
-            "If the front sanctuary TVs show the Mac desktop wallpaper, dock, or mouse cursor instead of full slides, macOS display arrangement may have reset to Mirroring.",
-            "Click the <strong>Apple menu () ➔ System Settings ➔ Displays</strong>.",
-            "Ensure the external display is set to <strong>'Stop Mirroring' / 'Use as Separate Display' (Extended Desktop)</strong>, NOT 'Mirror Built-in Display'.",
-            "Verify all external screens appear in the display arrangement preview. If a screen is missing, click <strong>Detect Displays</strong> (hold Option key if needed)."
-          ],
-          tip: "Proclaim requires macOS Extended Desktop mode so it can project full-screen slides to the TVs while keeping the operator control grid on the booth desk monitor."
-        },
-        {
-          phase: "Phase 4: Force Quit & Emergency Restart Sequence",
+          phase: "Phase 3: Force Quit & Emergency Restart",
           badge: "Emergency Restart",
-          stepNumber: 4,
+          stepNumber: 3,
           title: "Force Quit Proclaim & Relaunch Presentation",
           location: "Sound Booth Presentation Mac",
           actionSteps: [
-            "If Proclaim displays the macOS spinning rainbow beach ball and does not respond to mouse clicks:",
-            "Press <strong>Cmd + Option + Esc</strong> (⌘⌥Esc) on the keyboard to bring up the <em>Force Quit Applications</em> dialogue.",
-            "Select <strong>Proclaim</strong> from the list and click <strong>Force Quit</strong>.",
-            "Relaunch Proclaim from the macOS Dock or Applications folder.",
-            "Click <strong>Open Service</strong> and choose today's service (Proclaim automatically saves state to the cloud and local disk with every slide change).",
-            "Click <strong>On Air</strong> to immediately resume the presentation."
+            "If Proclaim displays the macOS spinning rainbow beach ball and does not respond:",
+            "Press <strong>Cmd + Option + Esc</strong> (⌘⌥Esc) ➔ Select <strong>Proclaim</strong> ➔ Click <strong>Force Quit</strong>.",
+            "Relaunch Proclaim from macOS Dock ➔ Click <strong>Open Service</strong> ➔ Select today's service ➔ Click <strong>On Air</strong>."
           ],
-          tip: "Because Proclaim caches service files locally on the Mac SSD, relaunching after a force quit takes under 15 seconds."
+          tip: "Because Proclaim caches service files locally on the Mac SSD, relaunching takes under 15 seconds."
         }
       ]
     },
@@ -1239,62 +1091,22 @@ const AV_DATA = {
       icon: "power",
       category: "Power / Electrical / Panel S",
       severity: "high",
-      summary: "How to locate the gray electrical panel inside the sound booth and reset tripped breakers for stage floor pockets, platform outlets, TVs, subs, or booth lights.",
+      summary: "Reset tripped circuit breakers in gray Panel S inside the sound booth for stage pockets, platform outlets, TVs, subs, or booth lights.",
       phases: [
         {
-          phase: "Phase 1: Identify Sound Booth Electrical Panels",
-          badge: "Sound Booth Panel S",
+          phase: "Step-by-Step Reset",
+          badge: "Panel S Breakers",
           stepNumber: 1,
-          title: "Locate Gray Panel S & Black Lighting Panel",
-          location: "Sound Booth: Inside the back sound booth wall.",
+          title: "Reset Tripped Breakers in Gray Electrical Panel S",
+          location: "Sound Booth: Gray Panel S on the back wall",
           actionSteps: [
-            "Enter the back sound booth and locate the two main electrical panels on the wall.",
-            "<strong>Gray Metal Electrical Panel (Panel S):</strong> Supplies AC power to stage floor pockets, platform receptacles, sound booth quad outlets, sanctuary displays (TVs), projectors, and subwoofers.",
-            "<strong>Large Black Panel:</strong> Located directly next to Panel S — this is dedicated exclusively to sanctuary and stage lighting control (do not touch for stage audio/power issues)."
+            "<strong>Locate Gray Panel S:</strong> Open the metal door of <strong>Panel S</strong> on the back sound booth wall. (Note: Do NOT touch the adjacent black lighting panel).",
+            "<strong>Stage Floor Pockets (Pedalboards/Keyboards Dead):</strong> Locate <strong>Breakers 4 & 6</strong> (labeled <em>'Floor Recept. Stage'</em>). Push firmly all the way to <strong>OFF</strong>, then push back to <strong>ON</strong>.",
+            "<strong>Sound Booth Lights / Desk Power:</strong> Check <strong>Breaker 9</strong> (<em>Sound Rm Lights</em>) or <strong>Breakers 1, 2, 7, 8</strong> (<em>Quad Recept. Rm 110</em>).",
+            "<strong>Sanctuary TVs & Subwoofers:</strong> Check <strong>Breaker 11</strong> (<em>TV Sanctuary</em>) or <strong>Breakers 29–30</strong> (<em>10 R & L SUBS</em>).",
+            "<strong>Resetting Tip:</strong> A tripped breaker resting in the middle position will NOT reset unless pushed completely to OFF first before flipping to ON."
           ],
-          tip: "For any stage audio, musician pedalboard, TV display, subwoofer, or booth outlet power problem, always use the Gray Panel S."
-        },
-        {
-          phase: "Phase 2: Reset Stage Floor Pocket Power (Breakers 4 & 6)",
-          badge: "Breakers 4 & 6",
-          stepNumber: 2,
-          title: "Reset Stage Floor Receptacle Breakers (Circuits 4 & 6)",
-          location: "Gray Electrical Panel (Panel S) ➔ Breakers 4 & 6",
-          actionSteps: [
-            "Open the metal door of <strong>Panel S</strong> inside the sound booth.",
-            "Locate <strong>Breaker 4</strong> and <strong>Breaker 6</strong>, labeled <em>'Floor Recept. Stage'</em>.",
-            "Check if either breaker switch is resting in the middle 'tripped' position or turned OFF.",
-            "To reset: Firmly push the breaker handle all the way to the <strong>OFF</strong> position first, then push firmly back to <strong>ON</strong>.",
-            "Confirm that stage pedalboards, keyboard power supplies, DI boxes, and stage box AC outlets power back on."
-          ],
-          tip: "A tripped circuit breaker will not reset unless you push it fully to OFF before switching it back to ON."
-        },
-        {
-          phase: "Phase 3: Sound Booth Lights & Outlets Check",
-          badge: "Breakers 9, 1, 2, 7, 8",
-          stepNumber: 3,
-          title: "Check Booth Lights (Breaker 9) & Outlets (1, 2, 7, 8)",
-          location: "Gray Electrical Panel (Panel S) ➔ Circuits 1, 2, 7, 8, 9",
-          actionSteps: [
-            "<strong>Sound Booth Lights Not Working:</strong> Locate <strong>Breaker 9</strong> (labeled <em>'Sound Rm Lights'</em>). If tripped, cycle OFF then ON.",
-            "<strong>Sound Booth Outlets / Desk Power Loss:</strong> Check <strong>Breakers 1 & 2</strong> and <strong>Breakers 7 & 8</strong> (labeled <em>'Quad Recept. Rm 110'</em>).",
-            "<strong>Stage Platform & Stair Receptacles:</strong> Check <strong>Breaker 10</strong> (<em>Platform Recepts.</em>) and <strong>Breaker 12</strong> (<em>Platform Recept. Stairs</em>)."
-          ],
-          tip: "Breakers 1, 2, 7, and 8 power the primary sound booth computer workstations and outboard audio equipment."
-        },
-        {
-          phase: "Phase 4: Sanctuary TVs, Projectors & Subwoofers",
-          badge: "Breakers 11, 13, 29–30",
-          stepNumber: 4,
-          title: "Verify TV Displays, Projectors & Subwoofer Breakers",
-          location: "Gray Electrical Panel (Panel S) ➔ Circuits 11, 13, 29–30",
-          actionSteps: [
-            "<strong>Front Sanctuary TVs Dead:</strong> Check <strong>Breaker 11</strong> (labeled <em>'TV Sanctuary'</em>).",
-            "<strong>Sanctuary Video Projectors Dead:</strong> Check <strong>Breaker 13</strong> (labeled <em>'Projector Sanctuary'</em>).",
-            "<strong>Sanctuary Subwoofers (No Low End / Dead Subs):</strong> Check <strong>Breakers 29–30</strong> (labeled <em>'10 R & L SUBS'</em>).",
-            "Cycle any tripped breaker firmly to OFF and back to ON."
-          ],
-          tip: "If breakers 29–30 trip repeatedly, check the mixer gain structure to ensure subwoofers are not being overdriven."
+          tip: "Always push the breaker firmly to OFF first, then firmly to ON."
         }
       ]
     },
@@ -1304,46 +1116,418 @@ const AV_DATA = {
       icon: "clock",
       category: "Soundboard / In-Ears / Click",
       severity: "medium",
-      summary: "How to soft-patch the metronome click track between Front Stage Click (Input 12) and Drum Cage Click (Input 20) on Layer B Fader 2.",
+      summary: "Soft-patch click track between Front Stage (Input 12) and Drum Cage (Input 20) on Layer B Fader 2, send to Avioms, and keep muted in House.",
       phases: [
         {
-          phase: "Phase 1: Select Console Layer B & Click Fader",
+          phase: "Step-by-Step Patching",
           badge: "Layer B Fader 2",
           stepNumber: 1,
-          title: "Select Click Channel on Soundcraft Si Impact",
-          location: "Soundcraft Si Impact Console (Layer B, Fader 2)",
+          title: "Select Click Channel, Patch Input Source & Route to Avioms",
+          location: "Soundcraft Si Impact (Layer B Fader 2)",
           actionSteps: [
-            "Press the illuminated <strong>Layer B</strong> button on the left of the faders.",
-            "Locate <strong>Fader 2</strong> (labeled <em>'Click'</em> on the scribble strip).",
-            "Press the illuminated <strong>SEL</strong> (Select) button above Fader 2 to highlight the click channel."
+            "<strong>1. Select Click Channel:</strong> Press <strong>Layer B</strong> on the console ➔ press <strong>SEL</strong> above <strong>Fader 2 ('Click')</strong>.",
+            "<strong>2. Soft Patch Input Source:</strong> On the main touchscreen menu, tap <strong>Inputs</strong>:",
+            "   • <strong>Front Stage Click:</strong> Tap <strong>Input 12</strong> (Center Front stage box / FX1 recorder).",
+            "   • <strong>Drum Cage Click:</strong> Tap <strong>Input 20</strong> (Drum Cage Left wall plate).",
+            "   • Press <strong>Menu twice</strong> to exit.",
+            "<strong>3. Route to Aviom In-Ears:</strong> Press Aviom mix buttons (Mix 1 Drums, Mix 4 Keys, Mix 5 Elec, etc.) and raise Fader 2 to musicians' desired level.",
+            "<strong>4. Strict House Mute Rule:</strong> Verify Fader 2 is fully DOWN on <strong>MIX 12 (Stereo House)</strong> and Master LR so the metronome is NEVER heard in the sanctuary!"
           ],
-          tip: "Click track is always routed through Layer B Fader 2 regardless of whether the worship leader or drummer feeds the signal."
+          tip: "Click is always on Layer B Fader 2. Never route Click to Mix 12 House or Master LR."
+        }
+      ]
+    },
+    {
+      id: "mixing-station-disconnect",
+      title: "Mixing Station iPad App Disconnected / Offline",
+      icon: "tablet",
+      category: "iPad / Mixing Station / Network",
+      severity: "high",
+      summary: "Reconnect Mixing Station iPad app to the Soundcraft console using Backup Search, verify Wi-Fi, and check rear Ethernet cable.",
+      phases: [
+        {
+          phase: "Step-by-Step Reconnect",
+          badge: "Backup Search",
+          stepNumber: 1,
+          title: "Run 'Backup Search', Verify Wi-Fi & Soundboard Network Cable",
+          location: "iPad Mixing Station App & Sound Booth",
+          actionSteps: [
+            "<strong>1. Run 'Backup Search':</strong> In the Mixing Station app, tap the <strong>Back Arrow (←)</strong> or <strong>Home</strong> icon in the top left corner to exit the disconnected screen. Tap <strong>'Backup search'</strong>. When the Soundcraft Si Impact appears in the list, tap it to reconnect.",
+            "<strong>2. Check iPad Wi-Fi:</strong> Open iPad <strong>Settings ➔ Wi-Fi</strong>. Confirm connected to <strong>Waypoint Guest</strong> (Password: <code>Psalm27:4!</code>) or production Wi-Fi. Toggle Wi-Fi OFF for 5s and back ON if needed.",
+            "<strong>3. Check Console Ethernet Cable:</strong> Inspect the rear of the Soundcraft Si Impact console: verify the <strong>HiQnet / Network Ethernet cable</strong> is firmly clicked in and booth network switch LEDs are blinking."
+          ],
+          tip: "'Backup search' performs direct broadcast discovery and reconnects the iPad in seconds."
+        }
+      ]
+    },
+    {
+      id: "aviom-sends-volume",
+      title: "Aviom In-Ear Monitor Sends (Tablet & Soundboard)",
+      icon: "headphones",
+      category: "Audio / Monitors / Aviom",
+      severity: "medium",
+      summary: "Adjust channel volumes in musician Aviom in-ears using the Mixing Station tablet app ('Sends' tab) or physical soundboard mix buses, with gain staging rules.",
+      phases: [
+        {
+          phase: "Phase 1: Tablet App (Sends Panel) & Gain Staging Rule",
+          badge: "Tablet / Mixing Station",
+          stepNumber: 1,
+          title: "Adjust Sends on Tablet & Add Preamp Gain if Maxed Out",
+          location: "iPad / Tablet (Mixing Station App)",
+          actionSteps: [
+            "On the tablet Mixing Station mixer screen, <strong>click / tap the channel</strong> you want to adjust (e.g. Lead Vocal, Keys, Acoustic Guitar).",
+            "Look at the <strong>right side of the screen</strong> to locate the <strong>'Sends'</strong> panel displaying the mix bus send sliders.",
+            "Find the specific <strong>Aviom channel / mix bus</strong> for the musician requesting the change (Mix 1 Drums, Mix 2 Bass, Mix 4 Keys, Mix 5 Elec, Mix 6 Flex 1/Violin, Mix 9 Vocals 1&2, Mix 11 Acoustic) and <strong>push up the volume slider</strong>.",
+            "<strong>Gain Staging Rule (If Send is Maxed Out):</strong> If the Aviom send is already at maximum (<strong>+10 dB</strong>) and the musician still cannot hear enough, <strong>increase channel Preamp Gain slightly (+2 to +4 dB)</strong>. Pull down the channel fader on MIX 12 (House) slightly to keep room balance."
+          ],
+          tip: "The 'Sends' panel on the right lets you adjust any individual mix send without changing the house mix."
         },
         {
-          phase: "Phase 2: Soft-Patch Input Source",
-          badge: "Inputs Menu",
+          phase: "Phase 2: Physical Soundcraft Console (tOTEM Mode)",
+          badge: "Si Impact Console",
           stepNumber: 2,
-          title: "Patch to Front Stage (Input 12) or Drum Cage (Input 20)",
-          location: "Si Impact Main Touchscreen ➔ Inputs",
+          title: "Adjust Aviom Sends on Physical Soundboard & Check Layer D",
+          location: "Soundcraft Si Impact Console (Mix Bus Buttons)",
           actionSteps: [
-            "On the touchscreen menu, tap <strong>Inputs</strong>.",
-            "<strong>For Front Stage Click:</strong> Tap <strong>Input 12</strong> (hardwired from Center Front stage box).",
-            "<strong>For Drum Cage Click:</strong> Tap <strong>Input 20</strong> (hardwired from Drum Cage Left wall plate).",
-            "Confirm the input indicator switches to the selected hardware channel."
+            "On the physical Soundcraft Si Impact soundboard, <strong>press the target Aviom MIX button</strong> (e.g. <strong>MIX 1</strong> Drums, <strong>MIX 4</strong> Keys, <strong>MIX 5</strong> Elec, <strong>MIX 6</strong> Violin, <strong>MIX 9</strong> Vocals, <strong>MIX 11</strong> Acoustic).",
+            "The console enters <strong>Sends on Faders (tOTEM)</strong> mode — faders illuminate with the mix bus color.",
+            "Locate the instrument / vocal channel fader and <strong>push up the channel fader</strong> to the desired monitoring volume.",
+            "When finished, <strong>press the active MIX button again</strong> (or MIX 12 / LR) to exit Sends on Faders and return to the house mix.",
+            "<strong>Layer D Master Check:</strong> Press <strong>Layer D</strong> on the console. Confirm Aviom Master faders (1–11) are at <strong>0 dB</strong> and unmuted."
+          ]
+        }
+      ]
+    },
+    {
+      id: "aviom-dead-station",
+      title: "Aviom In-Ear Monitors: 'Nothing in My Ears' / Dead Station",
+      icon: "headphones",
+      category: "Audio / Aviom In-Ears / Monitoring",
+      severity: "high",
+      summary: "Systematic diagnostic to fix silent or dead personal Aviom in-ear monitor stations before and during rehearsal.",
+      phases: [
+        {
+          phase: "Phase 1: Headphone Extender Cable, 1/4\" Adapter & Volume Knob",
+          badge: "Musician Station & Cables",
+          stepNumber: 1,
+          title: "Bypass Headphone Extender Cable (#1 Failure Point), Check Adapter & Knob",
+          location: "On-Stage Musician Aviom Station",
+          actionSteps: [
+            "<strong>Bypass Headphone Extender Cable (#1 Failure Point):</strong> Headphone extension cables frequently fail due to bending, strain, or being stepped on. Unplug the musician's in-ears from the extension cable and plug them <strong>directly into the Aviom unit's Phones jack</strong>. If audio returns, replace the bad extension cable with a spare from the booth.",
+            "<strong>Check 1/4\" Screw-On Adapter & Jack:</strong> Ensure cable is plugged into <strong>Phones output jack</strong> (not Aux Out). Check if screw-on 1/8\" to 1/4\" adapter has loosened.",
+            "<strong>Master Volume Knob:</strong> Turn physical <strong>Master Volume knob</strong> on the right side of the Aviom unit clockwise (often accidentally turned down to 0).",
+            "<strong>Check Power LED:</strong> Look at front face of the Aviom mixer. If blue/green power LED is dark, the unit is not receiving PoE power over Ethernet (proceed to Phase 2).",
+            "<strong>Channel Mutes / Levels:</strong> Select the channel button on the Aviom (e.g. Channel 1 Vocal, Channel 2 Guitar), check volume meter LEDs, and ensure <strong>MUTE</strong> is NOT active."
           ],
-          tip: "Use the Click Track Patch Switcher tab for an interactive 1-click routing guide."
+          tip: "Headphone extension cables fail more than any other in-ear component. Always test by plugging earbuds directly into the Aviom unit first!"
         },
         {
-          phase: "Phase 3: In-Ear Monitor Routing & House Mute Rule",
-          badge: "Aviom & House Mute",
-          stepNumber: 3,
-          title: "Send Click to Avioms & Verify Muted in House Mix 12",
-          location: "Si Impact Mix Bus Buttons (Mix 1–5, 9–11 vs Mix 12)",
+          phase: "Phase 2: Stage-Left Aviom Network Switch & Cat5 Drops",
+          badge: "Stage-Left Switch",
+          stepNumber: 2,
+          title: "Verify Aviom Network Switch (Stage Left) & Ethernet Drops",
+          location: "Stage Left Floor / Behind Speaker (Aviom Network Hub)",
           actionSteps: [
-            "<strong>Aviom In-Ear Monitors:</strong> Press Aviom mix buttons (Mix 1 Drums, Mix 4 Keys, Mix 5 Elec Guitar, etc.) and raise Fader 2 to the musicians' preferred monitoring volume.",
-            "<strong>STRICT HOUSE RULE:</strong> Verify that Fader 2 is fully DOWN (or unassigned) on <strong>MIX 12 (Stereo House)</strong> and <strong>Master LR</strong> so the metronome is NEVER audible to the congregation."
+            "<strong>Locate Network Switch:</strong> Locate the dedicated Aviom network distribution switch on the <strong>left side of the stage with a bundle of Ethernet cables coming out</strong>.",
+            "<strong>Power Status:</strong> Verify power cable is firmly seated and front status LEDs are illuminated.",
+            "<strong>Cable Reseat:</strong> Locate the Cat5/Cat6 cable running to the musician's stage position. Unplug RJ45 connector from stage floor pocket and back of Aviom mixer, then click firmly back in.",
+            "<strong>Entire Band Outage:</strong> If ALL Aviom stations on stage are dead/dark, <strong>unplug the main power cord from the stage-left switch, wait 10 seconds, and plug back in</strong> to reboot the Aviom network."
           ],
-          tip: "⚠️ CRITICAL: Never route Click to Mix 12 or Master LR."
+          tip: "The stage-left switch distributes both digital A-Net audio channels and Power-over-Ethernet (PoE) down a single Cat5/Cat6 cable."
+        },
+        {
+          phase: "Phase 3: Soundcraft Console Sends, Layer D Masters & Preamp Gain",
+          badge: "Console & Tablet",
+          stepNumber: 3,
+          title: "Verify Channel Mix Sends, Layer D Masters & Raw Preamp Gain",
+          location: "Soundcraft Si Impact / Mixing Station Tablet",
+          actionSteps: [
+            "<strong>On Mixing Station Tablet:</strong> Tap the requested channel ➔ look at <strong>'Sends' on the right side</strong> ➔ verify the slider for that musician's mix (Mix 1 Drums, Mix 2 Bass, Mix 4 Keys, Mix 5 Elec, Mix 6 Flex 1/Violin, Mix 9 Vocals 1&2, Mix 11 Acoustic) is turned UP.",
+            "<strong>On Physical Console (tOTEM Mode):</strong> Press target Aviom <strong>MIX button</strong> ➔ confirm channel faders are pushed up ➔ press MIX button again to exit.",
+            "<strong>Layer D Master Faders Check:</strong> Press <strong>Layer D</strong> on the console. Verify the master fader for that Aviom mix (Faders 1–11) is pushed up to <strong>0 dB</strong> and is NOT muted.",
+            "<strong>Check Raw Preamp Gain:</strong> Verify channel input meter is bouncing (-8 to -10 dB). If console meter is dead, check stage instrument volume, battery, DI box phantom power, or wireless bodypack."
+          ],
+          tip: "Aviom in-ears receive signal directly after the console Preamp Gain stage. If there is no gain on the board, the in-ears will receive zero sound."
+        }
+      ]
+    },
+    {
+      id: "feedback-triage",
+      title: "Microphone Feedback & Stage Ringing (Pastor Lapel & Cajon Mic)",
+      icon: "alert-triangle",
+      category: "Audio / Microphones / Feedback",
+      severity: "high",
+      summary: "Fast triage for stage squeals: Pastor lapel preset recall & front cajon mic muting on Fader 21 in Band Group.",
+      phases: [
+        {
+          phase: "Fast Feedback Triage",
+          badge: "Preset Recall & Cajon Mute",
+          stepNumber: 1,
+          title: "Pastor Lapel Preset Recall & Front Cajon Mic Mute (Fader 21)",
+          location: "Soundcraft Si Impact / Mixing Station (Layer B Fader 3 & Layer A Fader 21)",
+          actionSteps: [
+            "<strong>1. Pastor Lapel Feedback (Reduce dB & Recall Preset):</strong> Immediately pull Pastor Lapel fader down 2–4 dB. <em>The core problem is usually volunteers manually over-EQing this mic!</em> On Mixing Station: Select Pastor channel ➔ tap <strong>Folder</strong> ➔ tap <strong>Local Presets</strong> ➔ recall the saved <strong>'Pastor Lapel' preset</strong> to instantly restore balanced gain, compression, and calibrated EQ. Ensure High Pass Filter (HPF) is at 80Hz–100Hz.",
+            "<strong>2. Front Cajon Mic Feedback (Mute on Fader 21):</strong> The Front Cajon mic (Input 18 / Fader 21 'CjnStmp18') is a high-gain acoustic boundary mic. It <strong>MUST be muted whenever the cajon is not actively being played</strong>.",
+            "<strong>3. Band Group / VCA Confusion:</strong> The Cajon channel is assigned inside the main <strong>Band Group</strong>. Make sure you mute its individual channel fader directly on <strong>Layer A, Fader 21</strong> (red glow) rather than relying only on group mutes.",
+            "<strong>4. Stage Monitor Check:</strong> Confirm speaker/pastor is not standing directly in front of a loud house speaker or stage floor wedge."
+          ],
+          tip: "Recalling the Pastor Lapel channel preset stops 95% of lapel feedback instantly. Mute Cajon on Fader 21 when not playing."
+        }
+      ]
+    },
+    {
+      id: "sanctuary-speakers-quiet",
+      title: "Sanctuary Speakers Completely Silent (Venue Live 360 & Master Check)",
+      icon: "speaker",
+      category: "Audio Console / Speakers / Processing",
+      severity: "high",
+      summary: "Power cycle Venue Live 360 speaker box in rack (unplug/replug until it boots), check Master LR fader and amplifier power.",
+      phases: [
+        {
+          phase: "Step-by-Step Fix",
+          badge: "Venue Live 360 & Master LR",
+          stepNumber: 1,
+          title: "Power Cycle Venue Live 360 Box & Verify Red Master LR Fader",
+          location: "Sound Booth Equipment Rack & Soundcraft Si Impact",
+          actionSteps: [
+            "<strong>1. Power Cycle Venue Live 360 Box (#1 Failure Point):</strong> If meters bounce on the soundboard but the sanctuary is dead silent, the <strong>Venue Live 360 speaker processor box is NOT on</strong>. Reach to the Venue Live 360 unit in the equipment rack, <strong>unplug the power cord, wait 5 seconds, and plug it back in</strong>. <em>If it doesn't power up on the first try, unplug and replug again until it turns on — it will eventually turn on!</em>",
+            "<strong>2. Check Red Master Left-Right (LR) Fader:</strong> Look at the dedicated <strong>red Master LR fader</strong> on the far right of the console: ensure it is pushed up to <strong>0 dB</strong> (nominal tape mark) and its red <strong>MUTE button is OFF</strong>.",
+            "<strong>3. Check Mix 12 (Stereo House):</strong> Ensure Mix 12 is active and assigned to the Master LR bus, and sweep channel mutes on Layer A and B.",
+            "<strong>4. Check Crown House Amp & Atlas Processor:</strong> Verify blue power LEDs are lit on the Crown main amplifier in the rack and fault lights are OFF."
+          ],
+          tip: "The Venue Live 360 speaker box is the main gatekeeper to sanctuary sound. Power cycling its cord gets it to boot every time."
+        }
+      ]
+    },
+    {
+      id: "atem-no-video",
+      title: "ATEM Switcher: Camera Video Feeds Black / Missing",
+      icon: "camera",
+      category: "Livestream / ATEM / Cameras",
+      severity: "high",
+      summary: "Both cameras black = Ubiquiti white switch under desk. One camera black = restart camera on switch or under-desk SDI box.",
+      phases: [
+        {
+          phase: "Step-by-Step Diagnostic",
+          badge: "Under-Desk Switch / SDI",
+          stepNumber: 1,
+          title: "Check Ubiquiti Switch Under Desk, Labeled SDI Box & Camera Cables",
+          location: "Sound Booth (Under Desk) & Sanctuary Cameras",
+          actionSteps: [
+            "<strong>Golden Diagnostic Rule:</strong> It is almost NEVER both camera feeds failing at the same time independently.",
+            "<strong>IF BOTH CAMERAS ARE BLACK:</strong> The issue is the <strong>Ubiquiti white network switch located underneath the sound booth desk</strong>. Check power and power cycle the switch to restore both camera network streams.",
+            "<strong>IF ONLY ONE CAMERA IS BLACK:</strong>",
+            "• Unplug that camera's data cable from the <strong>Ubiquiti white switch under the desk</strong> and replug to restart the stream, OR",
+            "• Check that camera's <strong>labeled SDI converter box underneath the desk</strong> (unplug the power barrel connector, wait 5 seconds, and replug).",
+            "<strong>Check Physical Cable on Camera Tripod:</strong> Physical panning/movement sometimes loosens the video cable directly on the camera body. Walk to the camera and firmly push the HDMI/SDI cable in.",
+            "<strong>Check ATEM Input Buttons:</strong> On the ATEM Mini switcher, verify Input 1 (Wide) or Input 2 (Close) is selected (not switched to Black or Color)."
+          ],
+          tip: "Both cameras black = Ubiquiti white switch. Single camera black = labeled SDI box under desk or camera port."
+        }
+      ]
+    },
+    {
+      id: "confidence-monitor-switch",
+      title: "Stage Confidence Monitor: Wrong View / Static Slide vs. BirdDog",
+      icon: "tv",
+      category: "Video / Proclaim / Stage Display",
+      severity: "medium",
+      summary: "Press the physical push button underneath the sound booth desk (labeled on top) to toggle between Static Slide & BirdDog view.",
+      phases: [
+        {
+          phase: "1-Click Switch",
+          badge: "Under-Desk Button",
+          stepNumber: 1,
+          title: "Press the Toggle Button Underneath the Sound Booth Desk",
+          location: "Sound Booth: Underneath Desk (Labeled on Top of Desk)",
+          actionSteps: [
+            "<strong>The Two Display Modes:</strong> The rear stage confidence TV for the pastor and worship team can display two different views:",
+            "1. <strong>Full Static View:</strong> Shows the exact slide currently on the front sanctuary TVs.",
+            "2. <strong>BirdDog View:</strong> The true confidence monitor showing current lyrics, next upcoming lyric line, elapsed time, and countdown clock.",
+            "<strong>How to Switch:</strong> Locate the <strong>labeled spot on top of the sound booth desk</strong>.",
+            "Reach directly <strong>underneath the desk</strong> at that spot to find the physical push-button switch.",
+            "<strong>Press the button once</strong> to toggle the video feed between the static slide and the BirdDog dynamic confidence view.",
+            "<strong>Proclaim Virtual Screen Check:</strong> In Proclaim ➔ Settings ➔ Display, verify <em>Virtual Screen: Confidence</em> is assigned to the connected external stage display."
+          ],
+          tip: "Musicians or pastors asking 'the rear TV is just showing the normal slide without the clock/lyrics' just need this under-desk button pressed once!"
+        }
+      ]
+    },
+    {
+      id: "computer-audio-no-sound",
+      title: "Computer Audio / Mac Video Has No Sound in Sanctuary",
+      icon: "speaker",
+      category: "Audio / Playback / Mac & PC",
+      severity: "high",
+      summary: "Step-by-step fix when Mac sermon video clips, Proclaim media, or PC background music play on screen but produce no sound in the sanctuary.",
+      phases: [
+        {
+          phase: "Phase 1: Mac / PC System Sound Output & 3.5mm Cable",
+          badge: "Computer Settings",
+          stepNumber: 1,
+          title: "Verify Computer Output Device & Physical Audio Cable",
+          location: "Sound Booth: Main Presentation Mac / PC",
+          actionSteps: [
+            "<strong>macOS Sound Output:</strong> On the Mac, click <strong>Control Center</strong> (top right menu bar) ➔ tap <strong>Sound</strong> ➔ confirm output is set to the <strong>Sound Booth Audio Interface / Line Out</strong> (NOT 'MacBook Pro Speakers').",
+            "<strong>Inspect Physical 3.5mm Cable:</strong> Ensure the headphone audio cable is pushed completely and firmly into the computer's audio jack and routed into the sound booth patch rack.",
+            "<strong>Check App & System Volume:</strong> Ensure macOS / Windows system volume is set to <strong>80–90%</strong> and the video player / browser / Spotify is unmuted.",
+            "<strong>Proclaim Audio Settings:</strong> In Proclaim, go to <strong>Proclaim ➔ Preferences ➔ Audio</strong> and verify the Audio Output device is assigned to the connected booth sound interface."
+          ],
+          tip: "macOS frequently resets audio output back to built-in laptop speakers when external cables are reconnected."
+        },
+        {
+          phase: "Phase 2: Soundcraft Console Layer A Faders (Mac / PC)",
+          badge: "Si Impact Layer A",
+          stepNumber: 2,
+          title: "Un-mute Fader 23 (Mac) or Fader 22 (PC) & Set Preamp Gain",
+          location: "Soundcraft Si Impact Console (Layer A)",
+          actionSteps: [
+            "Press <strong>Layer A</strong> on the console (computer audio channels live on the far right of Layer A).",
+            "Locate <strong>Fader 23 ('Mac')</strong> for the presentation computer, or <strong>Fader 22 ('PC')</strong> for the booth PC.",
+            "Verify the channel <strong>MUTE button is OFF</strong> (must NOT be glowing red).",
+            "Push the fader up to nominal level (<strong>0 dB</strong> or marked tape line).",
+            "Press the illuminated <strong>SEL</strong> button above the fader: adjust the <strong>Preamp Gain knob</strong> until the input meter bounces in the green/yellow zone (<strong>-8 to -10 dB</strong>)."
+          ],
+          tip: "Computer audio is split between Fader 22 (PC) and Fader 23 (Mac) on Layer A."
+        },
+        {
+          phase: "Phase 3: Verify Mix 12 (Stereo House) & Master LR",
+          badge: "House Bus Routing",
+          stepNumber: 3,
+          title: "Ensure Channel Feeds Mix 12 (House) & Master LR Fader is Up",
+          location: "Si Impact Channel Strip & Master Section",
+          actionSteps: [
+            "With Fader 23 (Mac) or Fader 22 (PC) selected via <strong>SEL</strong>, press <strong>MIX 12 (Stereo House)</strong>.",
+            "Confirm the channel fader is raised to <strong>0 dB</strong> within Mix 12 so audio passes to the sanctuary speakers.",
+            "Press <strong>MIX 12 again</strong> (or LR) to exit Sends on Faders mode.",
+            "Check the <strong>red Master LR fader</strong> on the far right of the console: ensure it is pushed up to <strong>0 dB</strong> and its red MUTE is OFF."
+          ]
+        }
+      ]
+    },
+    {
+      id: "ground-hum-buzz",
+      title: "Loud Buzz, Hum, or Ground Loop on Stage (DI Box & Ground Lift)",
+      icon: "alert-triangle",
+      category: "Audio / Stage Noise / Ground Loop",
+      severity: "high",
+      summary: "Fast 3-step triage to eliminate 60Hz buzzing or humming on acoustic guitars, keyboards, bass, or pedalboards in under 30 seconds.",
+      phases: [
+        {
+          phase: "Phase 1: Flip the GND / LIFT Switch on Stage DI Box (#1 Fix)",
+          badge: "DI Box Ground Lift",
+          stepNumber: 1,
+          title: "Flip the GND / LIFT Switch on the Stage Direct Box",
+          location: "On-Stage: Musician's DI Box / Pedalboard",
+          actionSteps: [
+            "<strong>Locate the DI Box:</strong> Walk to the direct box (DI box) on stage connected to the buzzing instrument (Acoustic Guitar, Bass, Keys, or Stomp Box).",
+            "<strong>Find the GND / LIFT Switch:</strong> Look for the small slide switch labeled <strong>GND / LIFT</strong> (Ground Lift) on the side or end of the DI box.",
+            "<strong>Flip to LIFT:</strong> Slide the switch to the <strong>LIFT</strong> position. In 95% of church stage buzz cases, lifting the ground breaks the electrical ground loop and silences the buzz immediately!",
+            "<strong>Swap DI Box if Needed:</strong> If buzz persists, grab a spare active/passive DI box from the stage storage in the <strong>closet to the right of the stage</strong> and replace it."
+          ],
+          tip: "Flipping the Ground Lift switch isolates the electrical ground between stage power and the soundboard without losing audio signal."
+        },
+        {
+          phase: "Phase 2: Check AC Power Circuits & Stage Floor Pockets",
+          badge: "Stage AC Power",
+          stepNumber: 2,
+          title: "Plug All Stage Gear into Same Pocket (Panel S Breakers 4 & 6)",
+          location: "Stage Floor Boxes & Musician Outlets",
+          actionSteps: [
+            "<strong>Same Circuit Rule:</strong> Ensure the musician's pedalboard, keyboard, and amplifiers are plugged into the <strong>stage floor pocket AC receptacles</strong> (powered by <strong>Panel S Breakers 4 & 6</strong>), NOT an extension cord run to an ungrounded wall outlet across the room.",
+            "<strong>Disconnect Phone Chargers:</strong> Make sure no unshielded phone or tablet chargers are plugged into the same power strip as guitar pedalboards or DI boxes.",
+            "<strong>Check Pedalboard Power Supply:</strong> Ensure digital effects pedals are powered by an isolated power supply (e.g. Voodoo Lab / Strymon) rather than a noisy daisy-chain wall adapter."
+          ]
+        },
+        {
+          phase: "Phase 3: Console High Pass Filter (HPF) & Cable Swap",
+          badge: "Si Impact HPF & Cables",
+          stepNumber: 3,
+          title: "Engage 80Hz High Pass Filter & Test Shielded Cable",
+          location: "Soundcraft Si Impact & Stage Floor",
+          actionSteps: [
+            "<strong>Engage Console HPF:</strong> On the Si Impact console, select the buzzing channel (<strong>SEL</strong> button) and press the illuminated <strong>HPF (High Pass Filter)</strong> button in the channel strip. Set to <strong>80Hz–100Hz</strong> to roll off low-frequency AC power line hum.",
+            "<strong>Swap 1/4\" Instrument Cable:</strong> Bad shielding on unbalanced 1/4\" TS guitar cables acts like an antenna for lighting dimmer noise. Replace with a heavy-duty shielded cable.",
+            "<strong>Check XLR Tie-Line:</strong> Ensure the XLR cable from the DI box is clicked firmly into the correct stage floor pocket port."
+          ]
+        }
+      ]
+    },
+    {
+      id: "system-boot-order",
+      title: "Sound Booth Morning System Startup & Boot Order (Pop Prevention)",
+      icon: "power",
+      category: "Soundboard / Startup / Power",
+      severity: "medium",
+      summary: "Strict hardware power-up sequence to prevent damaging speaker pops, protect amplifiers, and calibrate digital sync.",
+      phases: [
+        {
+          phase: "Phase 1: Strict Hardware Boot Order (Sources First, Amps Last)",
+          badge: "Sources ➔ Amps",
+          stepNumber: 1,
+          title: "Power ON Hardware in Exact 7-Step Sequence",
+          location: "Sound Booth & Stage Left",
+          actionSteps: [
+            "<strong>Golden Rule: Sources First, Amps Last!</strong> Turning amplifiers on before the console sends an electrical pop that can destroy speaker drivers.",
+            "<strong>1. Board (Console):</strong> Power ON the <strong>Soundcraft Si Impact console</strong> first and allow it to boot completely.",
+            "<strong>2. Wireless Rack:</strong> Turn ON the wireless microphone receivers rack.",
+            "<strong>3. ATLAS Processor:</strong> Turn ON the Atlas audio processor unit in the equipment rack.",
+            "<strong>4. House AMP:</strong> Power ON the <strong>Crown main house amplifier</strong>.",
+            "<strong>5. QSC Wall Speakers:</strong> Turn ON the active sanctuary wall speakers.",
+            "<strong>6. All Video ATEM:</strong> Power ON the ATEM video switcher (if broadcasting/recording).",
+            "<strong>7. AVIOM Switch:</strong> Power ON the Aviom monitor switch located on the <strong>left side of the stage with the ethernet bundle</strong>."
+          ],
+          tip: "Always power amplifiers and powered speakers ON last, and turn them OFF first!"
+        },
+        {
+          phase: "Phase 2: Venue Live 360 & Load 1NormalSunday Show File",
+          badge: "Venue Live 360 & Show",
+          stepNumber: 2,
+          title: "Verify Venue Live 360 Processor & Load Sunday Show File",
+          location: "Equipment Rack & Si Impact Touchscreen",
+          actionSteps: [
+            "<strong>Check Venue Live 360 Box:</strong> Look at the Venue Live 360 speaker box in the equipment rack. If unpowered/dark, unplug the power cord, wait 5 seconds, and replug until it boots.",
+            "<strong>Load Sunday Show:</strong> On the console touchscreen, press <strong>Menu ➔ Show ➔ Load ➔ 1NormalSunday ➔ Apply</strong> (confirm prompt).",
+            "<strong>🛑 NEVER OVERWRITE 1NormalSunday:</strong> It is the golden master reference. Always save changes under a dated file (<code>MM.DD.YYYY.show</code>) in <em>MMC ➔ Other Folder</em>.",
+            "<strong>Unmute Master LR:</strong> Ensure the red Master LR fader on the far right of the console is raised to <strong>0 dB</strong> and unmuted before service starts."
+          ]
+        }
+      ]
+    },
+    {
+      id: "foyer-tv-audio",
+      title: "Foyer TV & Lobby Audio Feed Not Working",
+      icon: "tv",
+      category: "Screens / Video / Foyer",
+      severity: "medium",
+      summary: "Restore lobby presentation display and foyer speaker audio. (Note: Foyer audio comes exclusively from the Foyer bus).",
+      phases: [
+        {
+          phase: "Phase 1: Foyer TV Display & ATEM Switcher Wide View",
+          badge: "Foyer TV Display",
+          stepNumber: 1,
+          title: "Check Foyer TV Power, HDMI Input & ATEM Key Output",
+          location: "Church Foyer / Lobby & Sound Booth ATEM Switcher",
+          actionSteps: [
+            "<strong>Foyer TV Power & Input:</strong> Verify the Foyer TV is turned ON (no red standby light) and the TV input is set to <strong>HDMI 1</strong>.",
+            "<strong>ATEM Switcher Configuration:</strong> On the ATEM Mini video switcher in the sound booth, leave the switcher on a <strong>wide view of the stage with the key on</strong> for the foyer TV during the second service and gathering times.",
+            "<strong>Inspect HDMI Distribution:</strong> If the screen shows 'No Signal', check the HDMI splitter and video distribution box behind the booth video desk."
+          ]
+        },
+        {
+          phase: "Phase 2: Foyer Audio Feed (Exclusively from Foyer Bus)",
+          badge: "Foyer Audio Bus",
+          stepNumber: 2,
+          title: "Verify Fader 24 ('Foyer') on Console Layer A & Rack Amp",
+          location: "Soundcraft Si Impact (Layer A Fader 24) & AV Rack",
+          actionSteps: [
+            "<strong>Exclusive Routing Rule:</strong> The foyer audio comes <strong>exclusively from the foyer bus (Layer A, Fader 24 'Foyer')</strong>.",
+            "<strong>Navigate to Layer A:</strong> Press <strong>Layer A</strong> on the Soundcraft console.",
+            "<strong>Check Fader 24 ('Foyer'):</strong> Ensure <strong>Fader 24 ('Foyer')</strong> is <strong>UNMUTED</strong> (MUTE button must NOT glow red) and the fader is raised to nominal volume.",
+            "<strong>Press SEL:</strong> Press illuminated <strong>SEL</strong> above Fader 24 to verify green input audio meters are bouncing.",
+            "<strong>Check Foyer Amplifier in Rack:</strong> In the sound booth equipment rack, confirm the foyer amplifier channel is powered ON and volume knob is turned up to its marked level."
+          ],
+          tip: "Because foyer audio comes exclusively from the dedicated Foyer bus, you can independently adjust lobby volume without changing sanctuary volume."
         }
       ]
     }
@@ -1351,6 +1535,23 @@ const AV_DATA = {
 
   // 5. Specific Step-by-Step Patching Procedures
   patchingProcedures: {
+    mixingStationReconnect: {
+      title: "Mixing Station iPad Reconnect Procedure",
+      steps: [
+        "1. On the iPad / tablet: Tap the Back Arrow (←) or Home button in the top left corner to return to the connection screen.",
+        "2. Tap 'Backup search' to broadcast and locate the Soundcraft Si Impact console.",
+        "3. Tap the mixer when discovered to reconnect.",
+        "4. If not found, verify iPad Wi-Fi is connected to 'Waypoint Guest' (Password: Psalm27:4!) and inspect the HiQnet network Ethernet cable on the rear of the soundboard."
+      ]
+    },
+    aviomSends: {
+      title: "Aviom In-Ear Monitor Sends (Tablet & Soundboard)",
+      steps: [
+        "1. On Tablet (Mixing Station): Tap the channel ➔ locate 'Sends' on the right side of the screen ➔ raise the volume slider for the target Aviom mix.",
+        "2. Gain Staging Rule: If the Aviom send fader is maxed out (+10dB) and still too quiet, add Preamp Gain to the channel instead (pull House fader down slightly to compensate).",
+        "3. On Physical Soundboard: Press the target Aviom MIX button (e.g. MIX 1 Drums, MIX 4 Keys, MIX 5 Elec, MIX 6 Violin, MIX 9 Vocals, MIX 11 Acoustic) ➔ push up the channel fader ➔ press the MIX button again to exit."
+      ]
+    },
     loadShowFile: {
       title: "How to Load the Sunday Show File",
       steps: [
@@ -1411,6 +1612,30 @@ const AV_DATA = {
         "3. On the touchscreen menu, press Inputs.",
         "4. Select the soundboard input number that matches the bracketed number on the scribble strip (e.g. Input 15 for Acou1, Input 13 for Acou2, Input 7 for KeysL)."
       ]
+    },
+    ipadPlaybackRouting: {
+      title: "iPad & Mobile Audio Playback (Through Aviom & House)",
+      usage: "Rehearsals, Saturday practices, song reference playback, track rehearsals, and pre-service prep.",
+      serviceCaution: "⚠️ CAUTION FOR SUNDAY SERVICES: While this routing is ideal for practices and rehearsals, exercise caution during live Sunday service! If you route through the Click channel or modify sends, ensure Click is NEVER routed to House (Mix 12 / Master LR) during a service so metronome clicks do not broadcast to the congregation.",
+      method1Physical: {
+        title: "Method 1: Physical Patching (Recommended & Easiest)",
+        steps: [
+          "1. On stage, take the 1/8\" (3.5mm) click track cable and plug it into the iPad / phone headphone adapter.",
+          "2. Instead of plugging into the dedicated click stage input, plug the cable into ANY spare instrument port (e.g. Aux 1 on Front Left Box / Input 3) or an unused vocal port on the stage box.",
+          "3. On the console (Layer A) or Mixing Station app, navigate to that corresponding instrument / vocal fader.",
+          "4. Control the fader like a normal instrument: push up the main fader for House sound (Mix 12 / Master LR), and adjust channel sends to route to the band's Aviom in-ears."
+        ]
+      },
+      method2Advanced: {
+        title: "Method 2: Advanced Console Routing (Modifying Click Channel Sends)",
+        steps: [
+          "1. Keep the iPad / playback device plugged into the standard Click cable on Layer B (Fader 2 'Click').",
+          "2. On the Si Impact console or Mixing Station app, select the Click channel and view its Sends / Bus assignments.",
+          "3. Raise the send from the Click channel to Mix 12 (House) and uncheck/unmute any House routing restrictions.",
+          "4. Audio from the iPad will now broadcast simultaneously to the sanctuary House speakers and all musicians' Aviom in-ears.",
+          "⚠️ POST-REHEARSAL CHECK: Always reset the Click channel's House send back to -∞ (OFF) before Sunday morning service!"
+        ]
+      }
     }
   },
 
@@ -1481,21 +1706,160 @@ const AV_DATA = {
     }
   },
 
-  // 7. Pre-Service Sound Booth Verification Checklist
+  // 7. Weekend Standard Pre-Service Readiness Checklist
   preServiceChecklist: [
-    { id: "chk-pwr-booth", label: "Sound booth power strip turned ON (Switch light glowing)", category: "Power & Systems" },
-    { id: "chk-panel-s-stage-pwr", label: "Stage floor pocket AC power active (Panel S Breakers 4 & 6 ON, pedals/keys powered)", category: "Power & Systems" },
-    { id: "chk-console-aes", label: "Soundcraft Si Impact powered on & Master LR fader unmuted (AES Out 01)", category: "Soundboard" },
-    { id: "chk-load-show", label: "Sunday show file loaded (MENU ➔ SHOW ➔ LOAD ➔ APPLY. Do NOT overwrite 1NormalSunday)", category: "Soundboard" },
-    { id: "chk-proclaim-onair", label: "Proclaim presentation software open, signed in, and set to 'On Air'", category: "Video & Screens" },
-    { id: "chk-sanctuary-tvs", label: "Front Sanctuary TVs powered on and displaying Proclaim feed on HDMI 1", category: "Video & Screens" },
-    { id: "chk-obs-embrace", label: "Embrace Room TV powered on & OBS Fullscreen Projector sent to 'LONTIUM' (check TX under desk & Nest camera RX timer)", category: "Conference Room" },
-    { id: "chk-obs-captions", label: "OBS Cloud Closed Captions enabled & transcribing (Tools ➔ Cloud Closed Captions ➔ Captioning Enabled)", category: "Broadcast & Stream" },
-    { id: "chk-reaper-running", label: "Reaper DAW open on PC with meters responding to soundboard audio", category: "Assistive Listening" },
-    { id: "chk-williams-av", label: "Williams AV unit on top of PC powered ON with Ethernet connected", category: "Assistive Listening" },
-    { id: "chk-wavecast-wifi", label: "Wavecast test on phone connected to 'Waypoint Guest' Wi-Fi (Password: Psalm27:4!)", category: "Assistive Listening" },
-    { id: "chk-wireless-mics", label: "Wireless microphones fresh batteries & tested (Pastor, Lead Vocals)", category: "Mics & Stage" },
-    { id: "chk-aviom-monitors", label: "Aviom personal monitor stations receiving signals (Drums, Keys, Leader)", category: "Monitors" },
-    { id: "chk-click-track", label: "Click track soft-patched correctly on Layer B Fader 2 (In 12 Front or In 20 Drums)", category: "Soundboard" }
-  ]
+    // Audio & Console
+    { id: "chk-pwr-console", label: "Turn ON sound booth power & boot Soundcraft Si Impact console", category: "Audio & Console" },
+    { id: "chk-load-show", label: "Load Sunday show file: 1NormalSunday (Apply show)", category: "Audio & Console" },
+    { id: "chk-wireless-mics", label: "Check wireless mic batteries & test audio (Pastor & Worship Team)", category: "Audio & Console" },
+    { id: "chk-computer-audio", label: "Line check Mac/PC audio for sermon videos & background music (Layer A Faders 22 & 23)", category: "Audio & Console" },
+    { id: "chk-aviom-monitors", label: "Verify Aviom in-ear monitor signals with worship band", category: "Audio & Console" },
+    { id: "chk-master-fader", label: "Unmute Master LR fader before service starts", category: "Audio & Console" },
+
+    // Visuals & Screens
+    { id: "chk-proclaim-onair", label: "Open Proclaim slides and click 'On Air'", category: "Visuals & Screens" },
+    { id: "chk-sanctuary-tvs", label: "Turn ON Front Sanctuary TVs & verify slide display (HDMI 1)", category: "Visuals & Screens" },
+    { id: "chk-foyer-tv", label: "Turn ON Foyer TV & verify lobby audio feed (Layer A Fader 24)", category: "Visuals & Screens" },
+
+    // Broadcast & Livestream
+    { id: "chk-laptop-yt", label: "Open YouTube Studio (studio.youtube.com) on broadcast laptop & verify preview", category: "Broadcast & Stream" },
+    { id: "chk-atem-onair-rec", label: "Press 'ON AIR' & 'REC' backup recording on ATEM switcher board", category: "Broadcast & Stream" },
+    { id: "chk-go-live", label: "Click 'Go Live' in YouTube Studio ~15 minutes before service", category: "Broadcast & Stream" },
+    { id: "chk-phone-verify", label: "Check public YouTube stream on phone (verify video & audio)", category: "Broadcast & Stream" },
+
+    // Embrace & Accessibility
+    { id: "chk-embrace-tv", label: "Turn ON Embrace Room TV & verify video feed", category: "Embrace & Accessibility" },
+    { id: "chk-obs-captions", label: "Enable OBS Cloud Closed Captions (Tools ➔ Cloud Closed Captions)", category: "Embrace & Accessibility" },
+    { id: "chk-wavecast-test", label: "Verify WaveCAST assistive listening audio on phone (Waypoint Guest Wi-Fi)", category: "Embrace & Accessibility" },
+
+    // Lighting & Atmosphere
+    { id: "chk-lighting-start", label: "Set booth lighting panel to Level 1 (switch to Level 2 for worship songs)", category: "Booth & Lighting" }
+  ],
+
+  // 8. Livestream & Presentation Operations
+  livestreamSetup: {
+    youtubeSite: "studio.youtube.com",
+    youtubeUrl: "https://studio.youtube.com",
+    note: "See the Google Keep note for more details and login credentials",
+    setupSteps: [
+      { step: "a", title: "Unlock Laptop", action: "Power on and unlock the sound booth broadcast laptop." },
+      { step: "b", title: "Open Livestream Site", action: "Go to studio.youtube.com in Google Chrome / browser." },
+      { step: "c", title: "Access Live Control Room", action: "Click 'Create' in the top right or go to 'Live control room'." },
+      { step: "d", title: "Hit 'ON AIR' on ATEM Board", action: "Hit 'ON AIR' on the physical ATEM switcher board." },
+      { step: "e", title: "Verify Video Preview", action: "Ensure preview of video shows correctly in YouTube Studio." },
+      { step: "f", title: "Go Live (~15 min before)", action: "Click 'Go Live' ~15 minutes before the service starts." },
+      { step: "g", title: "Public Stream Verification", action: "At the beginning and throughout the service, use your phone to view the public livestream to ensure video and audio are working properly. (If no audio: verify PC to the left of the stage is ON and the red tape audio cord is plugged into the back of the ATEM board)." },
+      { step: "h", title: "Start ATEM Backup Recording", action: "Hit 'REC' on the ATEM board in the top right as a backup recording." }
+    ],
+    shutdownSteps: [
+      { step: "a", title: "Stop Backup Recording", action: "Press 'STOP' recording on the top right of the ATEM board." },
+      { step: "b", title: "End Stream on YouTube", action: "End the YouTube stream ~2 minutes after the end of service." },
+      { step: "c", title: "Foyer TV Wide Stage View", action: "Leave the stream/switcher on a wide view of the stage with the key on for the foyer TV during the second service." }
+    ],
+    lightingControls: {
+      levels: [
+        { level: "Level 1", name: "Before / After Service", button: 1, usage: "Before, after, and during regular service gathering & dismissal.", details: "Full house architectural illumination + balanced stage lighting." },
+        { level: "Level 2", name: "Songs / Music", button: 2, usage: "Worship set, congregational singing & praise team.", details: "Dims house lights, warm atmospheric focus on worship team & stage." },
+        { level: "Level 3", name: "Everything Else", button: 3, usage: "General service flow, transitions, offering.", details: "Comfortable balanced lighting for transitions." },
+        { level: "Level 4", name: "Video Showing", button: 4, usage: "Video announcements, mission spotlights, sermon video clips.", details: "Darkens house for maximum video contrast on sanctuary TVs." },
+        { level: "Level 5", name: "Full 100%", button: 5, usage: "Rehearsals, setup, cleaning, and maintenance.", details: "100% maximum brightness on all sanctuary & stage fixtures." },
+        { level: "Level 6", name: "Spoken Word", button: 6, usage: "Sermon, preaching, announcements, scripture reading.", details: "Platform spotlighting on pulpit / podium speaker with ambient house." },
+        { level: "Level 7", name: "OFF", button: 7, usage: "End of service shutdown.", details: "Powers off all theatrical and architectural lighting." }
+      ],
+      quickCheatSheet: [
+        "1. BEFORE/AFTER SERVICE (Before, After, During) ➔ Button 1",
+        "2. SONGS/MUSIC (Worship Songs) ➔ Button 2",
+        "3. EVERYTHING ELSE ➔ Button 3",
+        "4. VIDEO SHOWING (Show Video) ➔ Button 4",
+        "5. FULL 100% (All Lights Full) ➔ Button 5",
+        "6. SPOKEN WORD (Sermon / Preaching) ➔ Button 6",
+        "7. OFF (Shutdown All) ➔ Button 7"
+      ]
+    },
+    proclaimGuide: {
+      title: "Proclaim Presentation & Slides Quick Guide",
+      onAirInstructions: "1. Open Proclaim ➔ 2. Select today's service ➔ 3. Tap 'On Air' (top right).",
+      quickScreens: [
+        { key: "Normal", label: "Normal presentation mode with full lyrics / slides" },
+        { key: "Blank (F10)", label: "Blanks output to solid black screen" },
+        { key: "Clear (F11)", label: "Clears lyric text overlay while preserving background media" },
+        { key: "Logo (F12)", label: "Displays church logo slide immediately" }
+      ],
+      displayRouting: "Virtual Screen: Slides ➔ External HDMI Splitter (Sanctuary TVs) &bull; Virtual Screen: Confidence ➔ Stage Display &bull; macOS Displays ➔ Extended Desktop (Use as Separate Display)."
+    }
+  },
+
+  // 9. Saturday Line Check & Rehearsal Workflow
+  saturdayRehearsalWorkflow: {
+    title: "Saturday Line Check & Rehearsal Workflow",
+    goal: "To efficiently set the technical foundation for rehearsal while relationally supporting the worship team with a systematic, encouraging, and clear line check.",
+    bootOrder: [
+      { step: 1, name: "Board (Console)", desc: "Power ON Soundcraft Si Impact console." },
+      { step: 2, name: "Wireless Rack", desc: "Turn ON wireless mic receivers rack." },
+      { step: 3, name: "ATLAS", desc: "Turn ON Atlas audio processor unit." },
+      { step: 4, name: "House AMP", desc: "Power ON Crown main house amplifier." },
+      { step: 5, name: "QSC Wall Speakers", desc: "Turn ON active QSC wall speakers." },
+      { step: 6, name: "All Video ATEM", desc: "Power ON ATEM switcher (only if there is an event)." },
+      { step: 7, name: "AVIOM", desc: "Turn ON Aviom personal monitor switch (located on stage left with ethernet bundle)." }
+    ],
+    shutdownOrder: [
+      { step: 1, name: "AVIOM", desc: "Leave Aviom ON after set rehearsal if Sunday service is next." },
+      { step: 2, name: "ATEM", desc: "Power off video switcher if powered." },
+      { step: 3, name: "QSC Wall Speakers", desc: "Flip all 6 switches off." },
+      { step: 4, name: "House AMP", desc: "Power off main amplifier." },
+      { step: 5, name: "ATLAS", desc: "Power off Atlas processor." },
+      { step: 6, name: "Wireless Rack", desc: "Power off wireless receivers." },
+      { step: 7, name: "Board (Console)", desc: "Shut down Soundcraft console last." }
+    ],
+    preArrivalSteps: [
+      "Load Scene & Power Up: Turn on system following boot order and load 1NormalSunday scene (Show -> Save As Date.show).",
+      "Confirm the Roster: Review this week's Planning Center services list for roster and stage setup changes.",
+      "Mute Foyer Feeds: Ensure foyer feeds are muted during setup phase (speakers only, Layer A).",
+      "PC Setup: Turn on PC (only open/start Reaper if track recording today).",
+      "Check Inputs: Check click track input.",
+      "Prep Talkback Mic: Ensure wireless pastor mic on 'Owens layer' (White or Blue Wireless) has fresh battery."
+    ],
+    teamArrivalTips: [
+      "Greet everyone by name: Build community and relational connection.",
+      "Help them settle in: Assist with direct boxes (in closet to the right of stage), locate stage box ports, and ask 'Do you have everything you need?'."
+    ],
+    clickTrackPatching: {
+      layer: "Layer B",
+      fader: "Fader 2 ('Click')",
+      steps: [
+        "Navigate to Layer B on the console.",
+        "Press the SEL button above Fader 2 (labeled 'Click').",
+        "On main soundboard touch screen menu, press 'Inputs'.",
+        "Patch input: Front Click = FX1 -> recorder (Mic 12 / Input 12) | Drum Cage Click = Mic 20 (Input 20).",
+        "Press 'Menu' twice to exit."
+      ]
+    },
+    lineCheckProcess: {
+      gainTarget: "-8 to -10 dB (Meter to right of volume fader on Mixing Station app. Sets in-ear and house baseline).",
+      tonePresets: "Mixing Station App: Select Channel -> Folder Icon -> Local Presets. Copy/Paste: Folder -> Copy -> Paste (⚠️ check +48V red phantom power, gain & routing!).",
+      aviomCheck: "Ask: 'Are you getting a good signal of yourself in your Aviom?'",
+      standardOrder: [
+        { instrument: "Drums", action: "Individual mics (kick, snare, toms) -> Tom balance check -> Simple steady beat for full kit." },
+        { instrument: "Bass", action: "Verify sub-bass and house levels." },
+        { instrument: "Keyboards / Piano", action: "Level balance, stereo imaging, and patch consistency." },
+        { instrument: "Violin / Special Instruments", action: "Extra setup time, EQ shaping, and DI check." },
+        { instrument: "Guitars (Acoustic & Electric)", action: "Acoustic: clean signal. Electric: main rhythm sound + engage lead/boost pedal to test volume jump." },
+        { instrument: "Vocals", action: "Background vocalists first, worship leader last. Sing a line from a worship song (not 'test 1, 2')." }
+      ]
+    },
+    massProtocol: [
+      { letter: "M", title: "Mix", desc: "Mix the band together in the main room." },
+      { letter: "A", title: "Around the Room", desc: "Walk around the sanctuary to verify coverage and sound consistency." },
+      { letter: "S", title: "Songs", desc: "Learn arrangements, cues, dynamics, and vocal leads." },
+      { letter: "S", title: "Subs", desc: "Check sub-bass performance and low-end definition." }
+    ],
+    saveShowFileProtocol: [
+      "Go to Touchscreen Menu -> Show",
+      "Press 'Save As'",
+      "Set show name using date: [MM.DD.YYYY] (e.g. 08.23.2026)",
+      "Press 'Apply'",
+      "Select 'MMC' -> 'Other Folder'",
+      "Press 'OK' to confirm. ⚠️ NEVER overwrite '1NormalSunday'!"
+    ]
+  }
 };
