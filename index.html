@@ -27,9 +27,12 @@
           <img src="favicon.svg" alt="Waypoint Production Logo" class="brand-favicon-img" width="38" height="38">
         </div>
         <div>
-          <h1 class="brand-title">Waypoint Church Production</h1>
+          <div class="brand-title-row">
+            <h1 class="brand-title">Waypoint Troubleshooting</h1>
+            <span class="brand-app-pill badge-ops">OPS HUB</span>
+          </div>
           <div class="brand-subtitle">
-            <span class="status-dot"></span> Sound Booth Operations
+            <span class="status-dot"></span> Sound Booth Operations &amp; Offline Manual
           </div>
         </div>
       </div>
@@ -54,11 +57,55 @@
 
       <!-- Quick Actions -->
       <div class="header-quick-actions">
-        <button id="installPwaBtn" class="emergency-btn" style="display: none; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: hsl(156, 95%, 75%);" title="Install to computer desktop for offline use">
-          <span>📥</span> Install App
+        <!-- Unified Sanctuary Apps Popup Dropdown -->
+        <div class="apps-dropdown-wrapper">
+          <button id="btnOpenAppsDropdown" class="emergency-btn btn-apps-trigger" title="Launch Sanctuary Broadcast Applications (Ports 3050 & 8765)" aria-haspopup="true" aria-expanded="false">
+            <span>🌐</span> Live Apps ▾
+          </button>
+          <div id="appsDropdownMenu" class="apps-dropdown-menu" role="menu" aria-label="Sanctuary Applications">
+            <div class="apps-dropdown-header">
+              <span class="apps-dropdown-title">⛪ Sanctuary Broadcast Apps</span>
+              <span class="apps-dropdown-badge">Ports 3050 & 8765</span>
+            </div>
+            <div class="apps-dropdown-items">
+              <a href="http://localhost:3050" target="_blank" rel="noopener noreferrer" class="app-dropdown-item" role="menuitem">
+                <div class="app-item-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🎛️</div>
+                <div class="app-item-info">
+                  <div class="app-item-title">Sanctuary AV Controller <span class="app-item-port">:3050</span> ↗</div>
+                  <div class="app-item-desc">Master telemetry, signal flow, camera joystick & VU meters</div>
+                </div>
+              </a>
+              <a href="http://localhost:8765/dashboard" target="_blank" rel="noopener noreferrer" class="app-dropdown-item" role="menuitem">
+                <div class="app-item-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">🎙️</div>
+                <div class="app-item-info">
+                  <div class="app-item-title">VoxStream Live Captioner PRO <span class="app-item-port">:8765</span> ↗</div>
+                  <div class="app-item-desc">7 STT engines, live speech levels & audio stream</div>
+                </div>
+              </a>
+              <a href="http://localhost:8765/display" target="_blank" rel="noopener noreferrer" class="app-dropdown-item" role="menuitem">
+                <div class="app-item-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">♿</div>
+                <div class="app-item-info">
+                  <div class="app-item-title">Accessibility Captions View <span class="app-item-port">:8765</span> ↗</div>
+                  <div class="app-item-desc">Full-screen accessible captions for Embrace room, iPads & mobile</div>
+                </div>
+              </a>
+            </div>
+            <div class="apps-dropdown-footer">
+              <span>💡 Need to launch all apps? Run <code>start_all_booth.bat</code> / <code>.command</code></span>
+            </div>
+          </div>
+        </div>
+        <button id="btnOpenPlacardsModal" class="emergency-btn" style="background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.6); color: #d8b4fe; font-weight: 700;" title="Generate & print physical QR equipment placards">
+          <span>🏷️</span> QR Placards
+        </button>
+        <button id="btnOpenSettingsModal" class="emergency-btn" style="background: rgba(148, 163, 184, 0.15); border-color: rgba(148, 163, 184, 0.35); color: #cbd5e1;" title="App Settings & Public Base URL">
+          <span>⚙️</span> Settings
+        </button>
+        <button id="installPwaBtn" class="emergency-btn" style="display: none; background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.4); color: #c084fc;" title="Install to computer desktop for offline use">
+          <span>📥</span> Install
         </button>
         <a href="https://docs.google.com/document/d/13H1LsbhdocR-NE9Hpa9k5cjeHOpi8mQa-IBDHi4dhpI/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="emergency-btn" style="text-decoration: none; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.35); color: #93c5fd;" title="Open Master Google Doc in a new tab">
-          <span>📄</span> Google Doc ↗
+          <span>📄</span> Doc ↗
         </a>
       </div>
     </div>
@@ -129,7 +176,13 @@
         </div>
       </div>
 
-      <!-- Category Filter Chips -->
+      <!-- 1-Tap SOS Emergency Bar (Extensible from AV_DATA.sosQuickFixes) -->
+      <div id="sosEmergencyBar" class="sos-emergency-bar"></div>
+
+      <!-- Popular Quick-Search Suggestions Bar -->
+      <div id="popularSearchChips" class="popular-search-chips"></div>
+
+      <!-- Category Filter Chips & Quick Tools -->
       <div class="problem-filter-bar" id="problemFilterBar">
         <button class="filter-chip active" data-filter="all"><span>⚡</span> All Issues</button>
         <button class="filter-chip" data-filter="livestream"><span>📡</span> Livestream & Cameras</button>
@@ -137,6 +190,9 @@
         <button class="filter-chip" data-filter="screens"><span>📺</span> Screens & Slides</button>
         <button class="filter-chip" data-filter="embrace"><span>🤝</span> Embrace</button>
         <button class="filter-chip" data-filter="power"><span>⚡</span> Power</button>
+        <button id="btnHubOpenPlacards" class="filter-chip" style="margin-left: auto; border-color: rgba(168, 85, 247, 0.5); color: #c084fc; background: rgba(168, 85, 247, 0.12);" title="Generate & print physical QR equipment placards">
+          <span>🏷️</span> Print Station Placards
+        </button>
       </div>
 
       <!-- Quick Issue Selector Cards -->
@@ -149,6 +205,15 @@
             <h3 class="problem-card-title">ATEM Switcher: Camera Feed Black</h3>
             <p class="problem-card-desc">Both black = Ubiquiti white switch under desk. One black = restart camera on switch or under-desk SDI box.</p>
             <span class="problem-card-action">Restore Camera Video ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="sanctuary-av-controller-issues" data-category="livestream">
+          <div class="problem-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🎛️</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Sanctuary AV Controller: Telemetry Offline</h3>
+            <p class="problem-card-desc">Restart Port 3050 Node daemon, verify ATEM USB/IP heartbeat, and disarm silence alarms during musical pauses.</p>
+            <span class="problem-card-action">Restore AV Controller ➔</span>
           </div>
         </div>
 
@@ -237,9 +302,9 @@
         <div class="quick-problem-card" data-scenario="mixing-station-disconnect" data-category="audio">
           <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">📱</div>
           <div class="problem-card-body">
-            <h3 class="problem-card-title">Mixing Station iPad Disconnected</h3>
+            <h3 class="problem-card-title">Mixing Station Tablet / iPad Disconnected</h3>
             <p class="problem-card-desc">Back arrow to Home screen ➔ tap 'Backup search' to locate and reconnect to the Soundcraft console.</p>
-            <span class="problem-card-action">Reconnect iPad App ➔</span>
+            <span class="problem-card-action">Reconnect Tablet / iPad ➔</span>
           </div>
         </div>
 
@@ -313,12 +378,26 @@
           </div>
         </div>
 
-        <div class="quick-problem-card" data-scenario="obs-captions" data-category="embrace">
-          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">💬</div>
+        <div class="quick-problem-card" data-scenario="obs-captions" data-category="livestream">
+          <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">💬</div>
           <div class="problem-card-body">
-            <h3 class="problem-card-title">OBS Cloud Closed Captions</h3>
-            <p class="problem-card-desc">Tools ➔ Cloud Closed Captions ➔ Check Captioning Enabled ➔ Click preview box to transcribe.</p>
-            <span class="problem-card-action">Fix Closed Captions ➔</span>
+            <h3 class="problem-card-title">OBS Stream Captions: Missing / Lagging</h3>
+            <p class="problem-card-desc">Check VoxStream service status (:8765), OBS browser source URL, mic VU meter, or switch to Moonshine engine.</p>
+            <span class="problem-card-action">Fix Stream Captions ➔</span>
+          </div>
+        </div>
+
+        <div class="quick-problem-card" data-scenario="embrace-captions-view" data-category="embrace">
+          <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">📱</div>
+          <div class="problem-card-body">
+            <h3 class="problem-card-title">Mobile Read-Along &amp; Stage Prompter</h3>
+            <p class="problem-card-desc">Phones/iPads can't connect to QR: verify 'Waypoint Guest' Wi-Fi, port 8765 firewall, Bionic Reading, or Wake Lock.</p>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-top: 0.4rem;">
+              <span class="problem-card-action">Fix Mobile Read-Along ➔</span>
+              <button class="btn-share-captions-qr-hub" style="background: rgba(14, 165, 233, 0.2); border: 1px solid rgba(14, 165, 233, 0.5); color: #38bdf8; font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; cursor: pointer; font-weight: 700;" title="Open scannable QR code for congregation read-along">
+                📲 Share QR
+              </button>
+            </div>
           </div>
         </div>
 
@@ -851,11 +930,11 @@
           </div>
 
           <div class="quick-problem-card" data-directscenario="obs-captions">
-            <div class="problem-card-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">💬</div>
+            <div class="problem-card-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">💬</div>
             <div class="problem-card-body">
-              <h3 class="problem-card-title">OBS Cloud Closed Captions</h3>
-              <p class="problem-card-desc">Tools ➔ Cloud Closed Captions ➔ Check Captioning Enabled ➔ Click preview box to transcribe.</p>
-              <span class="problem-card-action">Fix Closed Captions ➔</span>
+              <h3 class="problem-card-title">OBS Stream Captions: Missing / Lagging</h3>
+              <p class="problem-card-desc">Check VoxStream service status (:8765), OBS browser source URL, mic VU meter, or switch to Moonshine engine.</p>
+              <span class="problem-card-action">Fix Stream Captions ➔</span>
             </div>
           </div>
 
@@ -896,7 +975,7 @@
         <div class="layer-switch-group" id="embraceSubNavGroup">
           <button class="layer-btn active" data-embracesub="sub-wavecast">🎧 WaveCAST & Wi-Fi</button>
           <button class="layer-btn" data-embracesub="sub-embracetv">📺 Embrace Room TV</button>
-          <button class="layer-btn" data-embracesub="sub-captions">💬 OBS Closed Captions</button>
+          <button class="layer-btn" data-embracesub="sub-captions">💬 Live Captions &amp; Read-Along</button>
           <button class="layer-btn" data-embracesub="sub-all-embrace">📋 All Embrace Tools (<span id="embraceCountBadge">3</span>)</button>
         </div>
       </div>
@@ -1055,51 +1134,213 @@
         </div>
       </div>
 
-      <!-- Sub-Pane 3: OBS Cloud Closed Captions -->
+      <!-- Sub-Pane 3: Live Captions & Stage Prompter Suite -->
       <div id="embracesub-captions" class="embrace-subpane" style="display: none;">
-        <div class="calc-card" style="margin-bottom: 1.25rem;">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.5rem;">
-              <span>💬</span> OBS Cloud Closed Captions Setup & Troubleshooting
+        
+        <!-- Header & Action Controls -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem;">
+          <div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+              <span>💬</span> VoxStream Live Captions &amp; Stage Prompter Suite
             </h3>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span class="location-pill" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8; background: rgba(14, 165, 233, 0.1);">Google Cloud Speech API</span>
-              <button class="btn-print-action" onclick="window.print()" title="Print OBS captions guide">
-                <span>🖨️</span> Print Guide
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+              Real-time AI speech transcription, offline Scripture lookups, and mobile congregation read-along on Port <code>8765</code>.
+            </p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <button id="btnOpenCaptionsQrModal" class="btn-print-action" style="background: rgba(14, 165, 233, 0.2); border-color: rgba(14, 165, 233, 0.5); color: #38bdf8;" title="Open scannable live captions QR code modal">
+              <span>📲</span> Share Display QR
+            </button>
+            <a href="captions_qr_handout.html" target="_blank" class="btn-print-action" style="text-decoration: none;" title="Open and print guest QR code handout">
+              <span>📱</span> Print QR Handout
+            </a>
+            <button class="btn-print-action" onclick="window.print()" title="Print complete captions guide">
+              <span>🖨️</span> Print Guide
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Read-Along Live QR Code Share Card -->
+        <div class="calc-card" style="border: 1px solid rgba(14, 165, 233, 0.4); background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.85) 100%); margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <span class="location-pill" style="border-color: rgba(14, 165, 233, 0.5); color: #38bdf8; background: rgba(14, 165, 233, 0.15); font-weight: 800; font-size: 0.7rem;">CONGREGATION &amp; EMBRACE READ-ALONG</span>
+              <h4 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-top: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>📲</span> Scan for Live Captions Display
+              </h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; max-width: 650px; line-height: 1.45;">
+                Share this QR code with attendees or volunteers in the Embrace Room or sanctuary. Encodes the host computer's local Wi-Fi IP on port <code>8765/display</code>.
+              </p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <button id="btnShareCaptionsModalInline" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 14px; background: #0284c7; border-color: #0369a1; font-weight: 700;">
+                <span>📲</span> Fullscreen QR
               </button>
+              <a href="captions_qr_handout.html" target="_blank" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 14px; text-decoration: none; border-color: rgba(245, 158, 11, 0.5); color: #facc15;">
+                <span>🖨️</span> Print Handout ↗
+              </a>
             </div>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-            Real-time automated subtitles and closed captions for deaf / hard-of-hearing stream viewers and conference room screens.
-          </p>
 
-          <ol class="step-actions-list">
-            <li class="step-action-item">
-              <span class="step-action-number">1</span>
-              <div>
-                <strong>Open Plugin Menu:</strong> In the top OBS menu bar, click <strong>Tools ➔ Cloud Closed Captions</strong>.
+          <!-- Dynamic QR & Connection Panel -->
+          <div style="display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; background: var(--bg-input); padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-subtle);">
+            <!-- QR SVG container -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
+              <div id="qrCaptionsDisplay" class="qr-svg-wrap" style="width: 130px; height: 130px; padding: 5px;">
+                <!-- Dynamically generated SVG -->
               </div>
-            </li>
-            <li class="step-action-item">
-              <span class="step-action-number">2</span>
+              <span style="font-size: 0.7rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">Scan with Camera</span>
+            </div>
+
+            <!-- Connection Details & IP Configurator -->
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <!-- Target URL Bar with Copy & Open -->
               <div>
-                <strong>Turn On Captioning:</strong> In the Caption Preview dock, make sure the <strong>Captioning Enabled</strong> box is checked.
+                <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.25rem;">
+                  Target Read-Along URL (Port 8765):
+                </label>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <code id="captionsDisplayUrlText" style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 6px 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; word-break: break-all;">
+                    http://192.168.1.150:8765/display
+                  </code>
+                  <button id="btnCopyDisplayUrl" class="btn-prev-step" style="padding: 5px 10px; font-size: 0.78rem; white-space: nowrap;">
+                    📋 Copy Link
+                  </button>
+                  <a id="btnTestDisplayUrl" href="http://192.168.1.150:8765/display" target="_blank" rel="noopener noreferrer" class="btn-prev-step" style="padding: 5px 10px; font-size: 0.78rem; text-decoration: none; white-space: nowrap;">
+                    📺 Open ↗
+                  </a>
+                </div>
               </div>
-            </li>
-            <li class="step-action-item">
-              <span class="step-action-number">3</span>
-              <div>
-                <strong>Click Preview Box:</strong> Click the preview box inside the caption dock to make it turn on and start transcribing live voice audio.
+
+              <!-- Device IP Inline Quick-Edit -->
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; background: rgba(30, 41, 59, 0.5); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06); font-size: 0.78rem;">
+                <span style="color: var(--text-secondary);">Booth PC IP:</span>
+                <input type="text" id="inputBoothDeviceIp" class="calc-input" style="width: 140px; padding: 3px 8px; font-size: 0.78rem; font-family: var(--font-mono); text-align: center;" value="192.168.1.150" placeholder="192.168.1.xxx">
+                <button id="btnSaveBoothDeviceIp" class="btn btn-primary" style="font-size: 0.72rem; padding: 3px 8px; background: #0284c7; border-color: #0369a1;">
+                  Update QR
+                </button>
+                <button id="btnDetectBoothDeviceIp" class="btn-prev-step" style="font-size: 0.72rem; padding: 3px 8px;" title="Auto-detect LAN IP via browser">
+                  🔄 Auto-Detect
+                </button>
+                <span id="ipSaveFeedback" style="color: #34d399; font-size: 0.72rem; font-weight: 700; display: none;">✓ Updated!</span>
               </div>
-            </li>
-            <li class="step-action-item">
-              <span class="step-action-number">4</span>
-              <div>
-                <strong>No Captions Generating?</strong> Verify active microphone is unmuted in OBS Audio Mixer, check ASIO Soundcraft soundboard USB driver connection, and verify internet connectivity.
+
+              <!-- Guest 3-Step Instruction Pill -->
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.78rem; color: #cbd5e1;">
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800;">1</span>
+                  <span>Join Wi-Fi: <strong>Waypoint Guest</strong> (<code>Psalm27:4!</code>)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800;">2</span>
+                  <span>Open Camera &amp; Scan QR</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.35rem;">
+                  <span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800;">3</span>
+                  <span>Live Captions Stream Instantly</span>
+                </div>
               </div>
-            </li>
-          </ol>
+            </div>
+          </div>
         </div>
+
+        <!-- 2 Targeted Guides Side-by-Side Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+          
+          <!-- Guide 1: OBS Live Stream Overlay -->
+          <div class="calc-card" style="border: 1px solid rgba(59, 130, 246, 0.4); background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <div>
+                <span class="location-pill" style="border-color: rgba(59, 130, 246, 0.5); color: #93c5fd; background: rgba(59, 130, 246, 0.15); font-weight: 800; font-size: 0.7rem;">BROADCAST STREAM OVERLAY</span>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin-top: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                  <span>📡</span> OBS Stream Captions Guide
+                </h4>
+              </div>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.3);">Port 8765 /</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.4;">
+              Transparent lower-third caption overlay for YouTube stream, microphone level meters, and CEA-608 embedded closed captions.
+            </p>
+
+            <div style="font-size: 0.8rem; font-weight: 700; color: #93c5fd; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.04em;">Key Troubleshooting Checks:</div>
+            <ul class="step-actions-list" style="margin-bottom: 1rem; list-style: none; padding-left: 0;">
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>OBS Browser Source:</strong> Set to <code>http://127.0.0.1:8765/</code> (1920x1080 resolution).</li>
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>Mic Level Meter:</strong> Dashboard VU meter must bounce between <strong>-18 dBFS and -6 dBFS</strong>.</li>
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>Speech Lag:</strong> Switch engine to <strong>Useful Moonshine</strong> (~120ms) or <strong>Local Vosk</strong> (~20ms).</li>
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>Panic Drop:</strong> Press <code>C</code> or click '🚨 Panic Drop' to blank captions immediately.</li>
+            </ul>
+
+            <div class="captions-features-row" style="margin-top: 14px; padding: 12px 14px; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px;">
+              <p style="font-weight: 700; font-size: 12px; text-transform: uppercase; color: #60A5FA; letter-spacing: 0.06em; margin: 0 0 8px;">✨ Accessibility Features in Captions View</p>
+              <ul style="margin: 0; padding: 0 0 0 18px; font-size: 13px; color: var(--text-secondary, #94A3B8); line-height: 1.7;">
+                <li><strong style="color: #F1F5F9;">Bionic Reading</strong> — bolds the first half of every word to guide eyes and improve reading speed</li>
+                <li><strong style="color: #F1F5F9;">OpenDyslexic Font</strong> — switches to a dyslexia-friendly font with weighted letter bases</li>
+                <li><strong style="color: #F1F5F9;">Scripture Auto-Detection</strong> — automatically highlights verse references (e.g. John 3:16) in gold</li>
+                <li><strong style="color: #F1F5F9;">Live WebSocket Feed</strong> — auto-reconnects if connection drops; no manual refresh needed</li>
+                <li><strong style="color: #F1F5F9;">QR Code Access</strong> — attendees scan at the booth to open on their own device (Waypoint Guest Wi-Fi)</li>
+              </ul>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: auto;">
+              <button class="btn btn-primary" data-directscenario="obs-captions" style="font-size: 0.78rem; padding: 6px 12px; font-weight: 700;">
+                🛠️ Open Stream Fix Guide ➔
+              </button>
+              <a href="http://localhost:8765/dashboard" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.78rem; padding: 6px 12px; text-decoration: none; border: 1px solid rgba(59, 130, 246, 0.5);">
+                🎙️ Dashboard (:8765) ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Guide 2: Mobile Read-Along & Stage Prompter -->
+          <div class="calc-card" style="border: 1px solid rgba(14, 165, 233, 0.4); background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <div>
+                <span class="location-pill" style="border-color: rgba(14, 165, 233, 0.5); color: #38bdf8; background: rgba(14, 165, 233, 0.15); font-weight: 800; font-size: 0.7rem;">MOBILE &amp; STAGE PROMPTER</span>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin-top: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                  <span>📱</span> Congregation Read-Along &amp; Prompter
+                </h4>
+              </div>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.3);">Port 8765 /display</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.4;">
+              Live responsive teleprompter for congregation phones, Embrace Room TV, and podium iPads with built-in ADHD/Dyslexia reading aids.
+            </p>
+
+            <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.04em;">Key Troubleshooting Checks:</div>
+            <ul class="step-actions-list" style="margin-bottom: 1rem; list-style: none; padding-left: 0;">
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>Wi-Fi Connection:</strong> Phones must join <strong>Waypoint Guest</strong> (<code>Psalm27:4!</code>), NOT cellular.</li>
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>Windows Firewall:</strong> Allow <code>python.exe</code> / port 8765 through Windows Defender Firewall.</li>
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>Screen Wake Lock:</strong> Tablets stay awake automatically while <code>/display</code> is active.</li>
+              <li style="font-size: 0.82rem; color: #cbd5e1; margin-bottom: 0.4rem;">• <strong>Bionic Reading:</strong> Tap ⚙️ Settings on <code>/display</code> to toggle visual word fixation anchors.</li>
+            </ul>
+
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: auto;">
+              <button class="btn btn-primary" data-directscenario="embrace-captions-view" style="font-size: 0.78rem; padding: 6px 12px; font-weight: 700; background: #0284c7; border-color: #0369a1;">
+                🛠️ Open Mobile Fix Guide ➔
+              </button>
+              <button id="btnOpenCaptionsQrModalFromCard" class="btn btn-secondary" style="font-size: 0.78rem; padding: 6px 12px; border: 1px solid rgba(14, 165, 233, 0.5); color: #38bdf8;">
+                📲 Share QR
+              </button>
+              <a id="linkOpenDisplayPage" href="http://192.168.1.150:8765/display" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.78rem; padding: 6px 12px; text-decoration: none; border: 1px solid rgba(56, 189, 248, 0.5);">
+                📺 Open /display ↗
+              </a>
+              <a href="captions_qr_handout.html" target="_blank" class="btn btn-secondary" style="font-size: 0.78rem; padding: 6px 12px; text-decoration: none; border: 1px solid rgba(245, 158, 11, 0.5);">
+                📱 QR Handout ↗
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Pro-Tips / Architecture Callout -->
+        <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px 16px; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+          <strong style="color: #fff;">💡 Sound Booth Operator Notes:</strong>
+          <ul style="margin: 0.35rem 0 0 1.25rem; padding: 0;">
+            <li><strong>Automatic Startup:</strong> VoxStream is configured to launch automatically on Windows boot. If closed, re-launch via the desktop shortcut or <code>run_captioner.bat</code>.</li>
+            <li><strong>100% Offline Capability:</strong> When using <em>Local Faster-Whisper</em> or <em>Local Moonshine</em>, all speech-to-text, Scripture auto-detection, and lexicon correction run 100% locally with zero internet dependency.</li>
+          </ul>
+        </div>
+
       </div>
 
       <!-- Sub-Pane 4: All Dynamic Embrace Guides -->
@@ -2236,6 +2477,186 @@
       </div>
       <div class="modal-body" id="modalQrBody">
         <!-- Dynamically Cloned / Populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated VoxStream Live Captions Display QR Modal -->
+  <div class="detail-modal-backdrop" id="captionsQrModal">
+    <div class="detail-modal-card" style="max-width: 620px; text-align: center;">
+      <div class="modal-header" style="justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.3rem;">📱</span>
+          <div style="text-align: left;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+              Live Captions &amp; Read-Along
+            </h3>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0;">
+              Waypoint Church • VoxStream Port 8765
+            </p>
+          </div>
+        </div>
+        <button id="modalCaptionsQrCloseBtn" class="search-clear-btn" style="display: block; font-size: 1.2rem;">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.5rem 1.25rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        <!-- Large High-Contrast Scannable QR -->
+        <div style="background: #ffffff; padding: 12px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45); display: inline-flex;">
+          <div id="modalCaptionsQrCode" style="width: 220px; height: 220px;">
+            <!-- Dynamically Rendered SVG -->
+          </div>
+        </div>
+
+        <!-- Target URL Pill -->
+        <div style="width: 100%; max-width: 480px;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.35rem;">
+            Read-Along Web Address (Local Wi-Fi)
+          </div>
+          <code id="modalCaptionsUrlText" style="display: block; background: var(--bg-input); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; word-break: break-all;">
+            http://192.168.1.150:8765/display
+          </code>
+        </div>
+
+        <!-- Device IP Quick Adjuster inside Modal -->
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center; background: rgba(30, 41, 59, 0.5); padding: 6px 12px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.06); font-size: 0.78rem;">
+          <span style="color: var(--text-secondary);">Device IP:</span>
+          <input type="text" id="inputModalDeviceIp" class="calc-input" style="width: 130px; padding: 3px 8px; font-size: 0.78rem; font-family: var(--font-mono); text-align: center;" value="192.168.1.150">
+          <button id="btnModalSaveDeviceIp" class="btn btn-primary" style="font-size: 0.72rem; padding: 3px 8px; background: #0284c7; border-color: #0369a1;">
+            Update
+          </button>
+          <button id="btnModalDetectDeviceIp" class="btn-prev-step" style="font-size: 0.72rem; padding: 3px 8px;" title="Auto-detect LAN IP">
+            🔄 Auto
+          </button>
+        </div>
+
+        <!-- 3-Step Guide Card -->
+        <div style="width: 100%; max-width: 480px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem 1rem; text-align: left; font-size: 0.82rem; line-height: 1.5;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+            <span style="font-size: 1rem;">📶</span>
+            <span><strong>Step 1:</strong> Connect phone to <strong>Waypoint Guest</strong> Wi-Fi (<code>Psalm27:4!</code>)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+            <span style="font-size: 1rem;">📷</span>
+            <span><strong>Step 2:</strong> Scan QR code with your phone camera</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1rem;">⚡</span>
+            <span><strong>Step 3:</strong> Live transcript opens with Dyslexia &amp; ADHD reading aids</span>
+          </div>
+        </div>
+
+        <!-- Action Row -->
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; width: 100%;">
+          <button id="btnModalCopyDisplayUrl" class="btn btn-primary" style="font-size: 0.82rem; padding: 8px 16px; background: #0284c7; border-color: #0369a1; font-weight: 700;">
+            📋 Copy Link
+          </button>
+          <a id="btnModalOpenDisplayUrl" href="http://192.168.1.150:8765/display" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.82rem; padding: 8px 16px; text-decoration: none; border-color: rgba(56, 189, 248, 0.5);">
+            📺 Open /display ↗
+          </a>
+          <a href="captions_qr_handout.html" target="_blank" class="btn btn-secondary" style="font-size: 0.82rem; padding: 8px 16px; text-decoration: none; border-color: rgba(245, 158, 11, 0.5); color: #facc15;">
+            🖨️ Print Handout ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable Equipment Station QR Placards Modal -->
+  <div class="placard-modal-backdrop" id="placardPrintModal">
+    <div class="placard-modal-dialog">
+      <div class="placard-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.3rem;">🏷️</span>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+              Physical Equipment QR Placards
+            </h3>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0;">
+              Print and tape these 8 mini-placards on physical sanctuary gear for 1-tap mobile troubleshooting.
+            </p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <button id="btnPrintPlacardsSheet" class="btn-print-action" style="padding: 0.4rem 0.8rem; font-size: 0.825rem;">
+            <span>🖨️</span> Print All Placards
+          </button>
+          <button id="modalPlacardsCloseBtn" class="search-clear-btn" style="display: block; font-size: 1.1rem;">✕</button>
+        </div>
+      </div>
+      <div class="placard-modal-body">
+        <div id="placardBaseUrlInfo" style="margin-bottom: 1rem; padding: 0.5rem 0.75rem; background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; font-size: 0.78rem;">
+          <div>
+            <span style="color: var(--text-muted);">QR Codes encoded for: </span>
+            <strong id="placardCurrentBaseUrl" style="color: var(--accent-blue); font-family: var(--font-mono);">--</strong>
+          </div>
+          <button id="btnPlacardOpenSettings" class="btn-prev-step" style="padding: 0.25rem 0.6rem; font-size: 0.72rem;">
+            ⚙️ Change in Settings
+          </button>
+        </div>
+        <div id="placardModalPrintableArea">
+          <div class="placards-sheet-grid" id="placardsSheetGrid">
+            <!-- Dynamically Populated with 8 QR Placards -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Settings Modal -->
+  <div class="placard-modal-backdrop" id="appSettingsModal">
+    <div class="placard-modal-dialog" style="max-width: 600px;">
+      <div class="placard-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.3rem;">⚙️</span>
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+              Sound Booth Hub Settings
+            </h3>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0;">
+              Configure permanent production URL for QR placards & mobile access.
+            </p>
+          </div>
+        </div>
+        <button id="modalSettingsCloseBtn" class="search-clear-btn" style="display: block; font-size: 1.1rem;">✕</button>
+      </div>
+      <div class="placard-modal-body" style="padding: 1.5rem;">
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">
+            🌐 Production Public Base URL
+          </label>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.6rem; line-height: 1.4;">
+            This URL is encoded into physical QR codes so volunteers scanning from their phones reach the live production site instead of <code>localhost</code>.
+          </p>
+          <input type="url" id="settingPublicBaseUrl" class="calc-input" style="width: 100%; box-sizing: border-box; font-family: var(--font-mono); font-size: 0.85rem;" placeholder="e.g. https://av.waypointrdu.com (or blank for auto)">
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+          <button id="btnUseCurrentUrl" class="btn-prev-step" style="font-size: 0.75rem; padding: 0.35rem 0.7rem;">
+            📍 Use Current Browser URL
+          </button>
+          <button id="btnResetBaseUrl" class="btn-prev-step" style="font-size: 0.75rem; padding: 0.35rem 0.7rem;">
+            🔄 Reset to Auto
+          </button>
+        </div>
+
+        <div style="background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 0.85rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.3rem;">
+            Example QR Code Target Link:
+          </div>
+          <code id="settingUrlPreview" style="display: block; color: #38bdf8; font-size: 0.8rem; word-break: break-all;">
+            --
+          </code>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem;">
+            🛡️ Uses permanent short slug <code>/#q/tvs</code> with Level H error correction (30% physical scratch/damage tolerance).
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.6rem;">
+          <button id="btnCancelSettings" class="btn-prev-step">Cancel</button>
+          <button id="btnSaveSettings" class="btn-resolved" style="background: var(--accent-blue); border-color: var(--accent-blue); color: #ffffff;">
+            💾 Save Settings
+          </button>
+        </div>
       </div>
     </div>
   </div>

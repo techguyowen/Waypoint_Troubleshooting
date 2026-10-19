@@ -2,16 +2,18 @@
    Waypoint Church Sound Booth Operations - Service Worker (Offline PWA)
    ========================================================================== */
 
-const CACHE_NAME = 'waypoint-av-v2.5.0';
+const CACHE_NAME = 'waypoint-av-v2.15.0';
 
 const PRECACHE_ASSETS = [
   './',
   './index.html',
+  './captions_qr_handout.html',
   './styles.css',
   './app.js',
   './data.js',
   './qrcode.min.js',
   './favicon.svg',
+  './captions_qr_code.svg',
   './icon-192.png',
   './icon-512.png',
   './manifest.json'

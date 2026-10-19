@@ -32,7 +32,10 @@ Waypoint_Troubleshooting/
 ├── README.md           # Project Overview & Quick Start
 ├── ARCHITECTURE.md     # Architecture & Engineering Guide (This document)
 ├── HARDWARE_MAP.md     # Church Hardware Directory & Wiring Reference
-└── AI_GUIDELINES.md    # Instructions & Decision Rules for AI Assistants
+├── AI_GUIDELINES.md    # Instructions & Decision Rules for AI Assistants
+├── VOXSTREAM_GUIDE.md  # Deep Reference for VoxStream Live Captioner PRO (Port 8765)
+├── AV_CONTROLLER_GUIDE.md # Deep Reference for Sanctuary AV Controller (Port 3050)
+└── ECOSYSTEM_INTEGRATION_GUIDE.md # Cross-system architecture, network directory & triage map
 ```
 
 ---

@@ -785,32 +785,31 @@ const AV_DATA = {
       icon: "tv",
       category: "Embrace Group / TV & Video Extender",
       severity: "medium",
-      summary: "Troubleshooting guide for the Embrace Conference Room TV HDMI extender system (RX/TX), Nest camera outlet timer, and OBS fullscreen projection.",
+      summary: "Troubleshooting guide for the Embrace Conference Room TV HDMI extender system (RX/TX), Nest camera outlet timer, and Sanctuary AV Controller 1-click screen restore.",
       phases: [
         {
-          phase: "Phase 1: Behind TV Receiver & Outlet Timer",
-          badge: "Behind Embrace TV",
+          phase: "Phase 1: 1-Click Screen Restore & Receiver Check",
+          badge: "1-Click Quick Fix",
           stepNumber: 1,
-          title: "Inspect HDMI Cable on Receiver Box & Check Shared Outlet Timer",
-          location: "Embrace Conference Room: Mounted directly behind the Embrace Room TV.",
+          title: "Use AV Controller 'Reopen Screen' & Check Behind-TV Receiver",
+          location: "Sound Booth (Port 3050) & Embrace Conference Room (Behind TV)",
           actionSteps: [
-            "<strong>Inspect Receiver & HDMI:</strong> Check the small HDMI receiver box (RX) mounted behind the TV. Ensure HDMI cables at both ends (receiver out to TV input) are fully seated (cable often gets bumped or strained).",
-            "<strong>Check Power & Shared Outlet Timer:</strong> Verify the receiver box has power lights on. Because the receiver shares an outlet timer with the Nest camera, ensure the timer is active and currently supplying power.",
-            "<strong>Quick Indicator:</strong> If the room's Nest camera is also unpowered / offline, the shared outlet timer is switched OFF. Toggle or override the timer to restore power."
+            "<strong>⚡ 1-Click Fast Restore (Recommended):</strong> On the sound booth iPad or computer, open <strong>Sanctuary AV Controller (http://localhost:3050/captions)</strong> and tap <strong>'📺 Reopen Screen'</strong> (or run <code>POST /api/control/reopen-screen</code>). This automatically forces OBS Fullscreen Video Projector to the <strong>LONTIUM</strong> stage monitor and restarts captions.",
+            "<strong>Inspect Behind-TV Receiver (RX):</strong> If the TV still displays 'No Signal', check the small HDMI receiver box mounted behind the Embrace Room TV. Ensure the HDMI cable is firmly seated into the TV input.",
+            "<strong>Check Shared Outlet Timer:</strong> Verify the receiver box power LEDs are lit. If the room's Nest camera is also offline, the shared wall outlet timer is switched OFF. Toggle or override the timer to restore power."
           ],
-          tip: "Because the TV is wall-mounted, cable strain or physical movement frequently unseats the HDMI connector."
+          tip: "90% of OBS projector window drops are restored instantly by tapping 'Reopen Screen' on the Sanctuary AV Controller."
         },
         {
-          phase: "Phase 2: Sound Booth Transmitter & OBS Projector",
+          phase: "Phase 2: Sound Booth Transmitter & OBS Manual Projector",
           badge: "Sound Booth & OBS",
           stepNumber: 2,
-          title: "Check Booth Transmitter (TX) & Project OBS Preview to LONTIUM",
+          title: "Check Booth Transmitter (TX) & Manual OBS Projector Fallback",
           location: "Sound Booth: Underneath desk & OBS Studio computer",
           actionSteps: [
             "<strong>Inspect Transmitter Unit (TX):</strong> Underneath the booth desk, confirm transmitter power is ON, HDMI input cable is fully inserted, and Cat6 link status LEDs are lit.",
-            "<strong>Open OBS Studio:</strong> On the broadcast computer, right-click anywhere on the main video preview window.",
-            "Hover over <strong>'Fullscreen Projector (Preview)'</strong> and select <strong>'LONTIUM'</strong> from the list of available displays.",
-            "The OBS feed will instantly project onto the Embrace conference room TV screen."
+            "<strong>Manual OBS Fallback:</strong> If the automated API button didn't engage, right-click anywhere on the OBS main video preview ➔ hover over <strong>'Fullscreen Projector (Preview)'</strong> ➔ select <strong>'LONTIUM'</strong>.",
+            "The OBS program feed will immediately project onto the Embrace conference room TV screen."
           ],
           tip: "An active link light on both TX (booth) and RX (room) confirms the Cat6 network video bridge is healthy."
         }
@@ -818,38 +817,116 @@ const AV_DATA = {
     },
     {
       id: "obs-captions",
-      isEmbrace: true,
-      title: "OBS Cloud Closed Captions Setup & Troubleshooting",
+      title: "VoxStream Live Captions & Accessibility Captions View: Troubleshooting",
       icon: "captions",
-      category: "Embrace Group / Closed Captions",
-      severity: "medium",
-      summary: "How to enable Cloud Closed Captions in OBS Studio and resolve blank preview, ASIO driver disconnects, and text lag.",
+      category: "Livestream / Captions / Overlays",
+      severity: "high",
+      summary: "Troubleshoot VoxStream PRO live stream captions (AI transcription on port 8765) and Accessibility Captions View: verify the VoxStream service, check audio device input meter, switch to low-latency Moonshine/Vosk engine, confirm the Accessibility Captions View on attendee devices, and trigger 1-click Panic Drop.",
       phases: [
         {
-          phase: "Phase 1: Launch Caption Dock & Enable",
-          badge: "Plugin Startup",
+          phase: "Phase 1: Verify VoxStream Service & Emergency Launch",
+          badge: "Port 8765 / Service Check",
           stepNumber: 1,
-          title: "Launch Caption Dock & Turn On Captioning",
-          location: "Sound Booth Broadcast Computer (OBS Studio)",
+          title: "Confirm VoxStream Status & Emergency Start If Closed",
+          location: "Broadcast Workstation (http://localhost:8765/dashboard)",
           actionSteps: [
-            "In the top OBS menu bar, click <strong>Tools ➔ Cloud Closed Captions</strong>.",
-            "In the Caption Preview dock/window, ensure <strong>Captioning Enabled</strong> is checked.",
-            "Click the preview box inside the caption dock to start transcribing."
+            "<strong>Auto-Start on Boot:</strong> VoxStream is configured to automatically launch when the sound booth Windows PC starts up. Look for the black terminal window running in the background.",
+            "<strong>Check Web Dashboard:</strong> Open Chrome or Edge and navigate to <strong>http://localhost:8765/dashboard</strong> (or click 'Live Apps ▾' in the top header).",
+            "<strong>Verify Engine Status:</strong> Check the top-left status pill. It should read <strong style='color:#4ade80;'>'Capturing' (Green)</strong>. If it says 'Stopped' or 'Paused', click the green <strong>'▶ Start Captions'</strong> button.",
+            "<strong>Emergency Start (If Closed):</strong> If the dashboard won't load at all, double-click the <strong>VoxStream</strong> shortcut on the Windows desktop or run <code>run_captioner.bat</code> in the app folder. Keep the black terminal window open in the background."
           ],
-          tip: "Ensure the Caption Preview dock is docked or visible in OBS for quick monitoring during service."
+          tip: "Never close the black VoxStream command window while broadcasting — minimize it to the taskbar instead."
         },
         {
-          phase: "Phase 2: Audio Mixer, Internet & Stream Reset",
-          badge: "Audio & Network Check",
+          phase: "Phase 2: OBS Stream Overlay & Microphone Input",
+          badge: "OBS Source & Mic VU",
           stepNumber: 2,
-          title: "Verify Active Scene Audio, Internet Connection & Reset Stream",
-          location: "OBS Audio Mixer & Caption Settings",
+          title: "Inspect OBS Browser Source & Audio Capture Meter",
+          location: "OBS Studio & VoxStream Dashboard",
           actionSteps: [
-            "<strong>Active Scene Audio:</strong> The plugin only transcribes audio when the selected audio source is active and unmuted in the currently active scene. Ensure the microphone fader is unmuted in OBS Audio Mixer.",
-            "<strong>Status Indicator:</strong> If a red dot appears next to CC (ASIO Input Capture), verify the soundboard USB driver is connected and confirm the PC has internet access (uses Google Cloud Speech API).",
-            "<strong>Fix Lag / Overflow:</strong> In Caption Settings, verify Line Length (~32). Uncheck and recheck <strong>Captioning Enabled</strong> to clear accumulated lag."
+            "<strong>Check OBS Browser Source:</strong> In OBS Studio, find the <strong>'Live Captions'</strong> (or 'Captions Overlay') browser source in your active scene. Double-click it and verify:",
+            "• <strong>URL:</strong> <code>http://127.0.0.1:8765/</code> (or <code>http://localhost:8765/</code>)",
+            "• <strong>Resolution:</strong> Width <code>1920</code>, Height <code>1080</code> (or match your canvas size)",
+            "• <strong>Settings:</strong> Ensure <em>'Shutdown source when not visible'</em> and <em>'Refresh browser when scene becomes active'</em> are checked.",
+            "<strong>Check Microphone VU Meter:</strong> In the VoxStream dashboard header, observe the <strong>MIC VU Meter</strong> while the pastor or speaker talks. It should bounce comfortably between <strong>-18 dBFS and -6 dBFS</strong>.",
+            "<strong>If VU Meter reads -∞ dB:</strong> Go to the <strong>🎙️ Audio & Engine</strong> tab. Verify the correct audio input device is selected (e.g. <em>Soundcraft Si Impact USB</em>, <em>Focusrite</em>, or <em>Broadcast Lapel</em>). Click <strong>'💾 Save Audio & Engine Settings'</strong>.",
+            "<strong>Restart Audio Worker:</strong> If the meter stays dead, click <strong>'⏹ Stop Captions'</strong> and then <strong>'▶ Start Captions'</strong> to re-initialize the audio capture stream.",
+            "<strong>Accessibility Captions View (iPads & Mobile):</strong> Open <code>http://192.168.1.145:8765/display</code> (or scan the QR code at the booth) on any phone or tablet connected to the <strong>Waypoint Guest</strong> Wi-Fi to see captions in large-format read-along mode. Features include <strong>Bionic Reading</strong> mode (bold first half of each word), <strong>OpenDyslexic</strong> font toggle, and <strong>automatic Scripture detection</strong> (highlights verse references). The QR code handout is available at the sound booth."
           ],
-          tip: "A green status dot indicates active ASIO streaming to Google Cloud Speech API."
+          tip: "If OBS captions freeze, right-click the 'Live Captions' source in OBS and select 'Refresh' (or press Ctrl+R)."
+        },
+        {
+          phase: "Phase 3: Engine Lag, Inaccurate Text & Emergency Panic Drop",
+          badge: "Engine Lag & Panic Drop",
+          stepNumber: 3,
+          title: "Switch to Low-Latency Engine & Emergency Panic Drop",
+          location: "VoxStream Dashboard (🎙️ Audio & Engine) & AV Controller",
+          actionSteps: [
+            "<strong>Fix Speech Lag (>1 Second Delay):</strong> In the dashboard <strong>🎙️ Audio & Engine</strong> tab, switch the Speech-to-Text engine to:",
+            "• <strong>🥇 Local Faster-Whisper:</strong> ~400–600ms latency, 91.7% accuracy with superior biblical name recognition.",
+            "• <strong>🌙 Local Moonshine (Recommended for Fast Pacing):</strong> ~120–200ms latency, lightweight neural transformer.",
+            "• <strong>⚡ Local Vosk:</strong> Ultra-fast ~20–40ms latency with syllable-by-syllable instant response on any CPU.",
+            "<strong>Emergency Blanking (Panic Drop):</strong> If an inappropriate word, cough, or erroneous text gets transcribed on stream, immediately click <strong>'🚨 Panic Drop'</strong> in Sanctuary AV Controller (or send <code>POST http://127.0.0.1:8765/api/control/panic</code>, or press <code>C</code> on the dashboard) to instantly clear all broadcast screens.",
+            "<strong>Music Suppression:</strong> If captions output gibberish while the worship band plays, toggle on <strong>'Suppress Music & Organ'</strong> in the Audio tab to prevent instrumental noise from triggering speech recognition."
+          ],
+          tip: "The Accessibility Captions View at /display works even if the OBS stream captions overlay stops — iPads and phones auto-reconnect via WebSocket."
+        }
+      ]
+    },
+    {
+      id: "embrace-captions-view",
+      isEmbrace: true,
+      title: "Embrace Room & Mobile Read-Along Captions (VoxStream /display)",
+      icon: "tablet",
+      category: "Embrace Group / Mobile Accessibility",
+      severity: "high",
+      summary: "Triage live read-along captions on congregation phones, Embrace room TV, and stage prompter: fix Wi-Fi QR connection, Windows Firewall port 8765, and Screen Wake Lock.",
+      phases: [
+        {
+          phase: "Phase 1: Verify VoxStream Service & Web Display Link",
+          badge: "Port 8765 /display",
+          stepNumber: 1,
+          title: "Confirm Service Running & Test /display Link Locally",
+          location: "Sound Booth PC & Mobile Devices",
+          actionSteps: [
+            "<strong>Auto-Start on Boot:</strong> VoxStream runs automatically in the background on the sound booth PC. Confirm the black terminal window is active.",
+            "<strong>Test Local Display Link:</strong> Open <strong>http://localhost:8765/display</strong> in Chrome or Edge on the booth PC. You should see the dark read-along prompter screen with a green 'LIVE' badge.",
+            "<strong>Emergency Start (If Offline):</strong> If the page fails to connect, double-click the <strong>VoxStream</strong> shortcut on the Windows desktop or launch <code>run_captioner.bat</code>.",
+            "<strong>Display Mode Selection:</strong> In the top bar of <code>/display</code>, select between:",
+            "• <strong>📜 Scrollable History (Default):</strong> Viewers can scroll back to re-read earlier scripture or sermon notes.",
+            "• <strong>⚡ Live Prompter:</strong> Shows only current 2 sentences, fading out on silence for clean teleprompting."
+          ],
+          tip: "Click the '⛶ Fullscreen' button or press F11 for a clean borderless teleprompter display."
+        },
+        {
+          phase: "Phase 2: Mobile Wi-Fi & QR Connection Triage",
+          badge: "Wi-Fi & Firewall",
+          stepNumber: 2,
+          title: "Connect to 'Waypoint Guest' Wi-Fi & Check Windows Firewall",
+          location: "Congregation Phones, Embrace Room Table & Booth PC",
+          actionSteps: [
+            "<strong>Phone Must Join Church Wi-Fi:</strong> Mobile devices scanning the QR code must be connected to <strong>'Waypoint Guest'</strong> (Password: <code>Psalm27:4!</code>). Phones on cellular 5G/LTE cannot reach the local sound booth IP.",
+            "<strong>QR Code Generation:</strong> On the dashboard header, click <strong>'📲 Share Captions QR'</strong> (or click '📱 Share' on <code>/display</code>). A QR code modal appears with the booth machine's local Wi-Fi IP (e.g. <code>http://192.168.1.150:8765/display</code>).",
+            "<strong>Windows Firewall Check (If Phones Time Out):</strong> If phones on Wi-Fi get 'Server not found' or infinite spinning:",
+            "1. On the booth PC, open <strong>Windows Defender Firewall</strong> ➔ <em>Allow an app through firewall</em>.",
+            "2. Ensure <strong>python.exe</strong> (or port <code>8765</code>) is checked for <strong>Private Networks</strong>.",
+            "<strong>Install as PWA:</strong> On iPhone/iPad (Safari) or Android (Chrome), tap <strong>Share ➔ Add to Home Screen</strong> to install the Stage Display as a full-screen app."
+          ],
+          tip: "The QR code automatically embeds the host PC's current local IP address so scanning works seamlessly on any device."
+        },
+        {
+          phase: "Phase 3: Stage Prompter, Screen Wake Lock & Reading Aids",
+          badge: "Wake Lock & Reading Aids",
+          stepNumber: 3,
+          title: "Configure Screen Wake Lock, Bionic Reading & Stage TV",
+          location: "Podium iPad, Stage Confidence TV & Embrace Room",
+          actionSteps: [
+            "<strong>Screen Wake Lock (No Dimming):</strong> The <code>/display</code> web app automatically engages the browser's <strong>Screen Wake Lock API</strong>. Keep the browser tab visible and the tablet will never dim or sleep during preaching.",
+            "<strong>⚡ Bionic Reading (ADHD & Dyslexia Aid):</strong> In <code>/display</code>, tap <strong>⚙️ Settings</strong> and toggle <strong>Bionic Reading</strong>. It dynamically bolds the opening letters of words (e.g. <b>Wel</b>come <b>t</b>o <b>our</b> <b>ser</b>vice) to create visual fixation anchors that guide the eye.",
+            "<strong>High-Contrast Color Palettes:</strong> Choose from <strong>🌙 OLED Black</strong>, <strong>🟨 High Vis (Yellow on Black)</strong> for low vision, or <strong>🟡 Stage Amber</strong> for low glare under stage lights.",
+            "<strong>Restore LONTIUM Stage Confidence TV:</strong> If the stage TV loses its prompter feed, open <strong>Sanctuary AV Controller (http://localhost:3050/captions)</strong> and tap <strong>'📺 Reopen Screen'</strong> (or in OBS, right-click preview ➔ <em>Fullscreen Projector</em> ➔ <em>LONTIUM</em>)."
+          ],
+          tip: "Use keyboard shortcuts on /display: '+' to increase font, '-' to decrease font, 'C' to clear history, 'S' for settings."
         }
       ]
     },
@@ -1139,24 +1216,24 @@ const AV_DATA = {
     },
     {
       id: "mixing-station-disconnect",
-      title: "Mixing Station iPad App Disconnected / Offline",
+      title: "Mixing Station Tablet / iPad Disconnected / Offline",
       icon: "tablet",
-      category: "iPad / Mixing Station / Network",
+      category: "Tablet / iPad / Mixing Station / Network",
       severity: "high",
-      summary: "Reconnect Mixing Station iPad app to the Soundcraft console using Backup Search, verify Wi-Fi, and check rear Ethernet cable.",
+      summary: "Reconnect Mixing Station tablet or iPad app to the Soundcraft console using Backup Search, verify Wi-Fi, and check rear Ethernet cable.",
       phases: [
         {
           phase: "Step-by-Step Reconnect",
           badge: "Backup Search",
           stepNumber: 1,
           title: "Run 'Backup Search', Verify Wi-Fi & Soundboard Network Cable",
-          location: "iPad Mixing Station App & Sound Booth",
+          location: "Tablet / iPad (Mixing Station App) & Sound Booth",
           actionSteps: [
-            "<strong>1. Run 'Backup Search':</strong> In the Mixing Station app, tap the <strong>Back Arrow (←)</strong> or <strong>Home</strong> icon in the top left corner to exit the disconnected screen. Tap <strong>'Backup search'</strong>. When the Soundcraft Si Impact appears in the list, tap it to reconnect.",
-            "<strong>2. Check iPad Wi-Fi:</strong> Open iPad <strong>Settings ➔ Wi-Fi</strong>. Confirm connected to <strong>Waypoint Guest</strong> (Password: <code>Psalm27:4!</code>) or production Wi-Fi. Toggle Wi-Fi OFF for 5s and back ON if needed.",
+            "<strong>1. Run 'Backup Search':</strong> In the Mixing Station app on the tablet / iPad, tap the <strong>Back Arrow (←)</strong> or <strong>Home</strong> icon in the top left corner to exit the disconnected screen. Tap <strong>'Backup search'</strong>. When the Soundcraft Si Impact appears in the list, tap it to reconnect.",
+            "<strong>2. Check Tablet / iPad Wi-Fi:</strong> Open tablet / iPad <strong>Settings ➔ Wi-Fi</strong>. Confirm connected to <strong>Waypoint Guest</strong> (Password: <code>Psalm27:4!</code>) or production Wi-Fi. Toggle Wi-Fi OFF for 5s and back ON if needed.",
             "<strong>3. Check Console Ethernet Cable:</strong> Inspect the rear of the Soundcraft Si Impact console: verify the <strong>HiQnet / Network Ethernet cable</strong> is firmly clicked in and booth network switch LEDs are blinking."
           ],
-          tip: "'Backup search' performs direct broadcast discovery and reconnects the iPad in seconds."
+          tip: "'Backup search' performs direct broadcast discovery and reconnects the tablet or iPad in seconds."
         }
       ]
     },
@@ -1315,14 +1392,39 @@ const AV_DATA = {
           location: "Sound Booth (Under Desk) & Sanctuary Cameras",
           actionSteps: [
             "<strong>Golden Diagnostic Rule:</strong> It is almost NEVER both camera feeds failing at the same time independently.",
+            "<strong>Check Camera Ping Telemetry:</strong> Open <strong>Sanctuary AV Controller (http://localhost:3050/broadcast)</strong>. Check the latency matrix to see if Cam 1 (<code>192.168.1.101</code>) or Cam 2 (<code>192.168.1.102</code>) are responding to network pings.",
             "<strong>IF BOTH CAMERAS ARE BLACK:</strong> The issue is the <strong>Ubiquiti white network switch located underneath the sound booth desk</strong>. Check power and power cycle the switch to restore both camera network streams.",
             "<strong>IF ONLY ONE CAMERA IS BLACK:</strong>",
             "• Unplug that camera's data cable from the <strong>Ubiquiti white switch under the desk</strong> and replug to restart the stream, OR",
             "• Check that camera's <strong>labeled SDI converter box underneath the desk</strong> (unplug the power barrel connector, wait 5 seconds, and replug).",
             "<strong>Check Physical Cable on Camera Tripod:</strong> Physical panning/movement sometimes loosens the video cable directly on the camera body. Walk to the camera and firmly push the HDMI/SDI cable in.",
-            "<strong>Check ATEM Input Buttons:</strong> On the ATEM Mini switcher, verify Input 1 (Wide) or Input 2 (Close) is selected (not switched to Black or Color)."
+            "<strong>Check ATEM Input Buttons:</strong> On the ATEM Mini switcher (or on AV Controller at <code>http://localhost:3050/cameras</code>), verify Input 1 (Wide) or Input 2 (Close) is selected (not switched to Black or Color)."
           ],
           tip: "Both cameras black = Ubiquiti white switch. Single camera black = labeled SDI box under desk or camera port."
+        }
+      ]
+    },
+    {
+      id: "sanctuary-av-controller-issues",
+      title: "Sanctuary AV Controller: Telemetry Down or Silence Alarm Misfiring",
+      icon: "alert",
+      category: "Livestream / ATEM / Cameras",
+      severity: "medium",
+      summary: "Troubleshooting guide for Sanctuary AV Controller (Port 3050): Node service recovery, REAPER OSC VU stream, and false silence alert reset.",
+      phases: [
+        {
+          phase: "Step-by-Step Diagnostic",
+          badge: "Port 3050 / OSC",
+          stepNumber: 1,
+          title: "Check Node Server, Silence Thresholds & REAPER OSC Feed",
+          location: "Sound Booth Computer (Port 3050)",
+          actionSteps: [
+            "<strong>If Web Controller is Offline (http://localhost:3050 not loading):</strong> Open Terminal and restart the controller daemon: <code>cd /Users/techguyowen/Downloads/AV_Controller && npm start</code> (or <code>pm2 restart sanctuary-av</code>).",
+            "<strong>If Silence Watchdog Alarm is Flashing Red:</strong> Verify that the FOH Soundcraft Si Impact broadcast send (Layer D, Fader 22: Mix 14 Broadcast) is active and unmuted. Then check REAPER DAW master track output fader.",
+            "<strong>Verify REAPER OSC VU Meter Stream:</strong> In REAPER, navigate to Preferences ➔ Control/OSC/web. Confirm the OSC device is active, sending on port <code>8000</code> and receiving on port <code>9000</code>.",
+            "<strong>False Silence Alerts During Service Transitions:</strong> AV Controller is configured with a 15-second grace period. If extended prayer or quiet transition triggers the alarm, acknowledge it directly on the Master Hub or adjust the silence threshold in ⚙️ Settings."
+          ],
+          tip: "Sanctuary AV Controller automatically alerts GroupMe Tech Leads if master broadcast audio drops below -50 dBFS during scheduled service hours."
         }
       ]
     },
@@ -1536,12 +1638,12 @@ const AV_DATA = {
   // 5. Specific Step-by-Step Patching Procedures
   patchingProcedures: {
     mixingStationReconnect: {
-      title: "Mixing Station iPad Reconnect Procedure",
+      title: "Mixing Station Tablet / iPad Reconnect Procedure",
       steps: [
         "1. On the iPad / tablet: Tap the Back Arrow (←) or Home button in the top left corner to return to the connection screen.",
         "2. Tap 'Backup search' to broadcast and locate the Soundcraft Si Impact console.",
         "3. Tap the mixer when discovered to reconnect.",
-        "4. If not found, verify iPad Wi-Fi is connected to 'Waypoint Guest' (Password: Psalm27:4!) and inspect the HiQnet network Ethernet cable on the rear of the soundboard."
+        "4. If not found, verify tablet / iPad Wi-Fi is connected to 'Waypoint Guest' (Password: Psalm27:4!) and inspect the HiQnet network Ethernet cable on the rear of the soundboard."
       ]
     },
     aviomSends: {
@@ -1723,13 +1825,14 @@ const AV_DATA = {
 
     // Broadcast & Livestream
     { id: "chk-laptop-yt", label: "Open YouTube Studio (studio.youtube.com) on broadcast laptop & verify preview", category: "Broadcast & Stream" },
+    { id: "chk-av-controller", label: "Run automated pre-flight sweep on Sanctuary AV Controller (http://localhost:3050/checklist)", category: "Broadcast & Stream" },
     { id: "chk-atem-onair-rec", label: "Press 'ON AIR' & 'REC' backup recording on ATEM switcher board", category: "Broadcast & Stream" },
     { id: "chk-go-live", label: "Click 'Go Live' in YouTube Studio ~15 minutes before service", category: "Broadcast & Stream" },
     { id: "chk-phone-verify", label: "Check public YouTube stream on phone (verify video & audio)", category: "Broadcast & Stream" },
 
     // Embrace & Accessibility
     { id: "chk-embrace-tv", label: "Turn ON Embrace Room TV & verify video feed", category: "Embrace & Accessibility" },
-    { id: "chk-obs-captions", label: "Enable OBS Cloud Closed Captions (Tools ➔ Cloud Closed Captions)", category: "Embrace & Accessibility" },
+    { id: "chk-obs-captions", label: "Live Captions: Confirm VoxStream PRO dashboard is green at http://localhost:8765/dashboard, click 📺 Captions View (or open http://localhost:8765/display) to confirm captions view loads, audio meter bounces, and Accessibility Captions QR handout is at the booth", category: "Embrace & Accessibility", detail: "Confirm VoxStream PRO dashboard is green at http://localhost:8765/dashboard. Click 📺 Captions View button or navigate to http://localhost:8765/display to confirm the captions view loads on screen. Confirm Accessibility Captions QR handout is at the booth for attendees with iPads." },
     { id: "chk-wavecast-test", label: "Verify WaveCAST assistive listening audio on phone (Waypoint Guest Wi-Fi)", category: "Embrace & Accessibility" },
 
     // Lighting & Atmosphere
@@ -1861,5 +1964,175 @@ const AV_DATA = {
       "Select 'MMC' -> 'Other Folder'",
       "Press 'OK' to confirm. ⚠️ NEVER overwrite '1NormalSunday'!"
     ]
+  },
+
+  // 10. 1-Tap SOS Emergency Quick-Fix Actions (Extensible)
+  sosQuickFixes: [
+    {
+      id: "sanctuary-tvs",
+      title: "Front TVs Blank",
+      badge: "🚨 Urgent Display Fix",
+      subtitle: "Choir closet ceiling splitter & Mac power strip reset",
+      icon: "📺",
+      accentColor: "#ef4444"
+    }
+  ],
+
+  // 11. Popular Quick-Search Suggestion Chips
+  popularSearchChips: [
+    { label: "📺 TVs Blank", query: "sanctuary-tvs", type: "scenario" },
+    { label: "⚡ Stage Buzz", query: "ground-hum-buzz", type: "scenario" },
+    { label: "🎤 Dead Mic", query: "soundboard-dead-channel", type: "scenario" },
+    { label: "💻 Mac Audio", query: "computer-audio-no-sound", type: "scenario" },
+    { label: "🔌 Boot Order", query: "system-boot-order", type: "scenario" },
+    { label: "📱 Tablet / iPad", query: "mixing-station-disconnect", type: "scenario" },
+    { label: "💾 Load Show", query: "load-show-file", type: "scenario" },
+    { label: "📺 Foyer TV", query: "foyer-tv-audio", type: "scenario" }
+  ],
+
+  // 12. Printable Physical Station QR Placards
+  boothPlacards: [
+    {
+      id: "placard-tvs",
+      qrSlug: "tvs",
+      title: "Sanctuary TVs Splitter",
+      station: "Choir Closet Ceiling (Stage-Left)",
+      targetRoute: "#q/tvs",
+      resolvedRoute: "#scenario/sanctuary-tvs",
+      instruction: "Unplug ceiling HDMI power cord for 10s and replug",
+      icon: "📺",
+      color: "#ef4444"
+    },
+    {
+      id: "placard-confidence",
+      qrSlug: "conf",
+      title: "Stage Confidence TV Toggle",
+      station: "Underneath Sound Booth Desk",
+      targetRoute: "#q/conf",
+      resolvedRoute: "#scenario/confidence-monitor-switch",
+      instruction: "Press button under desk to toggle Static Slide vs BirdDog view",
+      icon: "🖥️",
+      color: "#0ea5e9"
+    },
+    {
+      id: "placard-captions-view",
+      qrSlug: "captions",
+      title: "Accessibility Captions View — Read Along on Your Device",
+      subtitle: "Powered by Waypoint VoxStream PRO",
+      station: "Embrace Room Table & Guest Wi-Fi",
+      targetRoute: "#q/captions",
+      resolvedRoute: "#tab/embrace-hub/sub-captions",
+      instruction: "Connect to Waypoint Guest Wi-Fi, open 192.168.1.145:8765/display or scan this QR, then tap Aa for Bionic Reading or Dy for OpenDyslexic font — Scripture references highlight in gold",
+      steps: [
+        "Connect to the **Waypoint Guest** Wi-Fi",
+        "Open your browser and go to **192.168.1.145:8765/display** OR scan the QR code on this card",
+        "Tap the **Aa** button to toggle **Bionic Reading** mode (bolds the first half of each word to help reading speed)",
+        "Tap the **Dy** button to switch to the **OpenDyslexic** font",
+        "Scripture references (like 'John 3:16') are automatically highlighted in gold"
+      ],
+      icon: "♿",
+      color: "#3b82f6"
+    },
+    {
+      id: "placard-panel-s",
+      qrSlug: "panel-s",
+      title: "Sound Booth Electrical Panel S",
+      station: "Inside Gray Breaker Door",
+      targetRoute: "#q/panel-s",
+      resolvedRoute: "#tab/audio-hub/sub-power",
+      instruction: "Breakers 4 & 6 for stage pockets, Breaker 9 for booth lights",
+      icon: "⚡",
+      color: "#eab308"
+    },
+    {
+      id: "placard-ground-lift",
+      qrSlug: "buzz",
+      title: "Stage DI Ground Lift & Stage Map",
+      station: "Stage Floor Boxes & DI Storage",
+      targetRoute: "#q/buzz",
+      resolvedRoute: "#scenario/ground-hum-buzz",
+      instruction: "Flip GND/LIFT switch on DI to kill 60Hz guitar/keys buzz",
+      icon: "⚡",
+      color: "#f97316"
+    },
+    {
+      id: "placard-lighting",
+      qrSlug: "lights",
+      title: "7-Scene Lighting Wall Keypad",
+      station: "Sanctuary Lighting Wall Pad",
+      targetRoute: "#q/lights",
+      resolvedRoute: "#tab/livestream-hub/sub-lights",
+      instruction: "Level 1: Before/After • Level 2: Songs • Level 4: Video",
+      icon: "💡",
+      color: "#eab308"
+    },
+    {
+      id: "placard-boot-order",
+      qrSlug: "boot",
+      title: "Morning System Boot Order",
+      station: "Main Sound Equipment Rack",
+      targetRoute: "#q/boot",
+      resolvedRoute: "#scenario/system-boot-order",
+      instruction: "1. Board ➔ 2. Wireless ➔ 3. Atlas ➔ 4. Amps ➔ 5. Speakers",
+      icon: "🔌",
+      color: "#10b981"
+    },
+    {
+      id: "placard-show-file",
+      qrSlug: "show",
+      title: "Soundcraft Show File Rule",
+      station: "Si Impact Soundboard Bridge",
+      targetRoute: "#q/show",
+      resolvedRoute: "#scenario/load-show-file",
+      instruction: "🛑 NEVER overwrite 1NormalSunday! Save as MM.DD.YYYY.show",
+      icon: "💾",
+      color: "#a855f7"
+    },
+    {
+      id: "placard-wavecast",
+      qrSlug: "wave",
+      title: "WaveCAST Assistive Listening",
+      station: "Sound Desk & Greeter Stand",
+      targetRoute: "#q/wave",
+      resolvedRoute: "#tab/embrace-hub/sub-wavecast",
+      instruction: "SSID: Waypoint Guest • Password: Psalm27:4!",
+      icon: "🎧",
+      color: "#10b981"
+    }
+  ],
+
+  // 13. Permanent Short QR Slugs & Backward-Compatibility Routing Map
+  permanentSlugMap: {
+    'tvs': 'scenario/sanctuary-tvs',
+    'conf': 'scenario/confidence-monitor-switch',
+    'panel-s': 'tab/audio-hub/sub-power',
+    'pwr': 'tab/audio-hub/sub-power',
+    'power': 'tab/audio-hub/sub-power',
+    'buzz': 'scenario/ground-hum-buzz',
+    'di': 'scenario/ground-hum-buzz',
+    'lights': 'tab/livestream-hub/sub-lights',
+    'boot': 'scenario/system-boot-order',
+    'show': 'scenario/load-show-file',
+    'wave': 'tab/embrace-hub/sub-wavecast',
+    'foyer': 'scenario/foyer-tv-audio',
+    'mac': 'scenario/computer-audio-no-sound',
+    'pc': 'scenario/computer-audio-no-sound',
+    'checklist': 'tab/checklist',
+    'log': 'tab/logbook',
+    'click': 'tab/click-hub',
+    'tablet': 'scenario/mixing-station-disconnect',
+    'ipad': 'scenario/mixing-station-disconnect',
+    'mixingstation': 'scenario/mixing-station-disconnect',
+    'captions': 'tab/embrace-hub/sub-captions',
+    'stream-captions': 'scenario/obs-captions',
+    'streamcc': 'scenario/obs-captions',
+    'readalong': 'scenario/embrace-captions-view',
+    'display': 'scenario/embrace-captions-view'
+  },
+
+  // 14. Application Settings Defaults
+  defaultAppSettings: {
+    publicBaseUrl: "", // Empty string defaults to current window.location origin + pathname
+    voxstreamDeviceIp: "192.168.1.150" // Sound booth PC local Wi-Fi IP for VoxStream /display QR
   }
 };

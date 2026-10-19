@@ -15,33 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedFader: null,
     searchQuery: '',
     checkedListItems: JSON.parse(localStorage.getItem('av_checklist_state') || '{}'),
-    logFilter: 'all',
-    logEntries: JSON.parse(localStorage.getItem('av_booth_logbook') || JSON.stringify([
-      {
-        id: "log-init-1",
-        category: "Hardware / Cable",
-        status: "open",
-        author: "Owen",
-        timestamp: "2026-08-14 18:30",
-        details: "Front Right Box Input 17 (Djembe line) cable has intermittent connection when moved. Test with cable tester."
-      },
-      {
-        id: "log-init-2",
-        category: "Battery / Wireless",
-        status: "resolved",
-        author: "Sound Booth Lead",
-        timestamp: "2026-08-15 08:15",
-        details: "Replaced 2x AA alkaline batteries in Pastor wireless headset mic. RF signal clean."
-      },
-      {
-        id: "log-init-3",
-        category: "Video / Splitter",
-        status: "resolved",
-        author: "Volunteer",
-        timestamp: "2026-08-15 09:00",
-        details: "Ceiling HDMI Splitter power cycled above stage-left choir closet. Sanctuary TVs re-synced to HDMI 1 successfully."
-      }
-    ]))
+    searchQuery: '',
+    checkedListItems: JSON.parse(localStorage.getItem('av_checklist_state') || '{}')
   };
 
   // DOM Elements
@@ -71,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mix Bus Table Element
   const mixBusTableBody = document.getElementById('mixBusTableBody');
+
+  // Application Settings Cache
+  const appSettings = JSON.parse(localStorage.getItem('av_app_settings') || JSON.stringify(AV_DATA.defaultAppSettings || { publicBaseUrl: '', voxstreamDeviceIp: '192.168.1.150' }));
 
   // Patch Calc Elements
   const guestInstrumentName = document.getElementById('guestInstrumentName');
@@ -102,25 +80,141 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalQrCloseBtn = document.getElementById('modalQrCloseBtn');
   const modalQrBody = document.getElementById('modalQrBody');
 
-  // Logbook Elements
-  const logEntryForm = document.getElementById('logEntryForm');
-  const logCategory = document.getElementById('logCategory');
-  const logStatus = document.getElementById('logStatus');
-  const logAuthor = document.getElementById('logAuthor');
-  const logDetails = document.getElementById('logDetails');
-  const logbookEntriesList = document.getElementById('logbookEntriesList');
-  const logFilterButtons = document.querySelectorAll('#logFilterGroup .layer-btn');
-  const logTemplateButtons = document.querySelectorAll('.log-template-btn');
-  const btnExportLog = document.getElementById('btnExportLog');
-  const btnClearLog = document.getElementById('btnClearLog');
+  // Captions Display QR Elements
+  const qrCaptionsDisplay = document.getElementById('qrCaptionsDisplay');
+  const captionsDisplayUrlText = document.getElementById('captionsDisplayUrlText');
+  const btnCopyDisplayUrl = document.getElementById('btnCopyDisplayUrl');
+  const btnTestDisplayUrl = document.getElementById('btnTestDisplayUrl');
+  const inputBoothDeviceIp = document.getElementById('inputBoothDeviceIp');
+  const btnSaveBoothDeviceIp = document.getElementById('btnSaveBoothDeviceIp');
+  const btnDetectBoothDeviceIp = document.getElementById('btnDetectBoothDeviceIp');
+  const ipSaveFeedback = document.getElementById('ipSaveFeedback');
+  const btnOpenCaptionsQrModal = document.getElementById('btnOpenCaptionsQrModal');
+  const btnShareCaptionsModalInline = document.getElementById('btnShareCaptionsModalInline');
+  const btnOpenCaptionsQrModalFromCard = document.getElementById('btnOpenCaptionsQrModalFromCard');
+  const captionsQrModal = document.getElementById('captionsQrModal');
+  const modalCaptionsQrCloseBtn = document.getElementById('modalCaptionsQrCloseBtn');
+  const modalCaptionsQrCode = document.getElementById('modalCaptionsQrCode');
+  const modalCaptionsUrlText = document.getElementById('modalCaptionsUrlText');
+  const inputModalDeviceIp = document.getElementById('inputModalDeviceIp');
+  const btnModalSaveDeviceIp = document.getElementById('btnModalSaveDeviceIp');
+  const btnModalDetectDeviceIp = document.getElementById('btnModalDetectDeviceIp');
+  const btnModalCopyDisplayUrl = document.getElementById('btnModalCopyDisplayUrl');
+  const btnModalOpenDisplayUrl = document.getElementById('btnModalOpenDisplayUrl');
+
+  // Report Form Elements
+  const btnCopyFormUrl = document.getElementById('btnCopyFormUrl');
+
+  // SOS Emergency & Quick Search Containers
+  const sosEmergencyBar = document.getElementById('sosEmergencyBar');
+  const popularSearchChips = document.getElementById('popularSearchChips');
 
   // --------------------------------------------------------------------------
-  // 1. Navigation Tabs Management
+  // 1. URL Hash Routing & Navigation State
   // --------------------------------------------------------------------------
-  function switchTab(tabId) {
+  let isInternalNavigation = false;
+
+  function updateUrlHash(hashPath) {
+    if (isInternalNavigation) return;
+    const cleanPath = (hashPath || '').replace(/^#\/?/, '');
+    if (window.location.hash.replace(/^#\/?/, '') === cleanPath) return;
+    try {
+      history.replaceState(null, '', `#/${cleanPath}`);
+    } catch (e) {
+      window.location.hash = `/${cleanPath}`;
+    }
+  }
+
+  function handleHashChange() {
+    isInternalNavigation = true;
+    const rawHash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (!rawHash) {
+      isInternalNavigation = false;
+      return;
+    }
+
+    const parts = rawHash.split('/');
+    const mainAction = parts[0];
+
+    // 1. Permanent Short QR Slugs (/#q/{slug})
+    if (mainAction === 'q' && parts[1]) {
+      const slug = parts[1].toLowerCase();
+      const mappedRoute = (AV_DATA.permanentSlugMap && AV_DATA.permanentSlugMap[slug]) || slug;
+      const targetParts = mappedRoute.split('/');
+      if (targetParts[0] === 'scenario' && targetParts[1]) {
+        switchTab('volunteer-hub', false);
+        selectScenario(targetParts[1], false);
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (targetParts[0] === 'tab' && targetParts[1]) {
+        switchTab(targetParts[1], false);
+        if (targetParts[2]) {
+          if (targetParts[1] === 'audio-hub') switchAudioSub(targetParts[2], false);
+          else if (targetParts[1] === 'livestream-hub') switchLivestreamSub(targetParts[2], false);
+          else if (targetParts[1] === 'embrace-hub') switchEmbraceSub(targetParts[2], false);
+        }
+      }
+    } else if (mainAction === 'scenario' && parts[1]) {
+      const scenId = parts[1];
+      const exists = AV_DATA.troubleshootingScenarios.some(s => s.id === scenId);
+      if (exists) {
+        switchTab('volunteer-hub', false);
+        selectScenario(scenId, false);
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else if (mainAction === 'tab' && parts[1]) {
+      const tabId = parts[1];
+      const subId = parts[2];
+      switchTab(tabId, false);
+      if (subId) {
+        if (tabId === 'audio-hub') switchAudioSub(subId, false);
+        else if (tabId === 'livestream-hub') switchLivestreamSub(subId, false);
+        else if (tabId === 'embrace-hub') switchEmbraceSub(subId, false);
+      }
+    } else {
+      // Shortcut direct hash (e.g. #sanctuary-tvs or #checklist or #tvs)
+      const mappedSlug = AV_DATA.permanentSlugMap && AV_DATA.permanentSlugMap[mainAction];
+      if (mappedSlug) {
+        const targetParts = mappedSlug.split('/');
+        if (targetParts[0] === 'scenario' && targetParts[1]) {
+          switchTab('volunteer-hub', false);
+          selectScenario(targetParts[1], false);
+          const el = document.getElementById('wizardCanvas');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (targetParts[0] === 'tab' && targetParts[1]) {
+          switchTab(targetParts[1], false);
+        }
+      } else {
+        const isScenario = AV_DATA.troubleshootingScenarios.some(s => s.id === mainAction);
+        if (isScenario) {
+          switchTab('volunteer-hub', false);
+          selectScenario(mainAction, false);
+          const el = document.getElementById('wizardCanvas');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          const isTab = Array.from(tabButtons).some(b => b.dataset.tab === mainAction);
+          if (isTab) {
+            switchTab(mainAction, false);
+          }
+        }
+      }
+    }
+    isInternalNavigation = false;
+  }
+
+  window.addEventListener('hashchange', handleHashChange);
+
+  // --------------------------------------------------------------------------
+  // 1b. Navigation Tabs Management
+  // --------------------------------------------------------------------------
+  function switchTab(tabId, syncHash = true) {
     state.activeTab = tabId;
     tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabId));
     tabPanes.forEach(pane => pane.classList.toggle('active', pane.id === `pane-${tabId}`));
+    if (syncHash && !isInternalNavigation) {
+      updateUrlHash(`tab/${tabId}`);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -134,13 +228,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const embraceSubButtons = document.querySelectorAll('#embraceSubNavGroup .layer-btn');
   const embraceSubPanes = document.querySelectorAll('.embrace-subpane');
 
-  function switchEmbraceSub(subId) {
+  function switchEmbraceSub(subId, syncHash = true) {
     embraceSubButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.embracesub === subId);
     });
     embraceSubPanes.forEach(pane => {
       pane.style.display = pane.id === `embracesub-${subId.replace('sub-', '')}` ? 'block' : 'none';
     });
+    if (syncHash && !isInternalNavigation) {
+      updateUrlHash(`tab/embrace-hub/${subId}`);
+    }
   }
 
   embraceSubButtons.forEach(btn => {
@@ -153,13 +250,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const livestreamSubButtons = document.querySelectorAll('#livestreamSubNavGroup .layer-btn');
   const livestreamSubPanes = document.querySelectorAll('.livestream-subpane');
 
-  function switchLivestreamSub(subId) {
+  function switchLivestreamSub(subId, syncHash = true) {
     livestreamSubButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.livesub === subId);
     });
     livestreamSubPanes.forEach(pane => {
       pane.style.display = pane.id === `livesub-${subId.replace('sub-', '')}` ? 'block' : 'none';
     });
+    if (syncHash && !isInternalNavigation) {
+      updateUrlHash(`tab/livestream-hub/${subId}`);
+    }
   }
 
   livestreamSubButtons.forEach(btn => {
@@ -181,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Audio Sub-Navigation (Inside Sound Engineer Hub)
-  function switchAudioSub(subId) {
+  function switchAudioSub(subId, syncHash = true) {
     state.activeAudioSub = subId;
     audioSubButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.audiosub === subId);
@@ -189,6 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
     audioSubPanes.forEach(pane => {
       pane.style.display = pane.id === `audiosub-${subId.replace('sub-', '')}` ? 'block' : 'none';
     });
+    if (syncHash && !isInternalNavigation) {
+      updateUrlHash(`tab/audio-hub/${subId}`);
+    }
   }
 
   audioSubButtons.forEach(btn => {
@@ -198,9 +301,81 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
+  // 1c. 1-Tap SOS Emergency Bar & Popular Suggestion Chips
+  // --------------------------------------------------------------------------
+  function renderSosBar() {
+    if (!sosEmergencyBar || !AV_DATA.sosQuickFixes) return;
+
+    if (AV_DATA.sosQuickFixes.length === 0) {
+      sosEmergencyBar.style.display = 'none';
+      return;
+    }
+
+    sosEmergencyBar.style.display = 'flex';
+    sosEmergencyBar.innerHTML = `
+      <div class="sos-bar-header">
+        <span class="sos-pulse-dot"></span>
+        <span class="sos-bar-title">Urgent SOS Triggers</span>
+      </div>
+      <div class="sos-items-container">
+        ${AV_DATA.sosQuickFixes.map(fix => `
+          <button class="sos-action-btn" data-sos-scenario="${fix.id}" title="${fix.subtitle}">
+            <span>${fix.icon}</span>
+            <span><strong>${fix.title}</strong></span>
+            <span class="sos-badge">${fix.badge}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+
+    sosEmergencyBar.querySelectorAll('.sos-action-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const scenId = btn.dataset.sosScenario;
+        switchTab('volunteer-hub');
+        selectScenario(scenId);
+        if (wizardCanvas) {
+          wizardCanvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  }
+
+  function renderPopularChips() {
+    if (!popularSearchChips || !AV_DATA.popularSearchChips) return;
+    popularSearchChips.innerHTML = `
+      <span class="popular-chips-label">Popular:</span>
+      ${AV_DATA.popularSearchChips.map(chip => `
+        <button class="popular-search-chip" data-query="${chip.query}" data-type="${chip.type || 'search'}">
+          ${chip.label}
+        </button>
+      `).join('')}
+    `;
+
+    popularSearchChips.querySelectorAll('.popular-search-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const query = btn.dataset.query;
+        const type = btn.dataset.type;
+        if (type === 'scenario') {
+          switchTab('volunteer-hub');
+          selectScenario(query);
+          if (wizardCanvas) {
+            wizardCanvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        } else {
+          if (globalSearchInput) {
+            globalSearchInput.value = query;
+            handleSearchInput(query);
+            globalSearchInput.focus();
+          }
+        }
+      });
+    });
+  }
+
+  // --------------------------------------------------------------------------
   // 2. Diagnostic Wizard Engine (Volunteer Hub)
   // --------------------------------------------------------------------------
-  function selectScenario(scenarioId) {
+  function selectScenario(scenarioId, syncHash = true) {
     state.activeScenarioId = scenarioId;
     state.scenarioStepIndex = 0;
     state.scenarioResolved = false;
@@ -208,6 +383,10 @@ document.addEventListener('DOMContentLoaded', () => {
     quickProblemCards.forEach(card => {
       card.classList.toggle('active', card.dataset.scenario === scenarioId);
     });
+
+    if (syncHash && !isInternalNavigation) {
+      updateUrlHash(`scenario/${scenarioId}`);
+    }
 
     renderWizard();
   }
@@ -218,7 +397,10 @@ document.addEventListener('DOMContentLoaded', () => {
     filterChips.forEach(chip => {
       chip.addEventListener('click', () => {
         const filter = chip.dataset.filter;
-        filterChips.forEach(c => c.classList.toggle('active', c === chip));
+        if (!filter) return;
+        filterChips.forEach(c => {
+          if (c.dataset.filter) c.classList.toggle('active', c === chip);
+        });
         quickProblemCards.forEach(card => {
           const cardCats = (card.dataset.category || '').split(/\s+/);
           if (filter === 'all' || cardCats.includes(filter)) {
@@ -475,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
             switchEmbraceSub('sub-wavecast');
           } else if (scId === 'embrace-obs') {
             switchEmbraceSub('sub-embracetv');
-          } else if (scId === 'obs-captions') {
+          } else if (scId === 'obs-captions' || scId === 'embrace-captions-view') {
             switchEmbraceSub('sub-captions');
           } else {
             // For any newly added dynamic Embrace scenarios:
@@ -1079,8 +1261,174 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 8. QR Code Generation (Guest Wi-Fi, Apps & Google Report Form)
+  // 8. QR Code Generation (Guest Wi-Fi, WaveCAST, Report Form & VoxStream /display)
   // --------------------------------------------------------------------------
+  function getVoxstreamDeviceIp() {
+    // 1. Saved custom override in localStorage
+    const savedIp = localStorage.getItem('voxstream_device_ip');
+    if (savedIp && savedIp.trim()) {
+      return savedIp.trim();
+    }
+
+    // 2. Setting from appSettings if available
+    if (appSettings && appSettings.voxstreamDeviceIp && appSettings.voxstreamDeviceIp.trim()) {
+      return appSettings.voxstreamDeviceIp.trim();
+    }
+
+    // 3. Current window location hostname if not localhost or loopback
+    const host = window.location.hostname;
+    if (host && host !== 'localhost' && host !== '127.0.0.1' && host !== '') {
+      return host;
+    }
+
+    // 4. Check if publicBaseUrl has a hostname that is not localhost
+    if (appSettings && appSettings.publicBaseUrl) {
+      try {
+        const u = new URL(appSettings.publicBaseUrl.startsWith('http') ? appSettings.publicBaseUrl : `https://${appSettings.publicBaseUrl}`);
+        if (u.hostname && u.hostname !== 'localhost' && u.hostname !== '127.0.0.1') {
+          return u.hostname;
+        }
+      } catch (e) {}
+    }
+
+    // 5. Default sanctuary sound booth reserved IP
+    return '192.168.1.150';
+  }
+
+  function setVoxstreamDeviceIp(newIp, isUserOverride = true) {
+    if (!newIp) return;
+    // Clean string: strip http://, ports, paths
+    let cleanIp = newIp.trim().replace(/^https?:\/\//i, '').split(':')[0].replace(/\/+$/, '');
+    if (!cleanIp) return;
+
+    if (isUserOverride) {
+      localStorage.setItem('voxstream_device_ip', cleanIp);
+      if (appSettings) {
+        appSettings.voxstreamDeviceIp = cleanIp;
+        localStorage.setItem('av_app_settings', JSON.stringify(appSettings));
+      }
+    }
+
+    // Update inputs
+    if (inputBoothDeviceIp && document.activeElement !== inputBoothDeviceIp) {
+      inputBoothDeviceIp.value = cleanIp;
+    }
+    if (inputModalDeviceIp && document.activeElement !== inputModalDeviceIp) {
+      inputModalDeviceIp.value = cleanIp;
+    }
+
+    generateCaptionsDisplayQR();
+
+    // Show feedback if triggered by user
+    if (ipSaveFeedback && isUserOverride) {
+      ipSaveFeedback.style.display = 'inline';
+      setTimeout(() => { ipSaveFeedback.style.display = 'none'; }, 2500);
+    }
+  }
+
+  function getVoxstreamDisplayUrl(ip) {
+    const activeIp = ip || getVoxstreamDeviceIp();
+    return `http://${activeIp}:8765/display`;
+  }
+
+  // Attempt LAN IP auto-detection via WebRTC ICE candidates (works offline on local Wi-Fi)
+  function detectLanIp() {
+    if (typeof window === 'undefined' || !window.RTCPeerConnection) return;
+    if (localStorage.getItem('voxstream_device_ip')) return; // do not overwrite manual setting
+
+    try {
+      const pc = new (window.RTCPeerConnection || window.webkitRTCPeerConnection)({ iceServers: [] });
+      pc.createDataChannel('');
+      pc.createOffer().then(offer => pc.setLocalDescription(offer)).catch(() => {});
+      pc.onicecandidate = (ice) => {
+        if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+        const candidateStr = ice.candidate.candidate;
+        // Search for IPv4 pattern
+        const match = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(candidateStr);
+        if (match && match[1] && !match[1].startsWith('127.')) {
+          const detectedIp = match[1];
+          try { pc.close(); } catch (e) {}
+          if (!localStorage.getItem('voxstream_device_ip')) {
+            setVoxstreamDeviceIp(detectedIp, false);
+          }
+        }
+      };
+      setTimeout(() => {
+        try { pc.close(); } catch (e) {}
+      }, 1500);
+    } catch (e) {
+      // Gracefully ignore WebRTC restrictions
+    }
+  }
+
+  function generateCaptionsDisplayQR() {
+    if (typeof QRCode === 'undefined') return;
+
+    const deviceIp = getVoxstreamDeviceIp();
+    const displayUrl = getVoxstreamDisplayUrl(deviceIp);
+
+    // Update URL text and links across UI
+    if (captionsDisplayUrlText) captionsDisplayUrlText.textContent = displayUrl;
+    if (btnTestDisplayUrl) btnTestDisplayUrl.href = displayUrl;
+    const linkOpenDisplayPage = document.getElementById('linkOpenDisplayPage');
+    if (linkOpenDisplayPage) linkOpenDisplayPage.href = displayUrl;
+    if (modalCaptionsUrlText) modalCaptionsUrlText.textContent = displayUrl;
+    if (btnModalOpenDisplayUrl) btnModalOpenDisplayUrl.href = displayUrl;
+    if (inputBoothDeviceIp && document.activeElement !== inputBoothDeviceIp) {
+      inputBoothDeviceIp.value = deviceIp;
+    }
+    if (inputModalDeviceIp && document.activeElement !== inputModalDeviceIp) {
+      inputModalDeviceIp.value = deviceIp;
+    }
+
+    // High contrast SVG options for mobile cameras
+    const qrOptsDisplay = {
+      type: 'svg',
+      margin: 1,
+      errorCorrectionLevel: 'M',
+      color: {
+        dark: '#0f172a',
+        light: '#ffffff'
+      }
+    };
+
+    if (qrCaptionsDisplay) {
+      QRCode.toString(displayUrl, qrOptsDisplay).then(svg => {
+        qrCaptionsDisplay.innerHTML = svg;
+      }).catch(console.error);
+    }
+
+    if (modalCaptionsQrCode) {
+      QRCode.toString(displayUrl, { ...qrOptsDisplay, margin: 2 }).then(svg => {
+        modalCaptionsQrCode.innerHTML = svg;
+      }).catch(console.error);
+    }
+  }
+
+  function openCaptionsQrModal() {
+    if (!captionsQrModal) return;
+    generateCaptionsDisplayQR();
+    captionsQrModal.classList.add('open');
+  }
+
+  function closeCaptionsQrModal() {
+    if (!captionsQrModal) return;
+    captionsQrModal.classList.remove('open');
+  }
+
+  function copyCaptionsUrl(btn) {
+    const url = getVoxstreamDisplayUrl();
+    navigator.clipboard.writeText(url).then(() => {
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✓ Copied!';
+        setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+      }
+    }).catch(() => {
+      prompt('Copy Display Page URL:', url);
+    });
+  }
+
   function generateGuestQRCodes() {
     if (typeof QRCode === 'undefined') return;
 
@@ -1125,9 +1473,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (qrReportForm) {
       QRCode.toString(reportFormUrl, qrOptsReport).then(svg => { qrReportForm.innerHTML = svg; }).catch(console.error);
     }
+
+    // Generate VoxStream Live Captions Display QR Code
+    generateCaptionsDisplayQR();
   }
 
   document.addEventListener('click', (e) => {
+    // Quick Open Captions QR from Volunteer Hub Card
+    if (e.target && (e.target.classList.contains('btn-share-captions-qr-hub') || e.target.closest('.btn-share-captions-qr-hub'))) {
+      e.stopPropagation();
+      e.preventDefault();
+      openCaptionsQrModal();
+      return;
+    }
+
     if (e.target && (e.target.id === 'btnCopyWifiPass' || e.target.closest('#btnCopyWifiPass'))) {
       const btn = e.target.id === 'btnCopyWifiPass' ? e.target : e.target.closest('#btnCopyWifiPass');
       navigator.clipboard.writeText("Psalm27:4!").then(() => {
@@ -1164,11 +1523,104 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Captions QR Modal Listeners
+  if (btnOpenCaptionsQrModal) {
+    btnOpenCaptionsQrModal.addEventListener('click', openCaptionsQrModal);
+  }
+  if (btnShareCaptionsModalInline) {
+    btnShareCaptionsModalInline.addEventListener('click', openCaptionsQrModal);
+  }
+  if (btnOpenCaptionsQrModalFromCard) {
+    btnOpenCaptionsQrModalFromCard.addEventListener('click', openCaptionsQrModal);
+  }
+  if (modalCaptionsQrCloseBtn) {
+    modalCaptionsQrCloseBtn.addEventListener('click', closeCaptionsQrModal);
+  }
+  if (captionsQrModal) {
+    captionsQrModal.addEventListener('click', (e) => {
+      if (e.target === captionsQrModal) {
+        closeCaptionsQrModal();
+      }
+    });
+  }
+
+  // Copy Buttons
+  if (btnCopyDisplayUrl) {
+    btnCopyDisplayUrl.addEventListener('click', () => copyCaptionsUrl(btnCopyDisplayUrl));
+  }
+  if (btnModalCopyDisplayUrl) {
+    btnModalCopyDisplayUrl.addEventListener('click', () => copyCaptionsUrl(btnModalCopyDisplayUrl));
+  }
+
+  // Booth PC IP Settings & Auto-Detect Handlers
+  if (btnSaveBoothDeviceIp && inputBoothDeviceIp) {
+    btnSaveBoothDeviceIp.addEventListener('click', () => {
+      setVoxstreamDeviceIp(inputBoothDeviceIp.value);
+    });
+    inputBoothDeviceIp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        setVoxstreamDeviceIp(inputBoothDeviceIp.value);
+      }
+    });
+  }
+
+  if (btnDetectBoothDeviceIp) {
+    btnDetectBoothDeviceIp.addEventListener('click', () => {
+      localStorage.removeItem('voxstream_device_ip');
+      detectLanIp();
+      generateCaptionsDisplayQR();
+      if (ipSaveFeedback) {
+        ipSaveFeedback.textContent = '🔄 Auto-Detecting...';
+        ipSaveFeedback.style.display = 'inline';
+        setTimeout(() => {
+          ipSaveFeedback.textContent = '✓ Updated!';
+          setTimeout(() => { ipSaveFeedback.style.display = 'none'; }, 1500);
+        }, 1000);
+      }
+    });
+  }
+
+  if (btnModalSaveDeviceIp && inputModalDeviceIp) {
+    btnModalSaveDeviceIp.addEventListener('click', () => {
+      setVoxstreamDeviceIp(inputModalDeviceIp.value);
+    });
+    inputModalDeviceIp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        setVoxstreamDeviceIp(inputModalDeviceIp.value);
+      }
+    });
+  }
+
+  if (btnModalDetectDeviceIp) {
+    btnModalDetectDeviceIp.addEventListener('click', () => {
+      localStorage.removeItem('voxstream_device_ip');
+      detectLanIp();
+      generateCaptionsDisplayQR();
+    });
+  }
+
   // --------------------------------------------------------------------------
   // 9. Sound Booth Issue & Maintenance Report
   // --------------------------------------------------------------------------
   function renderLogbook() {
-    // Form and QR code are rendered statically & via generateGuestQRCodes()
+    const reportFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFImqNTuJq3KzdKxDhbLq4z-KST0zfMgCA9eWDbDU3pfhEUw/viewform?usp=dialog";
+    if (btnCopyFormUrl) {
+      btnCopyFormUrl.addEventListener('click', () => {
+        navigator.clipboard.writeText(reportFormUrl).then(() => {
+          const orig = btnCopyFormUrl.innerHTML;
+          btnCopyFormUrl.innerHTML = '✅ Link Copied to Clipboard!';
+          btnCopyFormUrl.style.borderColor = 'var(--accent-emerald)';
+          btnCopyFormUrl.style.color = 'var(--accent-emerald)';
+          setTimeout(() => {
+            btnCopyFormUrl.innerHTML = orig;
+            btnCopyFormUrl.style.borderColor = '';
+            btnCopyFormUrl.style.color = '';
+          }, 2500);
+        }).catch(() => {
+          alert('Form URL: ' + reportFormUrl);
+        });
+      });
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -1195,7 +1647,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: sc.title,
         subtitle: `${sc.summary} (${sc.phases.length} Phases)`,
         badge: 'Quick-Fix',
-        keywords: `${sc.title} ${sc.summary} ${sc.category} ${sc.phases.map(p => p.title + ' ' + p.location + ' ' + p.actionSteps.join(' ')).join(' ')} tv tvs screen hdmi splitter obs project embrace lontium extender transmitter tx receiver rx nest camera outlet timer ethernet cat6 wavecast reaper dead mic audio captions subtitles cloud speech transcription asio wireless microphone shure sennheiser battery batteries rechargeable color code receiver rack mute crackle dropout static proclaim freeze slides slide lyrics wrong screen extend display mirroring on air off air mixing station ipad tablet disconnected backup search aviom sends gain in-ear monitors in-ears feedback ringing pastor lapel preset cajon mute band group venue live 360 venue360 speakers quiet silent ubnt ubiquiti switch sdi box camera black under desk birddog confidence monitor toggle switch button buzz hum ground loop ground lift di box lift switch ac power high pass filter hpf 80hz 60hz computer audio mac audio video sound macbook speakers line out spotify background music fader 22 fader 23 pc sound system startup boot order pop prevention power up crown amp atlas qsc foyer tv foyer audio lobby speakers fader 24 foyer bus`,
+        keywords: `${sc.title} ${sc.summary} ${sc.category} ${sc.phases.map(p => p.title + ' ' + p.location + ' ' + p.actionSteps.join(' ')).join(' ')} tv tvs screen hdmi splitter obs project embrace lontium extender transmitter tx receiver rx nest camera outlet timer ethernet cat6 wavecast reaper dead mic audio voxstream live captions subtitles stage prompter teleprompter read-along bionic reading asio wireless microphone shure sennheiser battery batteries rechargeable color code receiver rack mute crackle dropout static proclaim freeze slides slide lyrics wrong screen extend display mirroring on air off air mixing station ipad tablet disconnected backup search aviom sends gain in-ear monitors in-ears feedback ringing pastor lapel preset cajon mute band group venue live 360 venue360 speakers quiet silent ubnt ubiquiti switch sdi box camera black under desk birddog confidence monitor toggle switch button buzz hum ground loop ground lift di box lift switch ac power high pass filter hpf 80hz 60hz computer audio mac audio video sound macbook speakers line out spotify background music fader 22 fader 23 pc sound system startup boot order pop prevention power up crown amp atlas qsc foyer tv foyer audio lobby speakers fader 24 foyer bus`,
         action: () => {
           switchTab('volunteer-hub');
           selectScenario(sc.id);
@@ -1313,13 +1765,55 @@ document.addEventListener('DOMContentLoaded', () => {
     items.push({
       type: 'embrace',
       category: '🤝 Embrace & Accessibility',
-      title: 'OBS Cloud Closed Captions (Live Subtitles)',
-      subtitle: 'Tools ➔ Cloud Closed Captions ➔ Turn On Captioning ➔ Google Cloud Speech API',
-      badge: 'OBS Captions',
-      keywords: 'obs captions closed subtitles cloud speech transcription deaf hearing embrace',
+      title: 'VoxStream Live Captions & Stage Prompter Suite',
+      subtitle: 'Real-time AI speech transcription, offline Scripture lookups, and mobile read-along on Port 8765',
+      badge: 'VoxStream Suite',
+      keywords: 'voxstream live captions subtitles stage prompter bionic reading teleprompter read-along port 8765 embrace display qr scripture panic drop',
       action: () => {
         switchTab('embrace-hub');
         switchEmbraceSub('sub-captions');
+      }
+    });
+
+    items.push({
+      type: 'guide',
+      category: '📡 Livestream & Overlays',
+      title: 'OBS Live Stream Captions Setup & Fix (Port 8765)',
+      subtitle: 'Browser source URL (http://127.0.0.1:8765/), mic VU meter, and Moonshine engine',
+      badge: 'Stream Captions',
+      keywords: 'obs captions stream live stream broadcast overlay url port 8765 mic level vu meter lag delay moonshine vosk panic drop',
+      action: () => {
+        switchTab('volunteer-hub');
+        selectScenario('obs-captions');
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    items.push({
+      type: 'guide',
+      category: '📱 Mobile Accessibility & Stage',
+      title: 'Mobile Congregation Read-Along & Stage Prompter (/display)',
+      subtitle: 'Wi-Fi QR scan, Waypoint Guest network, port 8765 firewall, and Bionic Reading',
+      badge: 'Mobile Read-Along',
+      keywords: 'mobile read along read-along readalong prompter teleprompter qr code wifi waypoint guest bionic reading wake lock stage confidence display embrace',
+      action: () => {
+        switchTab('volunteer-hub');
+        selectScenario('embrace-captions-view');
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    items.push({
+      type: 'captions',
+      category: '📲 Mobile Sharing & QR',
+      title: 'Share Live Captions & Stage Prompter QR Code',
+      subtitle: 'Open scannable QR code modal for congregation phones & tablets (Port 8765 /display)',
+      badge: 'Share QR',
+      keywords: 'qr qr code display qr captions qr share qr mobile read-along teleprompter stage prompter embrace captions phone scan camera waypoint guest voxstream 8765/display handout print',
+      action: () => {
+        openCaptionsQrModal();
       }
     });
 
@@ -1697,19 +2191,33 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // 8. Logbook Entries
-    state.logEntries.forEach(e => {
-      items.push({
-        type: 'log',
-        category: '📝 Maintenance Logbook',
-        title: `Log: ${e.category} (${e.status.toUpperCase()})`,
-        subtitle: `${e.details} — ${e.timestamp} by ${e.author}`,
-        badge: e.status === 'open' ? '⚠️ Open' : '✅ Fixed',
-        keywords: `${e.category} ${e.details} ${e.author} ${e.status} log issue broken`,
-        action: () => {
-          switchTab('logbook');
-        }
-      });
+    // 7b. Mixing Station Tablet & iPad Reconnect
+    items.push({
+      type: 'guide',
+      category: '📱 Tablet & Soundboard Control',
+      title: 'Mixing Station Tablet / iPad App Reconnect',
+      subtitle: 'Back Arrow (←) ➔ Backup search ➔ Tap Soundcraft Si Impact to reconnect',
+      badge: 'Tablet / iPad',
+      keywords: 'mixing station tablet ipad app reconnect backup search offline disconnect soundcraft remote control faders hiqnet network wifi',
+      action: () => {
+        switchTab('volunteer-hub');
+        selectScenario('mixing-station-disconnect');
+        const el = document.getElementById('wizardCanvas');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // 8. Sound Booth Issue Report (Google Form)
+    items.push({
+      type: 'log',
+      category: '📝 Tech Team Issue Report',
+      title: 'Sound Booth Issue & Maintenance Report (Google Form)',
+      subtitle: 'Report broken cables, dead gear, battery problems, or needed booth supplies',
+      badge: 'Report Issue',
+      keywords: 'report form issue maintenance broken cable dead mic battery supplies request logbook google form feedback',
+      action: () => {
+        switchTab('logbook');
+      }
     });
 
     // 9. Master Documentation Google Doc Link
@@ -1745,6 +2253,53 @@ document.addEventListener('DOMContentLoaded', () => {
     return items;
   }
 
+  // Typo and Phonetic Dictionary for Fuzzy Search
+  const SEARCH_TYPO_MAP = {
+    'atme': 'atem',
+    'atme mini': 'atem',
+    'aveom': 'aviom',
+    'aviam': 'aviom',
+    'avom': 'aviom',
+    'procalim': 'proclaim',
+    'procliam': 'proclaim',
+    'soundbord': 'soundboard',
+    'sound bord': 'soundboard',
+    'splitr': 'splitter',
+    'spliter': 'splitter',
+    'wavelisten': 'wavecast',
+    'wavcast': 'wavecast',
+    'cajone': 'cajon',
+    'djemb': 'djembe',
+    'wierless': 'wireless',
+    'wirless': 'wireless',
+    'micophone': 'microphone',
+    'screan': 'screen',
+    'screans': 'screens',
+    'projecter': 'projector',
+    'tablit': 'tablet',
+    'tablett': 'tablet',
+    'tabelt': 'tablet',
+    'ipadd': 'ipad',
+    'iapp': 'ipad',
+    'mixstation': 'mixing station',
+    'mixingstation': 'mixing station',
+    'mix station': 'mixing station',
+    'voxtream': 'voxstream',
+    'voxstreem': 'voxstream',
+    'readalong': 'read-along',
+    'promter': 'prompter'
+  };
+
+  function normalizeSearchQuery(q) {
+    let normalized = (q || '').toLowerCase();
+    for (const [typo, fix] of Object.entries(SEARCH_TYPO_MAP)) {
+      if (normalized.includes(typo)) {
+        normalized = normalized.replace(new RegExp(typo, 'g'), fix);
+      }
+    }
+    return normalized;
+  }
+
   function handleSearchInput(query) {
     state.searchQuery = query.trim();
     if (!state.searchQuery) {
@@ -1758,11 +2313,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchClearBtn) searchClearBtn.style.display = 'block';
 
-    const qLower = state.searchQuery.toLowerCase();
+    const qRaw = state.searchQuery.toLowerCase();
+    const qNormalized = normalizeSearchQuery(qRaw);
+    const qTokens = qNormalized.split(/\s+/).filter(Boolean);
     const allItems = getSearchIndex();
 
-    // Filter matching items
-    const matches = allItems.filter(item => item.keywords.toLowerCase().includes(qLower));
+    // Filter matching items (Exact substring, normalized typo match, and multi-word token match)
+    const matches = allItems.filter(item => {
+      const kLower = item.keywords.toLowerCase();
+      const tLower = item.title.toLowerCase();
+      
+      // 1. Direct or normalized query match
+      if (kLower.includes(qRaw) || kLower.includes(qNormalized)) return true;
+      if (tLower.includes(qRaw) || tLower.includes(qNormalized)) return true;
+
+      // 2. Multi-token match (all words match somewhere in item keywords or title)
+      if (qTokens.length > 1 && qTokens.every(tok => kLower.includes(tok) || tLower.includes(tok))) {
+        return true;
+      }
+
+      return false;
+    });
 
     if (matches.length === 0) {
       searchResultsDropdown.innerHTML = `
@@ -1977,9 +2548,286 @@ document.addEventListener('DOMContentLoaded', () => {
   updateNetworkStatus();
 
   // --------------------------------------------------------------------------
+  // Application Settings & Public Base URL Engine
+  // --------------------------------------------------------------------------
+  // (appSettings is initialized at top of module)
+
+  function getEffectiveBaseUrl() {
+    if (appSettings.publicBaseUrl && appSettings.publicBaseUrl.trim()) {
+      let url = appSettings.publicBaseUrl.trim();
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+      return url.replace(/\/+$/, '');
+    }
+    return (window.location.origin + window.location.pathname).replace(/\/+$/, '');
+  }
+
+  const appSettingsModal = document.getElementById('appSettingsModal');
+  const btnOpenSettingsModal = document.getElementById('btnOpenSettingsModal');
+  const modalSettingsCloseBtn = document.getElementById('modalSettingsCloseBtn');
+  const btnCancelSettings = document.getElementById('btnCancelSettings');
+  const btnSaveSettings = document.getElementById('btnSaveSettings');
+  const settingPublicBaseUrl = document.getElementById('settingPublicBaseUrl');
+  const btnUseCurrentUrl = document.getElementById('btnUseCurrentUrl');
+  const btnResetBaseUrl = document.getElementById('btnResetBaseUrl');
+  const settingUrlPreview = document.getElementById('settingUrlPreview');
+  const btnPlacardOpenSettings = document.getElementById('btnPlacardOpenSettings');
+  const placardCurrentBaseUrl = document.getElementById('placardCurrentBaseUrl');
+
+  function updateSettingsUrlPreview() {
+    if (!settingUrlPreview || !settingPublicBaseUrl) return;
+    let base = settingPublicBaseUrl.value.trim();
+    if (!base) {
+      base = (window.location.origin + window.location.pathname).replace(/\/+$/, '');
+    } else if (!base.startsWith('http://') && !base.startsWith('https://')) {
+      base = 'https://' + base;
+    }
+    base = base.replace(/\/+$/, '');
+    settingUrlPreview.textContent = `${base}/#q/tvs`;
+  }
+
+  function openSettingsModal() {
+    if (!appSettingsModal) return;
+    if (settingPublicBaseUrl) {
+      settingPublicBaseUrl.value = appSettings.publicBaseUrl || '';
+      updateSettingsUrlPreview();
+    }
+    appSettingsModal.classList.add('open');
+  }
+
+  function closeSettingsModal() {
+    if (!appSettingsModal) return;
+    appSettingsModal.classList.remove('open');
+  }
+
+  if (btnOpenSettingsModal) {
+    btnOpenSettingsModal.addEventListener('click', openSettingsModal);
+  }
+
+  if (btnPlacardOpenSettings) {
+    btnPlacardOpenSettings.addEventListener('click', () => {
+      if (placardPrintModal) placardPrintModal.classList.remove('open');
+      openSettingsModal();
+    });
+  }
+
+  if (modalSettingsCloseBtn) modalSettingsCloseBtn.addEventListener('click', closeSettingsModal);
+  if (btnCancelSettings) btnCancelSettings.addEventListener('click', closeSettingsModal);
+
+  if (appSettingsModal) {
+    appSettingsModal.addEventListener('click', (e) => {
+      if (e.target === appSettingsModal) closeSettingsModal();
+    });
+  }
+
+  if (settingPublicBaseUrl) {
+    settingPublicBaseUrl.addEventListener('input', updateSettingsUrlPreview);
+  }
+
+  if (btnUseCurrentUrl && settingPublicBaseUrl) {
+    btnUseCurrentUrl.addEventListener('click', () => {
+      settingPublicBaseUrl.value = (window.location.origin + window.location.pathname).replace(/\/+$/, '');
+      updateSettingsUrlPreview();
+    });
+  }
+
+  if (btnResetBaseUrl && settingPublicBaseUrl) {
+    btnResetBaseUrl.addEventListener('click', () => {
+      settingPublicBaseUrl.value = '';
+      updateSettingsUrlPreview();
+    });
+  }
+
+  if (btnSaveSettings && settingPublicBaseUrl) {
+    btnSaveSettings.addEventListener('click', () => {
+      appSettings.publicBaseUrl = settingPublicBaseUrl.value.trim();
+      localStorage.setItem('av_app_settings', JSON.stringify(appSettings));
+      closeSettingsModal();
+      if (placardPrintModal && placardPrintModal.classList.contains('open')) {
+        renderPlacardsModal();
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // Printable Equipment Station QR Placards Modal Engine
+  // --------------------------------------------------------------------------
+  const placardPrintModal = document.getElementById('placardPrintModal');
+  const btnOpenPlacardsModal = document.getElementById('btnOpenPlacardsModal');
+  const btnHubOpenPlacards = document.getElementById('btnHubOpenPlacards');
+  const modalPlacardsCloseBtn = document.getElementById('modalPlacardsCloseBtn');
+  const btnPrintPlacardsSheet = document.getElementById('btnPrintPlacardsSheet');
+  const placardsSheetGrid = document.getElementById('placardsSheetGrid');
+
+  async function renderPlacardsModal() {
+    if (!placardsSheetGrid || !AV_DATA.boothPlacards) return;
+    const qrEngine = window.QRCode || (typeof QRCode !== 'undefined' ? QRCode : null);
+    if (!qrEngine) {
+      console.warn('QRCode library not ready yet');
+      return;
+    }
+
+    const effectiveBase = getEffectiveBaseUrl();
+    if (placardCurrentBaseUrl) {
+      placardCurrentBaseUrl.textContent = effectiveBase;
+    }
+
+    placardsSheetGrid.innerHTML = '';
+
+    for (const placard of AV_DATA.boothPlacards) {
+      const targetUrl = `${effectiveBase}/${placard.targetRoute}`;
+      let qrSvg = '';
+      try {
+        qrSvg = await qrEngine.toString(targetUrl, {
+          type: 'svg',
+          margin: 1,
+          width: 120,
+          errorCorrectionLevel: 'H', // 30% physical damage/scratch tolerance
+          color: { dark: '#0f172a', light: '#ffffff' }
+        });
+      } catch (err) {
+        console.error('Failed generating QR for placard:', placard.id, err);
+        qrSvg = `<div style="padding: 1.5rem; color: #ef4444; font-size: 0.75rem;">QR Unavailable</div>`;
+      }
+
+      const card = document.createElement('div');
+      card.className = 'placard-card';
+      card.innerHTML = `
+        <div class="placard-card-header">
+          <span>${placard.icon}</span>
+          <span>${placard.title}</span>
+        </div>
+        <div class="placard-station-tag">📍 ${placard.station}</div>
+        <div class="placard-qr-wrap">${qrSvg}</div>
+        <div class="placard-instruction">${placard.instruction}</div>
+        <div class="placard-footer-meta" style="font-size: 0.62rem; color: #475569; font-family: var(--font-mono); word-break: break-all;">
+          ${placard.targetRoute} &bull; Level H Safe
+        </div>
+      `;
+      placardsSheetGrid.appendChild(card);
+    }
+  }
+
+  function openPlacardsModal() {
+    if (!placardPrintModal) return;
+    placardPrintModal.classList.add('open');
+    renderPlacardsModal();
+  }
+
+  function closePlacardsModal() {
+    if (!placardPrintModal) return;
+    placardPrintModal.classList.remove('open');
+  }
+
+  if (btnOpenPlacardsModal) {
+    btnOpenPlacardsModal.addEventListener('click', (e) => {
+      e.preventDefault();
+      openPlacardsModal();
+    });
+  }
+
+  if (btnHubOpenPlacards) {
+    btnHubOpenPlacards.addEventListener('click', (e) => {
+      e.preventDefault();
+      openPlacardsModal();
+    });
+  }
+
+  if (modalPlacardsCloseBtn) {
+    modalPlacardsCloseBtn.addEventListener('click', closePlacardsModal);
+  }
+
+  if (placardPrintModal) {
+    placardPrintModal.addEventListener('click', (e) => {
+      if (e.target === placardPrintModal) {
+        closePlacardsModal();
+      }
+    });
+  }
+
+  if (btnPrintPlacardsSheet) {
+    btnPrintPlacardsSheet.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.body.classList.add('printing-placards');
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          document.body.classList.remove('printing-placards');
+        }, 1000);
+      }, 120);
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // Live Sanctuary Apps Popup Dropdown
+  // --------------------------------------------------------------------------
+  const btnOpenAppsDropdown = document.getElementById('btnOpenAppsDropdown');
+  const appsDropdownMenu = document.getElementById('appsDropdownMenu');
+
+  function toggleAppsDropdown(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (!appsDropdownMenu) return;
+    const isOpen = appsDropdownMenu.classList.contains('open');
+    if (isOpen) {
+      closeAppsDropdown();
+    } else {
+      openAppsDropdown();
+    }
+  }
+
+  function openAppsDropdown() {
+    if (!appsDropdownMenu) return;
+    appsDropdownMenu.classList.add('open');
+    if (btnOpenAppsDropdown) {
+      btnOpenAppsDropdown.classList.add('active');
+      btnOpenAppsDropdown.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  function closeAppsDropdown() {
+    if (!appsDropdownMenu) return;
+    appsDropdownMenu.classList.remove('open');
+    if (btnOpenAppsDropdown) {
+      btnOpenAppsDropdown.classList.remove('active');
+      btnOpenAppsDropdown.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  if (btnOpenAppsDropdown) {
+    btnOpenAppsDropdown.addEventListener('click', toggleAppsDropdown);
+  }
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    if (appsDropdownMenu && appsDropdownMenu.classList.contains('open')) {
+      if (!appsDropdownMenu.contains(e.target) && e.target !== btnOpenAppsDropdown && !btnOpenAppsDropdown.contains(e.target)) {
+        closeAppsDropdown();
+      }
+    }
+  });
+
+  // Close modals & dropdowns on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeAppsDropdown();
+      closeCaptionsQrModal();
+      if (guestQrModal) guestQrModal.classList.remove('open');
+      if (channelDetailModal) channelDetailModal.classList.remove('open');
+      if (appSettingsModal) closeSettingsModal();
+      if (placardPrintModal) closePlacardsModal();
+    }
+  });
+
+  // --------------------------------------------------------------------------
   // Initialization
   // --------------------------------------------------------------------------
-  selectScenario('sanctuary-tvs');
+  renderSosBar();
+  renderPopularChips();
+  selectScenario('sanctuary-tvs', false);
   renderStageMap();
   renderConsoleLayer('A');
   renderMixBuses();
@@ -1989,5 +2837,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderBreakerDirectory();
   renderEmbraceHub();
   generateGuestQRCodes();
+  detectLanIp();
   renderLogbook();
+  handleHashChange();
 });

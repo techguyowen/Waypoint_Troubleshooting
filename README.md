@@ -7,10 +7,12 @@ An offline-first, high-performance Progressive Web App (PWA) designed for church
 ## 🌟 Overview & Purpose
 
 The **Waypoint Church Sound Booth Operations Hub** provides immediate, high-contrast, step-by-step assistance for all technical systems in the sanctuary:
-- **Volunteer Quick-Fix Center:** Rapid triage for common disruptions (mic feedback, black TV screens, silent sanctuary speakers, frozen lyric slides, dropped camera feeds).
-- **Audio Tech Hub:** Interactive stage box patch maps (Inputs 1–20), Soundcraft Si Impact fader layer cheat sheets, Aviom in-ear monitoring matrix, and Saturday line check / rehearsal protocols.
-- **Livestream & Presentation Hub:** YouTube Studio broadcast workflow, ATEM Mini switcher controls, Proclaim slide presentation recovery, stage confidence monitor toggles, and 6-button lighting scene presets.
-- **Embrace Group Hub:** Assistive listening (Williams AV / WaveCAST Wi-Fi setup), OBS Cloud Closed Captions (Google Cloud Speech API), and Embrace Conference Room TV extender troubleshooting.
+- **Volunteer Quick-Fix Center:** Rapid triage for common disruptions (mic feedback, black TV screens, silent sanctuary speakers, frozen lyric slides, dropped camera feeds) with 21 interactive troubleshooting guides.
+- **1-Tap SOS Emergency Bar:** Immediate 1-click access to urgent display fixes right above the problem cards.
+- **Printable Equipment QR Placards:** Physical 8-placard generator with permanent short slugs (`/#q/{slug}`), production domain override, and Level H error correction for 30% damage tolerance.
+- **Audio Tech Hub:** Interactive stage box patch maps (Inputs 1–23), Soundcraft Si Impact fader layer cheat sheets, Aviom in-ear monitoring matrix, and Saturday line check / rehearsal protocols.
+- **Livestream & Presentation Hub:** YouTube Studio broadcast workflow, ATEM Mini switcher controls, Proclaim slide presentation recovery, stage confidence monitor toggles, and 7 lighting scene presets.
+- **Embrace Group Hub:** Assistive listening (Williams AV / WaveCAST Wi-Fi setup), VoxStream Live Captions & Stage Prompter Suite, and Embrace Conference Room TV extender troubleshooting.
 - **Electrical & Hardware Power Directory:** Complete circuit directory and reset guide for Gray Electrical Panel S (Breakers 4 & 6 for stage pockets, Breaker 9 for booth lights, Breaker 11 for TVs, Breakers 29–30 for subwoofers).
 - **Engineering Tools:** Interactive stage audio frequency spectrum analyzer, real-time tone generator, and acoustic room delay / decibel SPL calculators.
 
@@ -54,6 +56,9 @@ This web app is built with a Service Worker (`sw.js`) and Web App Manifest (`man
 | **`sw.js`** | Service Worker handling precaching and cache-first offline delivery. |
 | **`ARCHITECTURE.md`** | Comprehensive technical deep dive for AI assistants and software engineers. |
 | **`HARDWARE_MAP.md`** | Detailed physical hardware directory, port mappings, and booth wiring layout. |
+| **`VOXSTREAM_GUIDE.md`** | Deep reference guide for VoxStream Live Captioner PRO (Port 8765, 7 STT engines, Bible engine, stage monitor). |
+| **`AV_CONTROLLER_GUIDE.md`** | Deep reference guide for Sanctuary AV Controller (Port 3050, ATEM switching, PTZ joystick, silence watchdog). |
+| **`ECOSYSTEM_INTEGRATION_GUIDE.md`** | Master network map, telemetry loop, and cross-application failure recovery workflows across all 3 systems. |
 
 ---
 
